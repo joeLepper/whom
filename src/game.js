@@ -53,9 +53,10 @@ export default class Game extends Component {
     let renderContent = this.renderMenu
     if (this.state.personId) renderContent = this.renderConversation
     if (this.state.loading) renderContent = () => 'LOADING'
+    const content = renderContent()
     return (
       <GameContainer>
-        {renderContent()}
+        {content}
       </GameContainer>
     )
   }
