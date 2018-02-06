@@ -74,6 +74,7 @@ class ConversationNode extends Component {
             node={this.props.node}/>
           <Buttons
             editing={this.props.editing}
+            personId={this.props.personId}
             onButtonAdd={this.props.onButtonAdd}
             onButtonChange={this.props.onButtonChange}
             onButtonDelete={this.props.onButtonDelete}

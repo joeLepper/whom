@@ -1,6 +1,7 @@
 const React = require('react')
 const { Component } = React
 
+const { back } = require('../route')
 const Button = require('./button')
 
 class ParentButton extends Component {
@@ -13,7 +14,7 @@ class ParentButton extends Component {
         opacity="1"
         onClick={(e) => {
           e.preventDefault()
-          history.back()
+          back()
         }}>{'<--'}</Button>
     )
   }

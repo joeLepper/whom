@@ -8,6 +8,5 @@ module.exports = function ({ person }) {
     messageAdd: require('./message-add')(person),
     messageChange: require('./message-change')(person),
     messageDelete: require('./message-delete')(person),
-    resize: require('./resize'),
   }
 }

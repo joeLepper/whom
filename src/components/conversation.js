@@ -4,11 +4,9 @@ const { Motion, spring } = require('react-motion')
 const styled = require('styled-components').default
 
 const Handle = require('../handle')
-const handleResize = require('../handle/resize')
 const Person = require('../person')
 const Screen = require('./screen')
 const ControlPanel = require('./control-panel')
-
 
 const ConversationContainer = styled.div`
   position: relative;
@@ -17,11 +15,9 @@ const ConversationContainer = styled.div`
   width:100vw;
   height:100vh;
   overflow: none;
-  font-family: arial;
 `
 const rebind = (self) => {
-  self.handle = new Handle({ person: self.person })
-  self.handleResize = self.handle.resize.bind(self)
+  self.handle = new Handle({ person: self.props.person })
   self.handleLinkAdd = self.handle.linkAdd.bind(self)
   self.handleButtonAdd = self.handle.buttonAdd.bind(self)
   self.handleButtonChange = self.handle.buttonChange.bind(self)
@@ -33,48 +29,21 @@ const rebind = (self) => {
 }
 
 class Conversation extends Component {
-  constructor ({ baseZoom, ee, personId }) {
+  constructor ({ baseZoom }) {
     super(...arguments)
-    this.person = new Person({
-      ee: ee,
-      personId: personId,
-      baseZoom: baseZoom,
-    })
     rebind(this)
     this.state = {
-      zoom: { x: baseZoom, y: baseZoom },
-      w: window.innerWidth,
-      h: window.innerHeight,
-      maxZoomX: 0,
-      maxZoomY: 0,
-      nodes: [],
-      selected: {},
-      selectedId: '',
-      links: [],
-      additionalLinks: [],
       editing: false,
-      loading: true,
+      zoom: { x: baseZoom, y: baseZoom }
     }
   }
-  componentDidMount () {
-    this.person.load(() => {
-      const newState = this.person.update({ zoom: this.state.zoom })
-      newState.loading = false
-      this.setState(newState)
-    })
-    this.props.ee.on('select-node', ({ id, personId }, updatePath) => {
-      const newState = Object.assign(this.state, { selectedId: id })
-      this.setState(this.person.update(newState, updatePath))
-    })
-    window.addEventListener('resize', this.handleResize(this.person.update))
-  }
-  renderMotion () {
+  renderMotion (selected) {
     return (
       <Motion style={{
-          x: spring(this.state.selected.x),
-          y: spring(this.state.selected.y),
-          w: spring(this.state.w),
-          h: spring(this.state.h),
+          x: spring(selected.x),
+          y: spring(selected.y),
+          w: spring(this.props.person.dimensions.w),
+          h: spring(this.props.person.dimensions.h),
           zoomX: spring(this.state.zoom.x),
           zoomY: spring(this.state.zoom.y),
           maxZoomX: spring(this.state.maxZoomX),
@@ -82,19 +51,18 @@ class Conversation extends Component {
         }}>
           {
             ({ x, y, w, h, zoomX, zoomY, maxZoomX, maxZoomY }) => {
-              console.log({ x, y, w, h, zoomX, zoomY, maxZoomX, maxZoomY })
               return (
                 <Screen
                   editing={this.state.editing}
-                  selectedId={this.state.selectedId}
-                  baseZoom={this.state.baseZoom}
+                  selectedId={this.props.selectedId}
+                  personId={this.props.personId}
+                  baseZoom={this.props.baseZoom}
                   zoomX={zoomX}
                   zoomY={zoomY}
                   x={x}
                   y={y}
                   w={w}
                   h={h}
-                  ee={this.props.ee}
                   onLinkAdd={this.handleLinkAdd}
                   onButtonAdd={this.handleButtonAdd}
                   onButtonChange={this.handleButtonChange}
@@ -104,9 +72,9 @@ class Conversation extends Component {
                   onMessageDelete={this.handleMessageDelete}
                   maxZoomX={maxZoomX}
                   maxZoomY={maxZoomY}
-                  links={this.state.links}
-                  additionalLinks={this.state.additionalLinks}
-                  nodes={this.state.nodes} />
+                  links={this.props.person.data.links}
+                  additionalLinks={this.props.person.data.additionalLinks}
+                  nodes={this.props.person.data.nodes} />
               )
             }
           }
@@ -114,24 +82,28 @@ class Conversation extends Component {
     )
   }
   render () {
-    console.log(this.state.loading)
+    const selected = this.props.person.data.nodes.filter((node) => {
+      console.log(node.id, this.props.selectedId)
+      return node.id === this.props.selectedId
+    })[0] || {}
     return (
       <ConversationContainer>
         <ControlPanel
           editing={this.state.editing}
-          selected={this.state.selected}
-          person={this.person}
+          selected={selected}
+          person={this.props.person}
+          personId={this.props.personId}
           onEditChange={this.handleEditChange}
           baseZoom={this.props.baseZoom}
           zoom={this.state.zoom}
-          maxZoomX={this.state.maxZoomX}
-          maxZoomY={this.state.maxZoomY}
+          maxZoomX={this.props.person.data.maxZoomX}
+          maxZoomY={this.props.person.data.maxZoomY}
           onZoomChange={({ zoom }) => {
             console.log(zoom)
             this.setState(this.person.update({ zoom }))
           }}
           />
-        {this.state.loading ? 'LOADING' : this.renderMotion()}
+        {this.renderMotion(selected)}
       </ConversationContainer>
     )
   }

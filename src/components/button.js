@@ -4,6 +4,7 @@ const styled = require('styled-components').default
 
 const PINK = '#f09'
 const WHITE = '#FFF'
+const FONT_SIZE = '1.5em'
 
 const ButtonContainer = styled.div`
   margin: 1vh 1vw;
@@ -11,9 +12,9 @@ const ButtonContainer = styled.div`
   justify-content: center;
   border-top: solid 1px ${PINK};
   border-bottom: solid 1px transparent;
-  background-color: ${WHITE};
+  background-color: transparent;
   padding 0.5vh 0.5vw;
-  font-size: 1.25em;
+  font-size: ${FONT_SIZE};
   &:hover{
     border-top: solid 1px transparent;
     border-bottom: solid 1px ${PINK};
@@ -27,7 +28,7 @@ const A = styled.a`
 `
 
 const Input = styled.input`
-  font-size: 1.25em;
+  font-size: ${FONT_SIZE};
   border: none;
   outline: none;
   margin: auto;

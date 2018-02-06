@@ -93,31 +93,31 @@ class Screen extends Component {
     )).map((n, i) => {
       return (
         <ConversationNode
-          editing={this.props.editing}
-          onButtonChange={this.props.onButtonChange}
-          onButtonDelete={this.props.onButtonDelete}
-          onButtonAdd={this.props.onButtonAdd}
+          additionalLinks={this.props.additionalLinks}
           onMessageDelete={this.props.onMessageDelete}
           onMessageChange={this.props.onMessageChange}
+          onButtonChange={this.props.onButtonChange}
+          onButtonDelete={this.props.onButtonDelete}
           onMessageAdd={this.props.onMessageAdd}
+          onButtonAdd={this.props.onButtonAdd}
+          personId={this.props.personId}
+          editing={this.props.editing}
+          key={`conversation-${i}`}
           zoomX={this.props.zoomX}
           zoomY={this.props.zoomY}
-          key={`conversation-${i}`}
-          additionalLinks={this.props.additionalLinks}
           node={n}
-          ee={this.props.ee}
           w={w}
           h={h} />
       )
     })
     const graphicalNodes = this.props.nodes.map((n, i) => (
       <GraphicalNode
-        dragSource={this.state.line.source}
-        dragging={this.state.dragging}
-        onDragBegin={this.handleDragBegin}
         onDragCancel={this.handleDragCancel}
+        dragSource={this.state.line.source}
+        onDragBegin={this.handleDragBegin}
+        personId={this.props.personId}
+        dragging={this.state.dragging}
         onDragEnd={this.handleDragEnd}
-        ee={this.props.ee}
         key={`graphical-${i}`}
         node={n}
         zoom={zoomY}
