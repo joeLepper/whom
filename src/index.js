@@ -17,6 +17,7 @@ const createWindow = async () => {
   mainWindow = new BrowserWindow({
     width: 800,
     height: 600,
+    fullscreen: true,
   })
 
   // and load the index.html of the app.
@@ -25,7 +26,7 @@ const createWindow = async () => {
   // Open the DevTools.
   if (isDevMode) {
     await installExtension(REACT_DEVELOPER_TOOLS)
-    mainWindow.webContents.openDevTools()
+    // mainWindow.webContents.openDevTools()
   }
 
   // Emitted when the window is closed.
@@ -71,11 +72,20 @@ ipcMain.on('people--load', (event) => {
 ipcMain.on('person--load', (event, personId) => {
   console.log(personId)
   readFile(`${__dirname}/people/${personId}.json`, 'utf8', (err, person) => {
+    console.log(JSON.stringify(person, null, 2))
     event.sender.send('person--load:reply', person)
   })
 })
 ipcMain.on('person--save', (event, personId, person) => {
   writeFile(`${__dirname}/people/${personId}.json`, person, 'utf8', (err) => {
     event.sender.send('person--save:reply', 'ok')
+  })
+})
+
+ipcMain.on('person--create', (event, personId) => {
+  readFile(`${__dirname}/person/template.json`, 'utf8', (err, person) => {
+    writeFile(`${__dirname}/people/${personId}.json`, person, 'utf8', (err) => {
+      event.sender.send('person--create:reply', person)
+    })
   })
 })

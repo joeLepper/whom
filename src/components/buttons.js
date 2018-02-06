@@ -2,6 +2,7 @@ const React = require('react')
 const { Component } = React
 const styled = require('styled-components').default
 const Guid = require('guid')
+const route = require('../route')
 
 const Button = require('./button')
 
@@ -38,7 +39,10 @@ class Buttons extends Component {
           className="natural-child"
           onButtonDelete={this.props.onButtonDelete}
           onClick={(e) => {
-            if (!this.props.editing) this.props.ee.emit('select-node', [{ id: child.data.id }])
+            if (!this.props.editing) {
+              const path = `/person/${this.props.personId}/node/${child.data.id}`
+              route.update(path)
+            }
           }}>{child.data.optionText}</Button>
       )
     }).concat(
@@ -56,9 +60,11 @@ class Buttons extends Component {
             className="adopted-child"
             onButtonDelete={this.props.onButtonDelete}
             onClick={(e) => {
-              if (!this.props.editing) this.props.ee.emit('select-node', [{ id: link.target.data.id }])
-            }}
-          >{link.optionText}</Button>
+              if (!this.props.editing) {
+                const path = `/person/${this.props.personId}/node/${target.data.id}`
+                route.update(path)
+              }
+            }}>{link.optionText}</Button>
         )
       })
     )

@@ -3,7 +3,7 @@ const { Component } = React
 const styled = require('styled-components').default
 const Button = require('./button')
 
-const FONT_SIZE = 32
+const FONT_SIZE = '1.75em'
 
 const MessageContainer = styled.li`
   font-size: ${FONT_SIZE};
@@ -19,6 +19,7 @@ const MessageContainer = styled.li`
 
 const P = styled.p`
   margin: auto;
+  font-size: ${FONT_SIZE};
 `
 
 const Input = styled.input`

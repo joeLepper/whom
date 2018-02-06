@@ -14,7 +14,7 @@ class ZoomButton extends Component {
           console.log(this.props)
           const zoomLevel = this.props.zoomX !== this.props.baseZoom ?
             { x: this.props.baseZoom, y: this.props.baseZoom } :
-            { x: this.props.maxZoomX, y: this.props.maxZoomY }
+            { x: this.props.maxZoomX * 2, y: this.props.maxZoomY * 2 }
           this.props.onZoomChange({ zoom: zoomLevel })
         }}>{this.props.zoomX !== this.props.baseZoom ? '-' : '+'}</Button>
     )
