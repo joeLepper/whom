@@ -76,15 +76,15 @@ export default class Game extends Component {
     })
     ipcRenderer.send('person--create', personId)
   }
-  loadPerson () {
+  loadPerson (personId) {
     ipcRenderer.on('person--load:reply', (_, person) => {
       const parsed = JSON.parse(person)
       this.setState({ person: new Person({ person: parsed }) }, () => {
         const rootId = this.state.person.data.nodes.filter(({ parent }) => parent === null)[0].id
-        route.update(`/person/${this.state.personId}/node/${rootId}`)
+        route.update(`/person/${personId}/node/${rootId}`)
       })
     })
-    ipcRenderer.send('person--load', this.state.personId)
+    ipcRenderer.send('person--load', personId)
   }
   loadPeople () {
     ipcRenderer.on('people--load:reply', (event, people) => {
@@ -93,14 +93,14 @@ export default class Game extends Component {
     ipcRenderer.send('people--load')
   }
   loadRootNode ({ params }) {
-    this.loadPerson()
+    this.loadPerson(params.personId)
   }
   savePerson () {
     ipcRenderer.on('person--save:reply', (_, status) => console.log(status))
     ipcRenderer.send('person--save', this.person)
   }
   componentDidMount () {
-    if (this.state.personId) this.loadPerson()
+    if (this.state.personId) this.loadPerson(this.state.personId)
     else this.loadPeople()
     route.addRouteListener('/person/:personId/node/:nodeId', this.loadNode)
     route.addRouteListener('/person/:personId', this.loadRootNode)

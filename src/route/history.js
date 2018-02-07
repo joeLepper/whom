@@ -32,7 +32,7 @@ class History {
   read () {
     const history = this.store.load()
     console.log(history)
-    return history[history.length - 1] || '/'
+    return history && history[history.length - 1] || '/'
   }
   notifyListeners (state) {
     console.log(state)
