@@ -10,7 +10,7 @@ class Store {
   }
 
   load () {
-    return JSON.parse(localStorage.getItem(this.namespace))
+    return JSON.parse(localStorage.getItem(this.namespace) || "[]")
   }
 
   save (state) {
