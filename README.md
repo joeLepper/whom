@@ -1,6 +1,6 @@
 # WHOM
 
-WHOM is a text-based adventure game using `d3-hierarchy` and `react`. Each decision you make will take you down a different path with different outcomes.
+__WHOM__ is a text-based adventure game using `d3-hierarchy` and `react`. Each decision you make will take you down a different path with different outcomes.
 
 This is still very much a work-in-progress.
 
@@ -12,7 +12,7 @@ Make sure you have [Node](https://nodejs.org/en/download/) installed. If the bel
 
     node --version
 
-You can 
+We reccomend using [nvm](https://github.com/creationix/nvm) to manage multiple versions of node on the same machine. You will find a `.nvmrc` specifying the major version of node __WHOM__ is currently being developed with.
 
 ### Step 2 - Installation
 
@@ -30,7 +30,7 @@ And if you're using Yarn:
 
 ### Step 3 - Launch the program
 
-If you hadn't guessed from step 2, you can launch the program using either yarn or npm scripts.
+You can launch the program using either yarn or npm scripts.
 
     npm start
     yarn start
