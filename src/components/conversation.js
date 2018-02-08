@@ -83,7 +83,6 @@ class Conversation extends Component {
   }
   render () {
     const selected = this.props.person.data.nodes.filter((node) => {
-      console.log(node.id, this.props.selectedId)
       return node.id === this.props.selectedId
     })[0] || {}
     return (
@@ -99,7 +98,6 @@ class Conversation extends Component {
           maxZoomX={this.props.person.data.maxZoomX}
           maxZoomY={this.props.person.data.maxZoomY}
           onZoomChange={({ zoom }) => {
-            console.log(zoom)
             this.setState(this.person.update({ zoom }))
           }}
           />

@@ -62,11 +62,9 @@ class GraphicalNode extends Component {
         {this.state.hover ? <Circle r={2} /> : null}
         <HitTarget
           onMouseEnter={() => {
-            console.log('enter')
             this.setState({ hover: true })
           }}
           onMouseLeave={() => {
-            console.log('leave')
             this.setState({ hover: false })
           }}
           onMouseDown={() => {

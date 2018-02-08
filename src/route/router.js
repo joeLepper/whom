@@ -28,16 +28,13 @@ class Router {
     return { route, params }
   }
   update (path) {
-    console.log(path)
     this.history.push(path)
   }
   replace (path) {
     this.history.replace(path)
   }
   notifyListeners (route) {
-    console.log(route)
     Object.keys(this.listeners).forEach((key) => {
-      console.log(key, this.listeners[key])
       this.listeners[key](route)
     })
   }
@@ -45,7 +42,6 @@ class Router {
     const routeMatcher = new Route(path)
     this.listeners[path] = (route) => {
       const params = routeMatcher.match(route)
-      console.log(params)
       if (params) fn({ route, params })
     }
   }

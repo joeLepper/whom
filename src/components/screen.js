@@ -28,8 +28,6 @@ class Screen extends Component {
   handleDragEnd (dragState) {
     dragState.dragging = false
     this.setState({ dragging: false, line: NULL_LINE })
-    // console.log('FINAL DRAG STATE')
-    // console.log(dragState)
     this.props.onLinkAdd(dragState.line.source.id, dragState.line.target.id)
   }
   handleDragMove (e) {

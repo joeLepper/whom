@@ -31,13 +31,10 @@ class History {
   }
   read () {
     const history = this.store.load()
-    console.log(history)
     return history && history[history.length - 1] || '/'
   }
   notifyListeners (state) {
-    console.log(state)
     Object.keys(this.listeners).forEach((key) => {
-      console.log(key)
       const listener = this.listeners[key]
       listener(state)
     })

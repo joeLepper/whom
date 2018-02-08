@@ -55,7 +55,6 @@ class Button extends Component {
         size={this.props.children.length}
         value={this.props.children}
         onChange={(e) => {
-          console.log(this.props.nodeId)
           this.props.onChange(this.props.nodeId, e.currentTarget.value)
         }}/>
     )
