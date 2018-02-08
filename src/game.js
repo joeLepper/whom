@@ -38,6 +38,7 @@ export default class Game extends Component {
     this.renderConversation = this.renderConversation.bind(this)
     this.renderMenu = this.renderMenu.bind(this)
     this.createPerson = this.createPerson.bind(this)
+    this.loadMenu = this.loadMenu.bind(this)
     this.loadNode = this.loadNode.bind(this)
     this.loadRootNode = this.loadRootNode.bind(this)
     this.loadPerson = this.loadPerson.bind(this)
@@ -95,6 +96,11 @@ export default class Game extends Component {
   loadRootNode ({ params }) {
     this.loadPerson(params.personId)
   }
+  loadMenu () {
+    this.setState({ personId: null, nodeId: null, loading: true }, () => {
+      this.loadPeople()
+    })
+  }
   savePerson () {
     ipcRenderer.on('person--save:reply', (_, status) => console.log(status))
     ipcRenderer.send('person--save', this.person)
@@ -104,6 +110,7 @@ export default class Game extends Component {
     else this.loadPeople()
     route.addRouteListener('/person/:personId/node/:nodeId', this.loadNode)
     route.addRouteListener('/person/:personId', this.loadRootNode)
+    route.addRouteListener('/', this.loadMenu)
     window.addEventListener('resize', () => {
       const path = route.history.read()
       route.replace(path)
@@ -144,11 +151,10 @@ export default class Game extends Component {
     let renderContent = this.renderMenu
     if (this.state.personId) renderContent = this.renderConversation
     if (this.state.loading) renderContent = () => 'LOADING'
+
     const content = renderContent()
     return (
-      <GameContainer>
-        {content}
-      </GameContainer>
+      <GameContainer>{content}</GameContainer>
     )
   }
 }

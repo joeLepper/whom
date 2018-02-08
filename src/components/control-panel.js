@@ -3,7 +3,8 @@ const { Component } = React
 
 const styled = require('styled-components').default
 
-const { history } = require('../route')
+const { history, update } = require('../route')
+const Button = require('./button')
 const EditButton = require('./edit-button')
 const ZoomButton = require('./zoom-button')
 const ParentButton = require('./parent-button')
@@ -30,6 +31,11 @@ class ControlPanel extends Component {
   render () {
       return (
         <Panel>
+          <Button
+            opacity={1}
+            editing={false}
+            key='menu'
+            onClick={() => update(`/`)}>menu</Button>
           <ParentButton selected={this.props.selected} />
           <EditButton
             editing={this.props.editing}
