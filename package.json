@@ -49,13 +49,10 @@
   "dependencies": {
     "d3-hierarchy": "^1.1.5",
     "d3-path": "^1.0.5",
-    "d3-shape": "^1.2.0",
-    "debounce": "^1.1.0",
     "electron-compile": "^6.4.2",
     "electron-devtools-installer": "^2.1.0",
     "electron-squirrel-startup": "^1.0.0",
     "guid": "0.0.12",
-    "nee": "^1.2.2",
     "react": "^15.4.1",
     "react-dom": "^15.4.1",
     "react-hot-loader": "^3.0.0-beta.6",

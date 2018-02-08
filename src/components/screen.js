@@ -4,7 +4,6 @@ const { Motion, spring } = require('react-motion')
 const ConversationNode = require('./conversation-node')
 const GraphicalNode = require('./graphical-node')
 const styled = require('styled-components').default
-const d3 = require('d3-shape')
 const { path } = require('d3-path')
 
 const NULL_LINE = {
