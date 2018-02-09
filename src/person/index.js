@@ -3,9 +3,9 @@ const Guid = require('guid')
 
 class Person {
   constructor ({ person }) {
-    this.person = person
+    this.raw = person
     this.stratifier = d3.stratify().parentId((d) => {
-      const parents = this.person.filter((node) => (
+      const parents = this.raw.filter((node) => (
         node.children && node.children.some((child) => child === d.id)
       ))
       const parent = parents[0]
@@ -37,7 +37,7 @@ class Person {
     this.update()
   }
   parseAdditionalLinks () {
-    this.data.additionalLinks = this.person.filter(({ type }) => {
+    this.data.additionalLinks = this.raw.filter(({ type }) => {
       return type === 'link'
     }).map(({ childId, parentId, optionText }) => {
       const source = this.data.nodes.filter((node) => node.data.id === parentId)[0]
@@ -51,7 +51,7 @@ class Person {
   }
   tree () {
     const layout = d3.tree().size([this.dimensions.w, this.dimensions.h])
-    return layout(this.stratifier(this.person.filter(({ type }) => type === 'node')))
+    return layout(this.stratifier(this.raw.filter(({ type }) => type === 'node')))
   }
   parseNodes () {
     const nodes = []
@@ -79,13 +79,13 @@ class Person {
     this.parseAdditionalLinks()
   }
   buttonAdd (newNodeId, currentNodeId) {
-    this.person.forEach((node, i) => {
+    this.raw.forEach((node, i) => {
       if (currentNodeId === node.id) {
         node.children.push(newNodeId)
-        this.person[i] = node
+        this.raw[i] = node
       }
     })
-    this.person.push({
+    this.raw.push({
       optionText: 'fresh button',
       id: newNodeId,
       fontSize: 32,
@@ -95,22 +95,22 @@ class Person {
     })
   }
   buttonChange (nodeId, optionText) {
-    this.person.forEach((node, i) => {
+    this.raw.forEach((node, i) => {
       if (nodeId === node.id) {
         node.optionText = optionText
-        this.person[i] = node
+        this.raw[i] = node
       }
     })
   }
   buttonDelete (nodeId) {
     let deleteIndex
-    this.person.forEach((node, i) => {
+    this.raw.forEach((node, i) => {
       if (nodeId === node.id) deleteIndex = i
     })
-    this.person.splice(deleteIndex, 1)
+    this.raw.splice(deleteIndex, 1)
   }
   linkAdd (parentId, childId) {
-    this.person.push({
+    this.raw.push({
       type: 'link',
       id: Guid.raw(),
       title: 'adoption',
@@ -120,26 +120,26 @@ class Person {
     })
   }
   messageAdd (nodeId) {
-    this.person.forEach((node, i) => {
+    this.raw.forEach((node, i) => {
       if (nodeId === node.id) {
         node.messages.push('fresh message')
-        this.person[i] = node
+        this.raw[i] = node
       }
     })
   }
   messageChange (nodeId, messageIndex, message) {
-    this.person.forEach((node, i) => {
+    this.raw.forEach((node, i) => {
       if (nodeId === node.id) {
         node.messages[messageIndex] = message
-        this.person[i] = node
+        this.raw[i] = node
       }
     })
   }
   messageDelete () {
-    this.person.forEach((node, i) => {
+    this.raw.forEach((node, i) => {
       if (nodeId === node.id) {
         node.messages = node.messages.filter((_, i) => i !== messageIndex)
-        this.person[i] = node
+        this.raw[i] = node
       }
     })
   }

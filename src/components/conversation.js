@@ -97,6 +97,7 @@ class Conversation extends Component {
           zoom={this.state.zoom}
           maxZoomX={this.props.person.data.maxZoomX}
           maxZoomY={this.props.person.data.maxZoomY}
+          onSaveAs={this.props.onSaveAs}
           onZoomChange={({ zoom }) => {
             this.setState(this.person.update({ zoom }))
           }}

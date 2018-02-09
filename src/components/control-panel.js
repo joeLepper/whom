@@ -28,6 +28,16 @@ const DevOutput = styled.div`
 `
 
 class ControlPanel extends Component {
+  constructor (props) {
+    super(...arguments)
+    this.state = {
+      personId: props.personId,
+    }
+  }
+  componentWillReceiveProps ({ personId }) {
+    console.log(personId !== this.state.personId, personId , this.state.personId)
+    if (personId !== this.state.personId) this.setState({ personId })
+  }
   render () {
       return (
         <Panel>
@@ -52,7 +62,15 @@ class ControlPanel extends Component {
           <DevOutput>
             <span>{history.read()}</span>
           </DevOutput>
-          <input value={this.props.personId} />
+
+          <input value={this.state.personId} onChange={({ target }) => {
+            this.setState({ personId: target.value })
+          }}/>
+          <Button
+            opacity={1}
+            editing={false}
+            key='save-as'
+            onClick={() => this.props.onSaveAs(this.state.personId)}>save as</Button>
         </Panel>
       )
     }

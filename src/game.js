@@ -43,6 +43,7 @@ export default class Game extends Component {
     this.loadRootNode = this.loadRootNode.bind(this)
     this.loadPerson = this.loadPerson.bind(this)
     this.loadPeople = this.loadPeople.bind(this)
+    this.savePerson = this.savePerson.bind(this)
 
     const path = history.read()
 
@@ -101,9 +102,10 @@ export default class Game extends Component {
       this.loadPeople()
     })
   }
-  savePerson () {
+  savePerson (name) {
+    console.log(this.state.person.raw)
     ipcRenderer.on('person--save:reply', (_, status) => console.log(status))
-    ipcRenderer.send('person--save', this.person)
+    ipcRenderer.send('person--save', name, JSON.stringify(this.state.person.raw, null, 2))
   }
   componentDidMount () {
     if (this.state.personId) this.loadPerson(this.state.personId)
@@ -122,6 +124,7 @@ export default class Game extends Component {
         person={this.state.person}
         personId={this.state.personId}
         selectedId={this.state.nodeId}
+        onSaveAs={this.savePerson}
         baseZoom={BASE_ZOOM} />
     )
   }

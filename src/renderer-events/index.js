@@ -21,6 +21,7 @@ ipcMain.on('person--load', (event, personId) => {
 })
 
 ipcMain.on('person--save', (event, personId, person) => {
+  console.log('Hi there')
   const file = join(__dirname, '..', 'people', `${personId}.json`)
   writeFile(file, person, 'utf8', (err) => {
     event.sender.send('person--save:reply', 'ok')
