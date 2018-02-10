@@ -43,7 +43,6 @@ export default class Game extends Component {
     this.loadRootNode = this.loadRootNode.bind(this)
     this.loadPerson = this.loadPerson.bind(this)
     this.loadPeople = this.loadPeople.bind(this)
-    this.savePerson = this.savePerson.bind(this)
 
     const path = history.read()
 
@@ -73,25 +72,12 @@ export default class Game extends Component {
   }
   createPerson () {
     const personId = 'fresh'
-    ipcRenderer.on('person--create:reply', (event, person) => {
-      this.loadPerson(personId)
-    })
     ipcRenderer.send('person--create', personId)
   }
   loadPerson (personId) {
-    ipcRenderer.on('person--load:reply', (_, person) => {
-      const parsed = JSON.parse(person)
-      this.setState({ person: new Person({ person: parsed }) }, () => {
-        const rootId = this.state.person.data.nodes.filter(({ parent }) => parent === null)[0].id
-        route.update(`/person/${personId}/node/${rootId}`)
-      })
-    })
     ipcRenderer.send('person--load', personId)
   }
   loadPeople () {
-    ipcRenderer.on('people--load:reply', (event, people) => {
-      this.setState({ people, loading: false })
-    })
     ipcRenderer.send('people--load')
   }
   loadRootNode ({ params }) {
@@ -102,11 +88,6 @@ export default class Game extends Component {
       this.loadPeople()
     })
   }
-  savePerson (name) {
-    console.log(this.state.person.raw)
-    ipcRenderer.on('person--save:reply', (_, status) => console.log(status))
-    ipcRenderer.send('person--save', name, JSON.stringify(this.state.person.raw, null, 2))
-  }
   componentDidMount () {
     if (this.state.personId) this.loadPerson(this.state.personId)
     else this.loadPeople()
@@ -116,6 +97,23 @@ export default class Game extends Component {
     window.addEventListener('resize', () => {
       const path = route.history.read()
       route.replace(path)
+    })
+    ipcRenderer.on('person--load:reply', (_, personId, person) => {
+      const parsed = JSON.parse(person)
+      this.setState({ person: new Person({ person: parsed, id: personId }) }, () => {
+        const rootId = this.state.person.data.nodes.filter(({ parent }) => parent === null)[0].id
+        route.update(`/person/${personId}/node/${rootId}`)
+      })
+    })
+    ipcRenderer.on('people--load:reply', (event, people) => {
+      this.setState({ people, loading: false })
+    })
+    ipcRenderer.on('person--create:reply', (event, personId) => {
+      this.loadPerson(personId)
+    })
+    ipcRenderer.on('person--save:reply', (event, personId, person) => {
+      // console.log(personId, person)
+      this.loadPerson(personId)
     })
   }
   renderConversation () {

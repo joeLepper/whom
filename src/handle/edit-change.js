@@ -1,6 +1,5 @@
-module.exports = function ({ editChange }) {
+module.exports = function () {
   return function handleEditChange ({ editing }) {
-    editChange(editing)
     this.setState({ editing })
   }
 }

@@ -1,9 +1,11 @@
 const d3 = require('d3-hierarchy')
 const Guid = require('guid')
+const { ipcRenderer } = require('electron')
 
 class Person {
-  constructor ({ person }) {
+  constructor ({ person, id }) {
     this.raw = person
+    this.id = id
     this.stratifier = d3.stratify().parentId((d) => {
       const parents = this.raw.filter((node) => (
         node.children && node.children.some((child) => child === d.id)
@@ -30,9 +32,6 @@ class Person {
     this.messageAdd = this.messageAdd.bind(this)
     this.messageChange = this.messageChange.bind(this)
     this.messageDelete = this.messageDelete.bind(this)
-
-    // changing the state of the page
-    this.editChange = this.editChange.bind(this)
 
     this.update()
   }
@@ -134,6 +133,7 @@ class Person {
         this.raw[i] = node
       }
     })
+    this.save()
   }
   messageDelete () {
     this.raw.forEach((node, i) => {
@@ -143,8 +143,8 @@ class Person {
       }
     })
   }
-  editChange (newEditingState) {
-    if (!newEditingState) this.save()
+  save () {
+    ipcRenderer.send('person--save', this.id, JSON.stringify(this.raw, null, 2))
   }
 }
 
