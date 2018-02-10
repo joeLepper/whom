@@ -56,7 +56,7 @@ class Message extends Component {
   }
   renderDisplayMessage () {
     if (this.props.editing) return (
-      <Div>
+      <Div key={`${this.props.nodeId}.${this.props.messageIndex}`}>
         {
           <Button
           editing={false}
@@ -65,6 +65,7 @@ class Message extends Component {
           key='new button'>delete</Button>
         }
         <Input
+          key={`${this.props.nodeId}.${this.props.messageIndex}`}
           value={this.props.children}
           onChange={(e) => {
             this.props.onChange(this.props.nodeId, this.props.messageIndex, e.currentTarget.value)

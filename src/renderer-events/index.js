@@ -17,15 +17,14 @@ ipcMain.on('people--load', (event) => {
 ipcMain.on('person--load', (event, personId) => {
   const file = join(__dirname, '..', 'people', `${personId}.json`)
   readFile(file, 'utf8', (err, person) => {
-    event.sender.send('person--load:reply', person)
+    event.sender.send('person--load:reply', personId, person)
   })
 })
 
 ipcMain.on('person--save', (event, personId, person) => {
-  console.log('Hi there')
   const file = join(__dirname, '..', 'people', `${personId}.json`)
   writeFile(file, person, 'utf8', (err) => {
-    event.sender.send('person--save:reply', 'ok')
+    event.sender.send('person--save:reply', personId, JSON.stringify(person, null, 2))
   })
 })
 
@@ -33,7 +32,7 @@ ipcMain.on('person--delete', (event, personId, person) => {
   const file = join(__dirname, '..', 'people', `${personId}.json`)
   unlink(file, (err) => {
     if (err) event.sender.send('person--delete:reply', err)
-    else event.sender.send('person--delete:reply', 'ok')
+    else event.sender.send('person--delete:reply', personId)
   })
 })
 
@@ -42,7 +41,7 @@ ipcMain.on('person--create', (event, personId) => {
   readFile(template, 'utf8', (err, person) => {
     const file = join(__dirname, '..', 'people', `${personId}.json`)
     writeFile(file, person, 'utf8', (err) => {
-      event.sender.send('person--create:reply', person)
+      event.sender.send('person--create:reply', personId, person)
     })
   })
 })

@@ -23,9 +23,10 @@ const rebind = (self) => {
   self.handleButtonChange = self.handle.buttonChange.bind(self)
   self.handleButtonDelete = self.handle.buttonDelete.bind(self)
   self.handleMessageAdd = self.handle.messageAdd.bind(self)
-  self.handleMessageChange = self.handle.messageChange.bind(self)
   self.handleMessageDelete = self.handle.messageDelete.bind(self)
   self.handleEditChange = self.handle.editChange.bind(self)
+
+  self.handleMessageChange = self.handleMessageChange.bind(self)
 }
 
 class Conversation extends Component {
@@ -36,6 +37,9 @@ class Conversation extends Component {
       editing: false,
       zoom: { x: baseZoom, y: baseZoom }
     }
+  }
+  handleMessageChange (nodeId, messageIndex, message) {
+    this.props.person.messageChange(nodeId, messageIndex, message)
   }
   renderMotion (selected) {
     return (

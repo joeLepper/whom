@@ -35,7 +35,6 @@ class ControlPanel extends Component {
     }
   }
   componentWillReceiveProps ({ personId }) {
-    console.log(personId !== this.state.personId, personId , this.state.personId)
     if (personId !== this.state.personId) this.setState({ personId })
   }
   render () {

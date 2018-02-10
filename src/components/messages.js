@@ -8,26 +8,30 @@ const Message = require('./message')
 const Li = styled.li`
   cursor: pointer;
 `
+const MessagesContainer = styled.ul`
+  list-style: none;
+  display: inline-flex;
+  align-items: center;
+  align-content: center;
+  justify-content: center;
+  flex: 1 1 100%;
+  margin: auto;
+  padding: 0;
+  cursor: pointer;
+`
 
 class Messages extends Component {
   render () {
-    const MessagesContainer = styled.ul`
-      list-style: none;
-      display: inline-flex;
-      align-items: center;
-      align-content: center;
-      justify-content: center;
-      flex: 1 1 100%;
-      margin: auto;
-      padding: 0;
-      cursor: pointer;
-      opacity: ${this.props.opacity};
-    `
     const msg = this.props.node.data.messages[this.props.index]
     return (
-      <MessagesContainer>
+      <MessagesContainer
+        key={`${this.props.node.data.id}.${this.props.index}`}
+        style={{
+          opacity: this.props.opacity,
+        }}>
         <Li onClick={this.props.editing ? () => {} : this.props.reverseMessage}><a>{'<'}</a></Li>
         <Message
+          key={`${this.props.node.data.id}.${this.props.index}`}
           zoomRatio={this.props.zoomRatio}
           onMessageDelete={this.props.onMessageDelete}
           onClick={this.props.editing ? () => {} : this.props.advanceMessage}
