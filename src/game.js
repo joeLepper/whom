@@ -74,7 +74,7 @@ export default class Game extends Component {
   createPerson () {
     const personId = 'fresh'
     ipcRenderer.on('person--create:reply', (event, person) => {
-      this.setState({ personId, person })
+      this.loadPerson(personId)
     })
     ipcRenderer.send('person--create', personId)
   }
