@@ -1,12 +1,14 @@
 import { ipcMain } from 'electron'
 import { readdir, readFile, writeFile, unlink } from 'fs'
-import { join, basename } from 'path'
+import { join, basename, extname } from 'path'
 
 ipcMain.on('people--load', (event) => {
   const dir = join(__dirname, '..', 'people')
   readdir(dir, (err, people) => {
-    const names = people.map((person) => {
-      return basename(person).split('.json')[0]
+    const names = people.filter((person) => {
+      return extname(person) === '.json'
+    }).map((person) => {
+      return basename(person, '.json')
     })
     event.sender.send('people--load:reply', names)
   })
@@ -15,7 +17,6 @@ ipcMain.on('people--load', (event) => {
 ipcMain.on('person--load', (event, personId) => {
   const file = join(__dirname, '..', 'people', `${personId}.json`)
   readFile(file, 'utf8', (err, person) => {
-    // console.log(JSON.stringify(person, null, 2))
     event.sender.send('person--load:reply', person)
   })
 })
