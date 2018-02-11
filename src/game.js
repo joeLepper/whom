@@ -10,8 +10,14 @@ const history = new History()
 const Person = require('./person')
 const Conversation = require('./components/conversation')
 const Button = require('./components/button')
+const Menu = require('./components/menu')
 
 const BASE_ZOOM = 0.25
+
+const personPath = '/person/:personId'
+const nodePath = '/person/:personId/node/:nodeId'
+const nodeRoute = new Route(nodePath)
+const personRoute = new Route(personPath)
 
 const GameContainer = styled.div`
   position: relative;
@@ -22,22 +28,12 @@ const GameContainer = styled.div`
   overflow: none;
   font-family: monospace;
 `
-const Menu = styled.ul`
-  list-style: none;
-  display: flex;
-  margin: auto;
-  flex-flow: column wrap;
-`
-const MenuItem = styled.li`
-  cursor: pointer;
-`
 
 export default class Game extends Component {
   constructor () {
     super(...arguments)
     this.renderConversation = this.renderConversation.bind(this)
     this.renderMenu = this.renderMenu.bind(this)
-    this.createPerson = this.createPerson.bind(this)
     this.loadMenu = this.loadMenu.bind(this)
     this.loadNode = this.loadNode.bind(this)
     this.loadRootNode = this.loadRootNode.bind(this)
@@ -45,9 +41,8 @@ export default class Game extends Component {
     this.loadPeople = this.loadPeople.bind(this)
 
     const path = history.read()
-
-    const personParams = new Route('/person/:personId').match(path)
-    const nodeParams = new Route('/person/:personId/node/:nodeId').match(path)
+    const personParams = personRoute.match(path)
+    const nodeParams = nodeRoute.match(path)
     const initialState = {
       people: [],
       loading: true,
@@ -70,19 +65,9 @@ export default class Game extends Component {
       loading: false,
     })
   }
-  createPerson () {
-    const personId = 'fresh'
-    ipcRenderer.send('person--create', personId)
-  }
-  loadPerson (personId) {
-    ipcRenderer.send('person--load', personId)
-  }
-  loadPeople () {
-    ipcRenderer.send('people--load')
-  }
-  loadRootNode ({ params }) {
-    this.loadPerson(params.personId)
-  }
+  loadPerson (personId) { ipcRenderer.send('person--load', personId) }
+  loadPeople () { ipcRenderer.send('people--load') }
+  loadRootNode ({ params }) { this.loadPerson(params.personId) }
   loadMenu () {
     this.setState({ personId: null, nodeId: null, loading: true }, () => {
       this.loadPeople()
@@ -91,28 +76,49 @@ export default class Game extends Component {
   componentDidMount () {
     if (this.state.personId) this.loadPerson(this.state.personId)
     else this.loadPeople()
-    route.addRouteListener('/person/:personId/node/:nodeId', this.loadNode)
-    route.addRouteListener('/person/:personId', this.loadRootNode)
+    route.addRouteListener(nodePath, this.loadNode)
+    route.addRouteListener(personPath, this.loadRootNode)
     route.addRouteListener('/', this.loadMenu)
     window.addEventListener('resize', () => {
-      const path = route.history.read()
-      route.replace(path)
+      this.loadPerson(this.state.personId)
     })
     ipcRenderer.on('person--load:reply', (_, personId, person) => {
-      const parsed = JSON.parse(person)
-      this.setState({ person: new Person({ person: parsed, id: personId }) }, () => {
-        const rootId = this.state.person.data.nodes.filter(({ parent }) => parent === null)[0].id
-        route.update(`/person/${personId}/node/${rootId}`)
+      this.setState({
+        person: new Person({
+          person: JSON.parse(person),
+          id: personId,
+        })
+      }, () => {
+        const path = route.history.read()
+        const result = nodeRoute.match(path)
+        if (result) {
+          const to = nodePath
+            .replace(':personId', personId)
+            .replace(':nodeId', result.nodeId)
+          route.update(to)
+        }
+        else {
+          const { nodes } = this.state.person.data
+          const rootList = nodes.filter(({ parent }) => parent === null)
+          const rootNode = rootList[0]
+
+          const to = nodePath
+            .replace(':personId', personId)
+            .replace(':nodeId', rootNode.id)
+          route.update(to)
+        }
       })
     })
     ipcRenderer.on('people--load:reply', (event, people) => {
-      this.setState({ people, loading: false })
+      this.setState({
+        people,
+        loading: false,
+      })
     })
     ipcRenderer.on('person--create:reply', (event, personId) => {
       this.loadPerson(personId)
     })
     ipcRenderer.on('person--save:reply', (event, personId, person) => {
-      // console.log(personId, person)
       this.loadPerson(personId)
     })
   }
@@ -122,36 +128,19 @@ export default class Game extends Component {
         person={this.state.person}
         personId={this.state.personId}
         selectedId={this.state.nodeId}
-        onSaveAs={this.savePerson}
         baseZoom={BASE_ZOOM} />
     )
   }
   renderMenu () {
-    const people = this.state.people.map((personId) => {
-      return (
-        <Button
-          opacity={1}
-          editing={false}
-          key={personId}
-          onClick={() => route.update(`/person/${personId}`)}>{personId}</Button>
-      )
-    })
-    people.push(
-      <Button
-        opacity={1}
-        editing={false}
-        key={'new-person-button'}
-        onClick={this.createPerson}>freshen up</Button>
-    )
-
     return (
-      <Menu>{people}</Menu>
+      <Menu people={this.state.people} />
     )
   }
+  renderLoading () { return 'LOADING' }
   render () {
     let renderContent = this.renderMenu
     if (this.state.personId) renderContent = this.renderConversation
-    if (this.state.loading) renderContent = () => 'LOADING'
+    if (this.state.loading) renderContent = this.renderLoading
 
     const content = renderContent()
     return (
