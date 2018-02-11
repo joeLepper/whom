@@ -58,10 +58,8 @@ class ControlPanel extends Component {
             maxZoomX={this.props.maxZoomX}
             maxZoomY={this.props.maxZoomY}
             onZoomChange={this.props.onZoomChange} />
-          {/*<DevOutput>
-              <span>{history.read()}</span>
-            </DevOutput>*/
-          }
+
+          <DevOutput><span>{history.read()}</span></DevOutput>
 
           <input value={this.state.personId} onChange={({ target }) => {
             this.setState({ personId: target.value })
@@ -70,7 +68,9 @@ class ControlPanel extends Component {
             opacity={1}
             editing={false}
             key='save-as'
-            onClick={() => this.props.onSaveAs(this.state.personId)}>save as</Button>
+            onClick={() => {
+              this.props.onSaveAs(this.state.personId)
+            }}>save as</Button>
         </Panel>
       )
     }

@@ -32,6 +32,7 @@ class Person {
     this.messageAdd = this.messageAdd.bind(this)
     this.messageChange = this.messageChange.bind(this)
     this.messageDelete = this.messageDelete.bind(this)
+    this.save = this.save.bind(this)
 
     this.update()
   }
@@ -92,6 +93,7 @@ class Person {
       children: [],
       type: 'node',
     })
+    this.save(this.id)
   }
   buttonChange (nodeId, optionText) {
     this.raw.forEach((node, i) => {
@@ -100,6 +102,7 @@ class Person {
         this.raw[i] = node
       }
     })
+    this.save(this.id)
   }
   buttonDelete (nodeId) {
     let deleteIndex
@@ -107,6 +110,7 @@ class Person {
       if (nodeId === node.id) deleteIndex = i
     })
     this.raw.splice(deleteIndex, 1)
+    this.save(this.id)
   }
   linkAdd (parentId, childId) {
     this.raw.push({
@@ -133,7 +137,7 @@ class Person {
         this.raw[i] = node
       }
     })
-    this.save()
+    this.save(this.id)
   }
   messageDelete () {
     this.raw.forEach((node, i) => {
@@ -143,8 +147,8 @@ class Person {
       }
     })
   }
-  save () {
-    ipcRenderer.send('person--save', this.id, JSON.stringify(this.raw, null, 2))
+  save (id) {
+    ipcRenderer.send('person--save', id, JSON.stringify(this.raw, null, 2))
   }
 }
 

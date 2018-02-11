@@ -1,6 +1,7 @@
 const React = require('react')
 const { Component } = React
 const { Motion, spring } = require('react-motion')
+const { ipcRenderer } = require('electron')
 const styled = require('styled-components').default
 
 const Handle = require('../handle')
@@ -19,27 +20,25 @@ const ConversationContainer = styled.div`
 const rebind = (self) => {
   self.handle = new Handle({ person: self.props.person })
   self.handleLinkAdd = self.handle.linkAdd.bind(self)
-  self.handleButtonAdd = self.handle.buttonAdd.bind(self)
-  self.handleButtonChange = self.handle.buttonChange.bind(self)
   self.handleButtonDelete = self.handle.buttonDelete.bind(self)
   self.handleMessageAdd = self.handle.messageAdd.bind(self)
   self.handleMessageDelete = self.handle.messageDelete.bind(self)
   self.handleEditChange = self.handle.editChange.bind(self)
-
-  self.handleMessageChange = self.handleMessageChange.bind(self)
 }
 
 class Conversation extends Component {
   constructor ({ baseZoom }) {
     super(...arguments)
     rebind(this)
+    this.handleSaveAs = this.handleSaveAs.bind(this)
     this.state = {
       editing: false,
       zoom: { x: baseZoom, y: baseZoom }
     }
   }
-  handleMessageChange (nodeId, messageIndex, message) {
-    this.props.person.messageChange(nodeId, messageIndex, message)
+  handleSaveAs (id) {
+    this.props.person.save(id)
+    ipcRenderer.send('person--load', id)
   }
   renderMotion (selected) {
     return (
@@ -68,11 +67,11 @@ class Conversation extends Component {
                   w={w}
                   h={h}
                   onLinkAdd={this.handleLinkAdd}
-                  onButtonAdd={this.handleButtonAdd}
-                  onButtonChange={this.handleButtonChange}
+                  onButtonAdd={this.props.person.buttonAdd}
+                  onButtonChange={this.props.person.buttonChange}
                   onButtonDelete={this.handleButtonDelete}
                   onMessageAdd={this.handleMessageAdd}
-                  onMessageChange={this.handleMessageChange}
+                  onMessageChange={this.props.person.messageChange}
                   onMessageDelete={this.handleMessageDelete}
                   maxZoomX={maxZoomX}
                   maxZoomY={maxZoomY}
@@ -101,9 +100,9 @@ class Conversation extends Component {
           zoom={this.state.zoom}
           maxZoomX={this.props.person.data.maxZoomX}
           maxZoomY={this.props.person.data.maxZoomY}
-          onSaveAs={this.props.onSaveAs}
+          onSaveAs={this.handleSaveAs}
           onZoomChange={({ zoom }) => {
-            this.setState(this.person.update({ zoom }))
+            this.setState({ zoom })
           }}
           />
         {this.renderMotion(selected)}
