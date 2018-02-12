@@ -11,7 +11,6 @@ const Person = require('./person')
 const Conversation = require('./components/conversation')
 const Button = require('./components/button')
 const Menu = require('./components/menu')
-
 const BASE_ZOOM = 0.25
 
 const personPath = '/person/:personId'
