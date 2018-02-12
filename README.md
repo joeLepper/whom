@@ -1,6 +1,6 @@
 # WHOM
 
-__WHOM__ is a text-based adventure game using `d3-hierarchy` and `react`. Each decision you make will take you down a different path with different outcomes.
+__WHOM__ is a text-based adventure game engine using `d3-hierarchy` and `react`. Each decision you make will take you down a different path with different outcomes.
 
 This is still very much a work-in-progress.
 
