@@ -1,7 +1,7 @@
 const React = require('react')
 const { Component } = React
 
-const Button = require('./button')
+const Button = require('../../button')
 
 class EditButton extends Component {
   render () {

@@ -4,7 +4,6 @@ const styled = require('styled-components').default
 
 const Message = require('./message')
 
-
 const Li = styled.li`
   cursor: pointer;
 `

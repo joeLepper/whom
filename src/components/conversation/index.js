@@ -4,9 +4,8 @@ const { Motion, spring } = require('react-motion')
 const { ipcRenderer } = require('electron')
 const styled = require('styled-components').default
 
-const Handle = require('../handle')
-const Person = require('../person')
-const Screen = require('./screen')
+const Person = require('../../person')
+const Screen = require('./navigator')
 const ControlPanel = require('./control-panel')
 
 const ConversationContainer = styled.div`
@@ -17,20 +16,13 @@ const ConversationContainer = styled.div`
   height:100vh;
   overflow: none;
 `
-const rebind = (self) => {
-  self.handle = new Handle({ person: self.props.person })
-  self.handleLinkAdd = self.handle.linkAdd.bind(self)
-  self.handleButtonDelete = self.handle.buttonDelete.bind(self)
-  self.handleMessageAdd = self.handle.messageAdd.bind(self)
-  self.handleMessageDelete = self.handle.messageDelete.bind(self)
-  self.handleEditChange = self.handle.editChange.bind(self)
-}
 
 class Conversation extends Component {
   constructor ({ baseZoom }) {
     super(...arguments)
-    rebind(this)
     this.handleSaveAs = this.handleSaveAs.bind(this)
+    this.handleEditChange = this.handleEditChange.bind(this)
+    this.handleButtonDelete = this.handleButtonDelete.bind(this)
     this.state = {
       editing: false,
       zoom: { x: baseZoom, y: baseZoom }
@@ -39,6 +31,14 @@ class Conversation extends Component {
   handleSaveAs (id) {
     this.props.person.save(id)
     ipcRenderer.send('person--load', id)
+  }
+  handleButtonDelete (nodeId) {
+    if (confirm('Deleting this button will delete its associated page. Are you sure?')) {
+      this.props.person.buttonDelete(nodeId)
+    }
+  }
+  handleEditChange ({ editing }) {
+    this.setState({ editing })
   }
   renderMotion (selected) {
     return (
@@ -66,13 +66,13 @@ class Conversation extends Component {
                   y={y}
                   w={w}
                   h={h}
-                  onLinkAdd={this.handleLinkAdd}
+                  onLinkAdd={this.props.person.linkAdd}
                   onButtonAdd={this.props.person.buttonAdd}
                   onButtonChange={this.props.person.buttonChange}
-                  onButtonDelete={this.handleButtonDelete}
-                  onMessageAdd={this.handleMessageAdd}
+                  onButtonDelete={this.props.person.buttonDelete}
+                  onMessageAdd={this.props.person.messageAdd}
                   onMessageChange={this.props.person.messageChange}
-                  onMessageDelete={this.handleMessageDelete}
+                  onMessageDelete={this.props.person.messageDelete}
                   maxZoomX={maxZoomX}
                   maxZoomY={maxZoomY}
                   links={this.props.person.data.links}

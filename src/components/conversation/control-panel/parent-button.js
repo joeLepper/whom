@@ -1,8 +1,8 @@
 const React = require('react')
 const { Component } = React
 
-const { back } = require('../route')
-const Button = require('./button')
+const { back } = require('../../../route')
+const Button = require('../../button')
 
 class ParentButton extends Component {
   render () {
