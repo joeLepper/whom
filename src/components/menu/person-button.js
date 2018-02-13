@@ -1,7 +1,9 @@
 const React = require('react')
 const { Component } = React
+const PropTypes = require('prop-types')
+const { guid } = require('../../validators')
+
 const Button = require('../button')
-const route = require('../../route')
 
 class PersonButton extends Component {
   constructor() {
@@ -9,7 +11,8 @@ class PersonButton extends Component {
     this.handleClick = this.handleClick.bind(this)
   }
   handleClick() {
-    route.update(`/person/${this.props.personId}`)
+    const to = `/person/${this.props.personId}`
+    this.props.history.push(to)
   }
   render() {
     return (
@@ -24,5 +27,8 @@ class PersonButton extends Component {
       </div>
     )
   }
+}
+PersonButton.propTypes = {
+  personId: PropTypes.string.isRequired,
 }
 module.exports = PersonButton

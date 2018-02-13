@@ -2,8 +2,7 @@ const React = require('react')
 const { Component } = React
 const styled = require('styled-components').default
 const Guid = require('guid')
-const route = require('../../../route')
-
+const qs = require('qs')
 const Button = require('../../button')
 
 const ButtonsContainer = styled.div`
@@ -19,11 +18,25 @@ class Buttons extends Component {
   constructor() {
     super(...arguments)
     this.handleButtonAdd = this.handleButtonAdd.bind(this)
+    this.handleButtonClick = this.handleButtonClick.bind(this)
   }
   handleButtonAdd() {
     const newNodeId = Guid.raw()
     const currentNodeId = this.props.node.data.id
     this.props.onButtonAdd(newNodeId, currentNodeId)
+  }
+  handleButtonClick(child) {
+    return (e) => {
+      if (!this.props.editing) {
+        const { personId } = this.props
+        const search = qs.parse(this.props.location.search.substring(1))
+        const to = {
+          pathname: `/person/${personId}/node/${child.data.id}`,
+          search: `?${qs.stringify(search, { encode: false })}`,
+        }
+        this.props.history.push(to)
+      }
+    }
   }
   render() {
     if (
@@ -44,14 +57,7 @@ class Buttons extends Component {
             key={`natural-child-${i}`}
             className="natural-child"
             onButtonDelete={this.props.onButtonDelete}
-            onClick={(e) => {
-              if (!this.props.editing) {
-                const path = `/person/${this.props.personId}/node/${
-                  child.data.id
-                }`
-                route.update(path)
-              }
-            }}>
+            onClick={this.handleButtonClick(child)}>
             {child.data.optionText}
           </Button>
         )
@@ -72,14 +78,7 @@ class Buttons extends Component {
                 key={`adopted-child-${i}`}
                 className="adopted-child"
                 onButtonDelete={this.props.onButtonDelete}
-                onClick={(e) => {
-                  if (!this.props.editing) {
-                    const path = `/person/${this.props.personId}/node/${
-                      link.target.data.id
-                    }`
-                    route.update(path)
-                  }
-                }}>
+                onClick={this.handleButtonClick(link.target)}>
                 {link.optionText}
               </Button>
             )

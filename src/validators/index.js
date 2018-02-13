@@ -7,13 +7,13 @@ const Guid = require('guid')
 
 function chainedGuidChecker(isRequired) {
   return function(props, propName, componentName) {
-    const guid = props[propName] || ''
+    const guid = props[propName]
 
     if (!guid && isRequired) {
       return new Error(
         `${propName} was empty. This is a required prop for ${componentName}`,
       )
-    } else if (!Guid.isGuid(guid)) {
+    } else if (guid && !Guid.isGuid(guid)) {
       return new Error(
         `${props[propName]} supplied to ${componentName}, expected a guid.`,
       )
@@ -24,7 +24,7 @@ function chainedGuidChecker(isRequired) {
 const guid = chainedGuidChecker(false)
 guid.isRequired = chainedGuidChecker(true)
 
-// Node appears as a prop in most of the components. I believe this is created by
+// Node appears as a prop in most of the components. It is created by
 // d3 and is not a ReactNode, so it needs a custom PropType
 const node = {
   children: PropTypes.array,

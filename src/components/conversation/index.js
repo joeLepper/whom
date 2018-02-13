@@ -1,15 +1,17 @@
 const React = require('react')
 const { Component } = React
-const { Motion, spring } = require('react-motion')
+
+const { Redirect } = require('react-router-dom')
 const { ipcRenderer } = require('electron')
 const styled = require('styled-components').default
-const PropTypes = require('prop-types')
-const { guid } = require('../../validators')
+const qs = require('qs')
 
-const Screen = require('./navigator')
-const ControlPanel = require('./control-panel')
+const Person = require('../../person')
+const ConversationContainer = require('./container')
 
-const ConversationContainer = styled.div`
+const BASE_ZOOM = 0.25
+
+const Container = styled.div`
   position: relative;
   display: flex;
   flex-flow: row wrap;
@@ -19,109 +21,78 @@ const ConversationContainer = styled.div`
 `
 
 class Conversation extends Component {
-  constructor({ baseZoom }) {
+  constructor(props) {
     super(...arguments)
-    this.handleSaveAs = this.handleSaveAs.bind(this)
-    this.handleEditChange = this.handleEditChange.bind(this)
-    this.handleButtonDelete = this.handleButtonDelete.bind(this)
+    console.log(props)
+    this.renderRedirect = this.renderRedirect.bind(this)
     this.state = {
-      editing: false,
-      zoom: { x: baseZoom, y: baseZoom },
+      loading: true,
+      nodeId: null,
+      personId: props.match.params.personId,
     }
   }
-  handleSaveAs(id) {
-    this.props.person.save(id)
-    ipcRenderer.send('person--load', id)
+  loadPerson(personId) {
+    ipcRenderer.send('person--load', personId)
   }
-  handleButtonDelete(nodeId) {
-    if (
-      window.confirm(
-        'Deleting this button will delete its associated page. Are you sure?',
-      )
-    ) {
-      this.props.person.buttonDelete(nodeId)
-    }
+  loadNode({ params }) {
+    this.setState({
+      nodeId: params.nodeId,
+      personId: params.personId,
+      loading: false,
+    })
   }
-  handleEditChange({ editing }) {
-    this.setState({ editing })
+  loadRootNode({ params }) {
+    this.loadPerson(params.personId)
   }
-  renderMotion(selected) {
+  componentDidMount() {
+    // probably need to confirm that this is still the right approach.
+    window.addEventListener('resize', () => {
+      this.loadPerson(this.state.personId)
+    })
+    ipcRenderer.on('person--load:reply', (_, personId, p) => {
+      const person = new Person({ person: JSON.parse(p), id: personId })
+      this.setState({ person, loading: false })
+    })
+    ipcRenderer.on('person--save:reply', (event, personId, person) => {
+      this.loadPerson(this.props.match.params.personId)
+    })
+    this.loadPerson(this.props.match.params.personId)
+  }
+  renderConversation() {
     return (
-      <Motion
-        style={{
-          x: spring(selected.x),
-          y: spring(selected.y),
-          w: spring(this.props.person.dimensions.w),
-          h: spring(this.props.person.dimensions.h),
-          zoomX: spring(this.state.zoom.x),
-          zoomY: spring(this.state.zoom.y),
-          maxZoomX: spring(this.state.maxZoomX),
-          maxZoomY: spring(this.state.maxZoomY),
-        }}>
-        {({ x, y, w, h, zoomX, zoomY, maxZoomX, maxZoomY }) => {
-          return (
-            <Screen
-              editing={this.state.editing}
-              selectedId={this.props.selectedId}
-              personId={this.props.personId}
-              baseZoom={this.props.baseZoom}
-              zoomX={zoomX}
-              zoomY={zoomY}
-              x={x}
-              y={y}
-              w={w}
-              h={h}
-              onLinkAdd={this.props.person.linkAdd}
-              onButtonAdd={this.props.person.buttonAdd}
-              onButtonChange={this.props.person.buttonChange}
-              onButtonDelete={this.props.person.buttonDelete}
-              onMessageAdd={this.props.person.messageAdd}
-              onMessageChange={this.props.person.messageChange}
-              onMessageDelete={this.props.person.messageDelete}
-              maxZoomX={maxZoomX}
-              maxZoomY={maxZoomY}
-              links={this.props.person.data.links}
-              additionalLinks={this.props.person.data.additionalLinks}
-              nodes={this.props.person.data.nodes}
-            />
-          )
-        }}
-      </Motion>
+      <ConversationContainer
+        baseZoom={BASE_ZOOM}
+        match={this.props.match}
+        person={this.state.person}
+        history={this.props.history}
+        location={this.props.location}
+        personId={this.props.match.params.personId}
+        selectedId={this.props.match.params.nodeId}
+      />
     )
+  }
+  renderRedirect() {
+    const { nodes } = this.state.person.data
+    const { id } = nodes.find(({ parent }) => parent === null)
+    const { personId } = this.state
+    const pathname = `/person/${personId}/node/${id}`
+    let search
+    if (this.props.location.search.length) {
+      search = qs.parse(this.props.location.search)
+      if (!search[id]) search[id] = 0
+    } else search = { [id]: 0 }
+    const to = {
+      pathname,
+      search: qs.stringify(search, { encode: false }),
+    }
+    return <Redirect from="/" to={to} />
   }
   render() {
-    const selected =
-      this.props.person.data.nodes.filter((node) => {
-        return node.id === this.props.selectedId
-      })[0] || {}
-    return (
-      <ConversationContainer>
-        <ControlPanel
-          editing={this.state.editing}
-          selected={selected}
-          person={this.props.person}
-          personId={this.props.personId}
-          onEditChange={this.handleEditChange}
-          baseZoom={this.props.baseZoom}
-          zoom={this.state.zoom}
-          maxZoomX={this.props.person.data.maxZoomX}
-          maxZoomY={this.props.person.data.maxZoomY}
-          onSaveAs={this.handleSaveAs}
-          onZoomChange={({ zoom }) => {
-            this.setState({ zoom })
-          }}
-        />
-        {this.renderMotion(selected)}
-      </ConversationContainer>
-    )
+    console.log(this.props.location)
+    if (this.state.loading) return <h1>'LOADING'</h1>
+    else if (this.props.match.params.nodeId) return this.renderConversation()
+    return this.renderRedirect()
   }
-}
-
-Conversation.propTypes = {
-  person: PropTypes.instanceOf(require('../../person')).isRequired,
-  personId: PropTypes.string.isRequired,
-  selectedId: guid.isRequired,
-  baseZoom: PropTypes.number.isRequired,
 }
 
 module.exports = Conversation

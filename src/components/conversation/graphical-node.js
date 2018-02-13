@@ -4,8 +4,6 @@ const styled = require('styled-components').default
 const PropTypes = require('prop-types')
 const { guid, node } = require('../../validators')
 
-// const route = require('../../route')
-
 const Circle = styled.circle`
   fill: #f09;
 `

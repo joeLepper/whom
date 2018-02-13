@@ -92,8 +92,8 @@ Button.propTypes = {
     fontSize: PropTypes.number,
   }),
   className: PropTypes.string,
-  onButtonDelete: PropTypes.func.isRequired,
-  onChange: PropTypes.func.isRequired,
+  onButtonDelete: PropTypes.func,
+  onChange: PropTypes.func,
   nodeId: guid,
 }
 
