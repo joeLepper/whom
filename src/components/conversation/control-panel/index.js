@@ -3,8 +3,8 @@ const { Component } = React
 
 const styled = require('styled-components').default
 
-const { history, update } = require('../route')
-const Button = require('./button')
+const { history, update } = require('../../../route')
+const Button = require('../../button')
 const EditButton = require('./edit-button')
 const ZoomButton = require('./zoom-button')
 const ParentButton = require('./parent-button')
@@ -59,7 +59,7 @@ class ControlPanel extends Component {
             maxZoomY={this.props.maxZoomY}
             onZoomChange={this.props.onZoomChange} />
 
-          <DevOutput><span>{history.read()}</span></DevOutput>
+          {/*<DevOutput><span>{history.read()}</span></DevOutput>*/}
 
           <input value={this.state.personId} onChange={({ target }) => {
             this.setState({ personId: target.value })

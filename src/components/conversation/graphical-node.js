@@ -1,7 +1,7 @@
 const React = require('react')
 const { Component } = React
 const styled = require('styled-components').default
-const route = require('../route')
+const route = require('../../route')
 
 const Messages = require('./messages')
 const Buttons = require('./buttons')

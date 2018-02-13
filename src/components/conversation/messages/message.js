@@ -1,7 +1,7 @@
 const React = require('react')
 const { Component } = React
 const styled = require('styled-components').default
-const Button = require('./button')
+const Button = require('../../button')
 
 const FONT_SIZE = '1.75em'
 

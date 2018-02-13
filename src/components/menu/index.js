@@ -2,8 +2,8 @@ const React = require('react')
 const { Component } = React
 const { ipcRenderer } = require('electron')
 const styled = require('styled-components').default
-const Button = require('./button')
-const route = require('../route')
+const Button = require('../button')
+const PersonButton = require('./person-button')
 
 const MenuContainer = styled.ul`
   list-style: none;
@@ -11,25 +11,6 @@ const MenuContainer = styled.ul`
   margin: auto;
   flex-flow: column wrap;
 `
-
-class PersonButton extends Component {
-  constructor () {
-    super(...arguments)
-    this.handleClick = this.handleClick.bind(this)
-  }
-  handleClick () {
-    route.update(`/person/${this.props.personId}`)
-  }
-  render () {
-    return (
-      <Button
-        opacity={1}
-        editing={false}
-        key={this.props.personId}
-        onClick={this.handleClick}>{this.props.personId}</Button>
-    )
-  }
-}
 
 class Menu extends Component {
   createPerson () {
