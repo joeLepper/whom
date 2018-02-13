@@ -25,9 +25,11 @@ class ConversationNode extends Component {
       opacity: 1,
     }
   }
-  componentWillReceiveProps(nextProps) {
-    if (this.props.node.data.id !== nextProps.node.data.id)
-      this.setState({ idx: 0 })
+  componentWillReceiveProps (nextProps) {
+    if (this.props.node.data.id !== nextProps.node.data.id) {
+      const idx = this.props.viewed[nextProps.node.data.id] || 0
+      this.setState({ idx })
+    }
   }
   advanceMessage() {
     const proposedIdx = this.state.idx + 1
@@ -36,7 +38,9 @@ class ConversationNode extends Component {
       const newState = { opacity: 1 }
       if (proposedIdx < this.props.node.data.messages.length)
         newState.idx = proposedIdx
-      this.setState(newState)
+      }
+      const nodeId = this.props.node.data.id
+      this.setState(newState, this.props.onView(nodeId, proposedIdx))
     }, 500)
   }
   reverseMessage(cb) {

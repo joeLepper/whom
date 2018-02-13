@@ -4,7 +4,7 @@ const { Motion, spring } = require('react-motion')
 const { ipcRenderer } = require('electron')
 const styled = require('styled-components').default
 
-const Screen = require('./navigator')
+const Navigator = require('./navigator')
 const ControlPanel = require('./control-panel')
 
 const ConversationContainer = styled.div`
@@ -56,35 +56,38 @@ class Conversation extends Component {
           maxZoomX: spring(this.state.maxZoomX),
           maxZoomY: spring(this.state.maxZoomY),
         }}>
-        {({ x, y, w, h, zoomX, zoomY, maxZoomX, maxZoomY }) => {
-          return (
-            <Screen
-              editing={this.state.editing}
-              selectedId={this.props.selectedId}
-              personId={this.props.personId}
-              baseZoom={this.props.baseZoom}
-              zoomX={zoomX}
-              zoomY={zoomY}
-              x={x}
-              y={y}
-              w={w}
-              h={h}
-              onLinkAdd={this.props.person.linkAdd}
-              onButtonAdd={this.props.person.buttonAdd}
-              onButtonChange={this.props.person.buttonChange}
-              onButtonDelete={this.props.person.buttonDelete}
-              onMessageAdd={this.props.person.messageAdd}
-              onMessageChange={this.props.person.messageChange}
-              onMessageDelete={this.props.person.messageDelete}
-              maxZoomX={maxZoomX}
-              maxZoomY={maxZoomY}
-              links={this.props.person.data.links}
-              additionalLinks={this.props.person.data.additionalLinks}
-              nodes={this.props.person.data.nodes}
-            />
-          )
-        }}
-      </Motion>
+          {
+            ({ x, y, w, h, zoomX, zoomY, maxZoomX, maxZoomY }) => {
+              return (
+                <Navigator
+                  viewed={this.props.viewed}
+                  editing={this.state.editing}
+                  selectedId={this.props.selectedId}
+                  personId={this.props.personId}
+                  baseZoom={this.props.baseZoom}
+                  zoomX={zoomX}
+                  zoomY={zoomY}
+                  x={x}
+                  y={y}
+                  w={w}
+                  h={h}
+                  onView={this.props.onView}
+                  onLinkAdd={this.props.person.linkAdd}
+                  onButtonAdd={this.props.person.buttonAdd}
+                  onButtonChange={this.props.person.buttonChange}
+                  onButtonDelete={this.props.person.buttonDelete}
+                  onMessageAdd={this.props.person.messageAdd}
+                  onMessageChange={this.props.person.messageChange}
+                  onMessageDelete={this.props.person.messageDelete}
+                  maxZoomX={maxZoomX}
+                  maxZoomY={maxZoomY}
+                  links={this.props.person.data.links}
+                  additionalLinks={this.props.person.data.additionalLinks}
+                  nodes={this.props.person.data.nodes} />
+              )
+            }
+          }
+        </Motion>
     )
   }
   render() {
@@ -105,6 +108,7 @@ class Conversation extends Component {
           maxZoomX={this.props.person.data.maxZoomX}
           maxZoomY={this.props.person.data.maxZoomY}
           onSaveAs={this.handleSaveAs}
+          onReset={this.props.onReset}
           onZoomChange={({ zoom }) => {
             this.setState({ zoom })
           }}

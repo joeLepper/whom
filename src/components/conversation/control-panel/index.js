@@ -8,6 +8,7 @@ const Button = require('../../button')
 const EditButton = require('./edit-button')
 const ZoomButton = require('./zoom-button')
 const ParentButton = require('./parent-button')
+const ResetButton = require('./reset-button')
 
 const FONT_SIZE = '1.5em'
 
@@ -37,32 +38,29 @@ class ControlPanel extends Component {
   componentWillReceiveProps({ personId }) {
     if (personId !== this.state.personId) this.setState({ personId })
   }
-  render() {
-    return (
-      <Panel>
-        <Button
-          opacity={1}
-          editing={false}
-          key="menu"
-          onClick={() => update(`/`)}>
-          menu
-        </Button>
-        <ParentButton selected={this.props.selected} />
-        <EditButton
-          editing={this.props.editing}
-          personId={this.props.personId}
-          person={this.props.person}
-          onEditChange={this.props.onEditChange}
-        />
-        <ZoomButton
-          baseZoom={this.props.baseZoom}
-          zoomX={this.props.zoom.x}
-          zoomY={this.props.zoom.y}
-          maxZoomX={this.props.maxZoomX}
-          maxZoomY={this.props.maxZoomY}
-          onZoomChange={this.props.onZoomChange}
-        />
-
+  render () {
+      return (
+        <Panel>
+          <Button
+            opacity={1}
+            editing={false}
+            key='menu'
+            onClick={() => update(`/`)}>menu</Button>
+          <ParentButton selected={this.props.selected} />
+          <EditButton
+            editing={this.props.editing}
+            personId={this.props.personId}
+            person={this.props.person}
+            onEditChange={this.props.onEditChange} />
+          <ZoomButton
+            baseZoom={this.props.baseZoom}
+            zoomX={this.props.zoom.x}
+            zoomY={this.props.zoom.y}
+            maxZoomX={this.props.maxZoomX}
+            maxZoomY={this.props.maxZoomY}
+            onZoomChange={this.props.onZoomChange} />
+          <ResetButton
+            onReset={this.props.onReset} />
         <DevOutput>
           <span>{history.read()}</span>
         </DevOutput>

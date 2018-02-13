@@ -37,6 +37,8 @@ export default class Game extends Component {
     this.loadRootNode = this.loadRootNode.bind(this)
     this.loadPerson = this.loadPerson.bind(this)
     this.loadPeople = this.loadPeople.bind(this)
+    this.markAsViewed = this.markAsViewed.bind(this)
+
 
     const path = history.read()
     const personParams = personRoute.match(path)
@@ -76,7 +78,17 @@ export default class Game extends Component {
       this.loadPeople()
     })
   }
-  componentDidMount() {
+  markAsViewed (nodeId, messageIdx) {
+    const { viewed } = this.state
+    const updated = Object.assign({}, viewed, { [nodeId]: messageIdx })
+    console.log('updating to:')
+    console.log(updated)
+    this.setState({ viewed: updated })
+  }
+  reset () {
+    this.setState({ viewed: {} })
+  }
+  componentDidMount () {
     if (this.state.personId) this.loadPerson(this.state.personId)
     else this.loadPeople()
     route.addRouteListener(nodePath, this.loadNode)
@@ -130,6 +142,8 @@ export default class Game extends Component {
   renderConversation() {
     return (
       <Conversation
+        onView={this.markAsViewed}
+        viewed={this.state.viewed}
         person={this.state.person}
         personId={this.state.personId}
         selectedId={this.state.nodeId}
@@ -143,7 +157,10 @@ export default class Game extends Component {
   renderLoading() {
     return 'LOADING'
   }
-  render() {
+  renderLoading () { return 'LOADING' }
+  render () {
+    console.log('rendered with views:')
+    console.log(this.state.viewed)
     let renderContent = this.renderMenu
     if (this.state.personId) renderContent = this.renderConversation
     if (this.state.loading) renderContent = this.renderLoading
