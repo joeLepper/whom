@@ -7,11 +7,13 @@ ipcMain.on('people--load', (event) => {
   readdir(dir, (err, people) => {
     if (err) console.error(err)
     else {
-      const names = people.filter((person) => {
-        return extname(person) === '.json'
-      }).map((person) => {
-        return basename(person, '.json')
-      })
+      const names = people
+        .filter((person) => {
+          return extname(person) === '.json'
+        })
+        .map((person) => {
+          return basename(person, '.json')
+        })
       event.sender.send('people--load:reply', names)
     }
   })
@@ -29,7 +31,12 @@ ipcMain.on('person--save', (event, personId, person) => {
   const file = join(__dirname, '..', 'people', `${personId}.json`)
   writeFile(file, person, 'utf8', (err) => {
     if (err) console.error(err)
-    else event.sender.send('person--save:reply', personId, JSON.stringify(person, null, 2))
+    else
+      event.sender.send(
+        'person--save:reply',
+        personId,
+        JSON.stringify(person, null, 2),
+      )
   })
 })
 

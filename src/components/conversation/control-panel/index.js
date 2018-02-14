@@ -28,49 +28,60 @@ const DevOutput = styled.div`
 `
 
 class ControlPanel extends Component {
-  constructor (props) {
+  constructor(props) {
     super(...arguments)
     this.state = {
       personId: props.personId,
     }
   }
-  componentWillReceiveProps ({ personId }) {
+  componentWillReceiveProps({ personId }) {
     if (personId !== this.state.personId) this.setState({ personId })
   }
-  render () {
+  render() {
     return (
       <Panel>
         <Button
           opacity={1}
           editing={false}
-          key='menu'
-          onClick={() => update(`/`)}>menu</Button>
+          key="menu"
+          onClick={() => update(`/`)}>
+          menu
+        </Button>
         <ParentButton selected={this.props.selected} />
         <EditButton
           editing={this.props.editing}
           personId={this.props.personId}
           person={this.props.person}
-          onEditChange={this.props.onEditChange} />
+          onEditChange={this.props.onEditChange}
+        />
         <ZoomButton
           baseZoom={this.props.baseZoom}
           zoomX={this.props.zoom.x}
           zoomY={this.props.zoom.y}
           maxZoomX={this.props.maxZoomX}
           maxZoomY={this.props.maxZoomY}
-          onZoomChange={this.props.onZoomChange} />
+          onZoomChange={this.props.onZoomChange}
+        />
 
-        <DevOutput><span>{history.read()}</span></DevOutput>
+        <DevOutput>
+          <span>{history.read()}</span>
+        </DevOutput>
 
-        <input value={this.state.personId} onChange={({ target }) => {
-          this.setState({ personId: target.value })
-        }} />
+        <input
+          value={this.state.personId}
+          onChange={({ target }) => {
+            this.setState({ personId: target.value })
+          }}
+        />
         <Button
           opacity={1}
           editing={false}
-          key='save-as'
+          key="save-as"
           onClick={() => {
             this.props.onSaveAs(this.state.personId)
-          }}>save as</Button>
+          }}>
+          save as
+        </Button>
       </Panel>
     )
   }

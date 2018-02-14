@@ -40,35 +40,41 @@ const Div = styled.div`
 `
 
 class Message extends Component {
-  constructor () {
+  constructor() {
     super(...arguments)
     this.renderDisplayMessage = this.renderDisplayMessage.bind(this)
     this.handleMessageDelete = this.handleMessageDelete.bind(this)
   }
-  handleMessageDelete () {
+  handleMessageDelete() {
     this.props.onMessageDelete(this.props.nodeId, this.props.messageIndex)
   }
-  renderDisplayMessage () {
-    if (this.props.editing) return (
-      <Div key={`${this.props.nodeId}.${this.props.messageIndex}`}>
-        <Button
-          editing={false}
-          opacity={this.props.opacity}
-          onClick={this.handleMessageDelete}
-          key='new button'>delete</Button>
-        <Input
-          key={`${this.props.nodeId}.${this.props.messageIndex}`}
-          value={this.props.children}
-          onChange={(e) => {
-            this.props.onChange(this.props.nodeId, this.props.messageIndex, e.currentTarget.value)
-          }} />
-      </Div>
-    )
-    return (
-      <P>{this.props.children}</P>
-    )
+  renderDisplayMessage() {
+    if (this.props.editing)
+      return (
+        <Div key={`${this.props.nodeId}.${this.props.messageIndex}`}>
+          <Button
+            editing={false}
+            opacity={this.props.opacity}
+            onClick={this.handleMessageDelete}
+            key="new button">
+            delete
+          </Button>
+          <Input
+            key={`${this.props.nodeId}.${this.props.messageIndex}`}
+            value={this.props.children}
+            onChange={(e) => {
+              this.props.onChange(
+                this.props.nodeId,
+                this.props.messageIndex,
+                e.currentTarget.value,
+              )
+            }}
+          />
+        </Div>
+      )
+    return <P>{this.props.children}</P>
   }
-  render () {
+  render() {
     return (
       <MessageContainer onClick={this.props.onClick}>
         {this.renderDisplayMessage()}

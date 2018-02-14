@@ -1,7 +1,7 @@
 const Store = require('./store')
 
 class History {
-  constructor (history) {
+  constructor(history) {
     this.store = new Store('history')
     this.history = history || this.store.load() || []
     this.back = this.back.bind(this)
@@ -14,36 +14,36 @@ class History {
     this.listeners = {}
     this.store.addChangeListener(this.notifyListeners)
   }
-  back () {
+  back() {
     const history = this.store.load()
     history.pop()
     this.store.save(history)
   }
-  push (path) {
+  push(path) {
     const history = this.store.load()
     history.push(path)
     this.store.save(history)
   }
-  replace (path) {
+  replace(path) {
     const history = this.store.load()
     history[history.length - 1] = path
     this.store.save(history)
   }
-  read () {
+  read() {
     const history = this.store.load()
     return (history && history[history.length - 1]) || '/'
   }
-  notifyListeners (state) {
+  notifyListeners(state) {
     Object.keys(this.listeners).forEach((key) => {
       const listener = this.listeners[key]
       listener(state)
     })
   }
-  addRouteListener (cb) {
+  addRouteListener(cb) {
     if (!cb.name) throw new Error('listener must be a named function')
     else this.listeners[cb.name] = cb
   }
-  removeRouteListener (cb) {
+  removeRouteListener(cb) {
     if (!cb.name) throw new Error('listener must be a named function')
     else this.listeners[cb.name] = undefined
   }

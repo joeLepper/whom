@@ -11,18 +11,18 @@ const ActiveCircle = styled.circle`
   fill: #9f0;
 `
 const HitTarget = styled.circle`
-  fill: rgba(0,0,0,0.0);
+  fill: rgba(0, 0, 0, 0);
   cursor: pointer;
 `
 class GraphicalNode extends Component {
-  constructor () {
+  constructor() {
     super(...arguments)
     this.state = {
       hover: false,
       active: false,
     }
   }
-  render () {
+  render() {
     return (
       <g
         onMouseUp={(e) => {
@@ -79,7 +79,8 @@ class GraphicalNode extends Component {
             }
             this.props.onDragBegin(dragState)
           }}
-          r={20} />
+          r={20}
+        />
       </g>
     )
   }
