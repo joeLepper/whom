@@ -3,7 +3,7 @@ const Route = require('route-parser')
 const History = require('./history')
 
 class Router {
-  constructor () {
+  constructor() {
     this.history = new History(['/'])
     this.back = this.back.bind(this)
     this.read = this.read.bind(this)
@@ -15,37 +15,37 @@ class Router {
     this.history.addRouteListener(this.notifyListeners)
     this.listeners = {}
   }
-  back () {
+  back() {
     this.history.back()
   }
-  read () {
+  read() {
     const route = this.history.read()
     let params = false
-    Object.keys(this.listeners).forEach((path) => {
+    Object.keys(this.listeners).forEach(path => {
       const results = new Router(path).match(route)
       if (results) params = results
     })
     return { route, params }
   }
-  update (path) {
+  update(path) {
     this.history.push(path)
   }
-  replace (path) {
+  replace(path) {
     this.history.replace(path)
   }
-  notifyListeners (route) {
-    Object.keys(this.listeners).forEach((key) => {
+  notifyListeners(route) {
+    Object.keys(this.listeners).forEach(key => {
       this.listeners[key](route)
     })
   }
-  addRouteListener (path, fn) {
+  addRouteListener(path, fn) {
     const routeMatcher = new Route(path)
-    this.listeners[path] = (route) => {
+    this.listeners[path] = route => {
       const params = routeMatcher.match(route)
       if (params) fn({ route, params })
     }
   }
-  removeRouteListener (path, fn) {
+  removeRouteListener(path, fn) {
     if (!fn.name) throw new Error('listener must be a named function')
     else this.listeners[fn.name] = undefined
   }

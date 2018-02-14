@@ -3,13 +3,13 @@ const Guid = require('guid')
 const { ipcRenderer } = require('electron')
 
 class Person {
-  constructor ({ person, id }) {
+  constructor({ person, id }) {
     this.raw = person
     this.id = id
-    this.stratifier = d3.stratify().parentId((d) => {
-      const parents = this.raw.filter((node) => (
-        node.children && node.children.some((child) => child === d.id)
-      ))
+    this.stratifier = d3.stratify().parentId(d => {
+      const parents = this.raw.filter(
+        node => node.children && node.children.some(child => child === d.id)
+      )
       const parent = parents[0]
       if (parent) return parent.id
       return undefined
@@ -36,30 +36,38 @@ class Person {
 
     this.update()
   }
-  parseAdditionalLinks () {
-    this.data.additionalLinks = this.raw.filter(({ type }) => {
-      return type === 'link'
-    }).map(({ childId, parentId, optionText }) => {
-      const source = this.data.nodes.filter((node) => node.data.id === parentId)[0]
-      const target = this.data.nodes.filter((node) => node.data.id === childId)[0]
-      const result = { source, target, optionText }
-      return result
-    })
+  parseAdditionalLinks() {
+    this.data.additionalLinks = this.raw
+      .filter(({ type }) => {
+        return type === 'link'
+      })
+      .map(({ childId, parentId, optionText }) => {
+        const source = this.data.nodes.filter(
+          node => node.data.id === parentId
+        )[0]
+        const target = this.data.nodes.filter(
+          node => node.data.id === childId
+        )[0]
+        const result = { source, target, optionText }
+        return result
+      })
   }
-  parseNaturalLinks () {
+  parseNaturalLinks() {
     this.data.links = this.tree(this.dimensions).links()
   }
-  tree () {
+  tree() {
     const layout = d3.tree().size([this.dimensions.w, this.dimensions.h])
-    return layout(this.stratifier(this.raw.filter(({ type }) => type === 'node')))
+    return layout(
+      this.stratifier(this.raw.filter(({ type }) => type === 'node'))
+    )
   }
-  parseNodes () {
+  parseNodes() {
     const nodes = []
     let maxZoomX = 0
     let maxZoomY = 0
 
     const tree = this.tree()
-    tree.each((node) => {
+    tree.each(node => {
       maxZoomX = Math.max(node.height, maxZoomX)
       maxZoomY = Math.max(node.depth, maxZoomY)
       nodes.push(node)
@@ -69,16 +77,16 @@ class Person {
     this.data.maxZoomX = maxZoomX
     this.data.maxZoomY = maxZoomY
   }
-  update () {
+  update() {
     this.dimensions = {
       w: window.innerWidth,
-      h: window.innerHeight
+      h: window.innerHeight,
     }
     this.parseNodes()
     this.parseNaturalLinks()
     this.parseAdditionalLinks()
   }
-  buttonAdd (newNodeId, currentNodeId) {
+  buttonAdd(newNodeId, currentNodeId) {
     this.raw.forEach((node, i) => {
       if (currentNodeId === node.id) {
         node.children.push(newNodeId)
@@ -95,7 +103,7 @@ class Person {
     })
     this.save(this.id)
   }
-  buttonChange (nodeId, optionText) {
+  buttonChange(nodeId, optionText) {
     this.raw.forEach((node, i) => {
       if (nodeId === node.id) {
         node.optionText = optionText
@@ -104,7 +112,7 @@ class Person {
     })
     this.save(this.id)
   }
-  buttonDelete (nodeId) {
+  buttonDelete(nodeId) {
     let deleteIndex
     this.raw.forEach((node, i) => {
       if (nodeId === node.id) deleteIndex = i
@@ -112,7 +120,7 @@ class Person {
     this.raw.splice(deleteIndex, 1)
     this.save(this.id)
   }
-  linkAdd (parentId, childId) {
+  linkAdd(parentId, childId) {
     this.raw.push({
       type: 'link',
       id: Guid.raw(),
@@ -122,7 +130,7 @@ class Person {
       childId,
     })
   }
-  messageAdd (nodeId) {
+  messageAdd(nodeId) {
     this.raw.forEach((node, i) => {
       if (nodeId === node.id) {
         node.messages.push('fresh message')
@@ -130,7 +138,7 @@ class Person {
       }
     })
   }
-  messageChange (nodeId, messageIndex, message) {
+  messageChange(nodeId, messageIndex, message) {
     this.raw.forEach((node, i) => {
       if (nodeId === node.id) {
         node.messages[messageIndex] = message
@@ -139,7 +147,7 @@ class Person {
     })
     this.save(this.id)
   }
-  messageDelete (nodeId, messageIndex) {
+  messageDelete(nodeId, messageIndex) {
     this.raw.forEach((node, i) => {
       if (nodeId === node.id) {
         node.messages = node.messages.filter((_, i) => i !== messageIndex)
@@ -147,7 +155,7 @@ class Person {
       }
     })
   }
-  save (id) {
+  save(id) {
     ipcRenderer.send('person--save', id, JSON.stringify(this.raw, null, 2))
   }
 }

@@ -15,7 +15,7 @@ const Div = styled.div`
   justify-content: center;
 `
 class ConversationNode extends Component {
-  constructor () {
+  constructor() {
     super(...arguments)
     this.advanceMessage = this.advanceMessage.bind(this)
     this.reverseMessage = this.reverseMessage.bind(this)
@@ -25,19 +25,21 @@ class ConversationNode extends Component {
       opacity: 1,
     }
   }
-  componentWillReceiveProps (nextProps) {
-    if (this.props.node.data.id !== nextProps.node.data.id) this.setState({ idx: 0 })
+  componentWillReceiveProps(nextProps) {
+    if (this.props.node.data.id !== nextProps.node.data.id)
+      this.setState({ idx: 0 })
   }
-  advanceMessage () {
+  advanceMessage() {
     const proposedIdx = this.state.idx + 1
     this.setState({ opacity: 0 })
     setTimeout(() => {
       const newState = { opacity: 1 }
-      if (proposedIdx < this.props.node.data.messages.length) newState.idx = proposedIdx
+      if (proposedIdx < this.props.node.data.messages.length)
+        newState.idx = proposedIdx
       this.setState(newState)
     }, 500)
   }
-  reverseMessage (cb) {
+  reverseMessage(cb) {
     const proposedIdx = this.state.idx - 1
     this.setState({ opacity: 0 })
     setTimeout(() => {
@@ -46,16 +48,15 @@ class ConversationNode extends Component {
       this.setState(newState, cb)
     }, 500)
   }
-  handleMessageDelete (nodeId, messageIndex) {
-    if (window.confirm('Delete this message?')) this.reverseMessage(() => {
-      this.props.onMessageDelete(nodeId, messageIndex)
-    })
+  handleMessageDelete(nodeId, messageIndex) {
+    if (window.confirm('Delete this message?'))
+      this.reverseMessage(() => {
+        this.props.onMessageDelete(nodeId, messageIndex)
+      })
   }
-  render () {
+  render() {
     return (
-      <foreignObject
-        width={this.props.w}
-        height={this.props.h}>
+      <foreignObject width={this.props.w} height={this.props.h}>
         <Div>
           <Messages
             advanceMessage={this.advanceMessage}
@@ -67,7 +68,8 @@ class ConversationNode extends Component {
             onMessageAdd={this.props.onMessageAdd}
             editing={this.props.editing}
             zoomRatio={this.props.zoomRatio}
-            node={this.props.node} />
+            node={this.props.node}
+          />
           <Buttons
             editing={this.props.editing}
             personId={this.props.personId}
@@ -75,10 +77,14 @@ class ConversationNode extends Component {
             onButtonChange={this.props.onButtonChange}
             onButtonDelete={this.props.onButtonDelete}
             ee={this.props.ee}
-            opacity={this.props.node.data.messages.length - 1 === this.state.idx ? 1 : 0}
+            opacity={
+              this.props.node.data.messages.length - 1 === this.state.idx
+                ? 1
+                : 0
+            }
             additionalLinks={this.props.additionalLinks}
-            node={this.props.node} />
-
+            node={this.props.node}
+          />
         </Div>
       </foreignObject>
     )
