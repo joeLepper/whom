@@ -12,11 +12,10 @@ class ParentButton extends Component {
       <Button
         editing={false}
         opacity="1"
-        onClick={e => {
+        onClick={(e) => {
           e.preventDefault()
           back()
-        }}
-      >
+        }}>
         {'<--'}
       </Button>
     )

@@ -17,7 +17,7 @@ class Store {
   }
   notifyListeners() {
     const state = this.load()
-    Object.keys(this.listeners).forEach(key => {
+    Object.keys(this.listeners).forEach((key) => {
       const listener = this.listeners[key]
       listener(state[state.length - 1])
     })

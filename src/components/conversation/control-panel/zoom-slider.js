@@ -104,7 +104,7 @@ class ZoomSlider extends Component {
           max={this.props.maxZoomX}
           value={this.props.zoomX}
           step="0.1"
-          onChange={e => {
+          onChange={(e) => {
             const val = Math.round(e.currentTarget.value * 10) / 10
             this.props.onZoomChange({ zoom: { x: val, y: val } })
           }}

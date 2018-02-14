@@ -44,22 +44,21 @@ class Buttons extends Component {
             key={`natural-child-${i}`}
             className="natural-child"
             onButtonDelete={this.props.onButtonDelete}
-            onClick={e => {
+            onClick={(e) => {
               if (!this.props.editing) {
                 const path = `/person/${this.props.personId}/node/${
                   child.data.id
                 }`
                 route.update(path)
               }
-            }}
-          >
+            }}>
             {child.data.optionText}
           </Button>
         )
       })
       .concat(
         this.props.additionalLinks
-          .filter(link => {
+          .filter((link) => {
             return this.props.node.data.id === link.source.data.id
           })
           .map((link, i) => {
@@ -73,19 +72,18 @@ class Buttons extends Component {
                 key={`adopted-child-${i}`}
                 className="adopted-child"
                 onButtonDelete={this.props.onButtonDelete}
-                onClick={e => {
+                onClick={(e) => {
                   if (!this.props.editing) {
                     const path = `/person/${this.props.personId}/node/${
                       link.target.data.id
                     }`
                     route.update(path)
                   }
-                }}
-              >
+                }}>
                 {link.optionText}
               </Button>
             )
-          })
+          }),
       )
     if (this.props.editing)
       buttons.push(
@@ -93,10 +91,9 @@ class Buttons extends Component {
           editing={false}
           opacity={this.props.opacity}
           onClick={this.handleButtonAdd}
-          key="new button"
-        >
+          key="new button">
           New Button
-        </Button>
+        </Button>,
       )
     return <ButtonsContainer>{buttons}</ButtonsContainer>
   }

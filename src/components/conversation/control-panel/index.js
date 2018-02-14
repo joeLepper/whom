@@ -44,8 +44,7 @@ class ControlPanel extends Component {
           opacity={1}
           editing={false}
           key="menu"
-          onClick={() => update(`/`)}
-        >
+          onClick={() => update(`/`)}>
           menu
         </Button>
         <ParentButton selected={this.props.selected} />
@@ -80,8 +79,7 @@ class ControlPanel extends Component {
           key="save-as"
           onClick={() => {
             this.props.onSaveAs(this.state.personId)
-          }}
-        >
+          }}>
           save as
         </Button>
       </Panel>

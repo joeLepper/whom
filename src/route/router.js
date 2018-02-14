@@ -21,7 +21,7 @@ class Router {
   read() {
     const route = this.history.read()
     let params = false
-    Object.keys(this.listeners).forEach(path => {
+    Object.keys(this.listeners).forEach((path) => {
       const results = new Router(path).match(route)
       if (results) params = results
     })
@@ -34,13 +34,13 @@ class Router {
     this.history.replace(path)
   }
   notifyListeners(route) {
-    Object.keys(this.listeners).forEach(key => {
+    Object.keys(this.listeners).forEach((key) => {
       this.listeners[key](route)
     })
   }
   addRouteListener(path, fn) {
     const routeMatcher = new Route(path)
-    this.listeners[path] = route => {
+    this.listeners[path] = (route) => {
       const params = routeMatcher.match(route)
       if (params) fn({ route, params })
     }

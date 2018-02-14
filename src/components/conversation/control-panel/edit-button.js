@@ -10,12 +10,11 @@ class EditButton extends Component {
         editing={false}
         opacity="1"
         style={{ fontSize: 16 }}
-        onClick={e => {
+        onClick={(e) => {
           e.preventDefault()
           const newEditingState = !this.props.editing
           this.props.onEditChange({ editing: newEditingState })
-        }}
-      >
+        }}>
         {this.props.editing ? 'dynamic' : 'static'}
       </Button>
     )

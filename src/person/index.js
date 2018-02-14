@@ -6,9 +6,10 @@ class Person {
   constructor({ person, id }) {
     this.raw = person
     this.id = id
-    this.stratifier = d3.stratify().parentId(d => {
+    this.stratifier = d3.stratify().parentId((d) => {
       const parents = this.raw.filter(
-        node => node.children && node.children.some(child => child === d.id)
+        (node) =>
+          node.children && node.children.some((child) => child === d.id),
       )
       const parent = parents[0]
       if (parent) return parent.id
@@ -43,10 +44,10 @@ class Person {
       })
       .map(({ childId, parentId, optionText }) => {
         const source = this.data.nodes.filter(
-          node => node.data.id === parentId
+          (node) => node.data.id === parentId,
         )[0]
         const target = this.data.nodes.filter(
-          node => node.data.id === childId
+          (node) => node.data.id === childId,
         )[0]
         const result = { source, target, optionText }
         return result
@@ -58,7 +59,7 @@ class Person {
   tree() {
     const layout = d3.tree().size([this.dimensions.w, this.dimensions.h])
     return layout(
-      this.stratifier(this.raw.filter(({ type }) => type === 'node'))
+      this.stratifier(this.raw.filter(({ type }) => type === 'node')),
     )
   }
   parseNodes() {
@@ -67,7 +68,7 @@ class Person {
     let maxZoomY = 0
 
     const tree = this.tree()
-    tree.each(node => {
+    tree.each((node) => {
       maxZoomX = Math.max(node.height, maxZoomX)
       maxZoomY = Math.max(node.depth, maxZoomY)
       nodes.push(node)

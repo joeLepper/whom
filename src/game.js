@@ -111,7 +111,7 @@ export default class Game extends Component {
               .replace(':nodeId', rootNode.id)
             route.update(to)
           }
-        }
+        },
       )
     })
     ipcRenderer.on('people--load:reply', (event, people) => {

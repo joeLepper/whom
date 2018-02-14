@@ -34,7 +34,7 @@ class History {
     return (history && history[history.length - 1]) || '/'
   }
   notifyListeners(state) {
-    Object.keys(this.listeners).forEach(key => {
+    Object.keys(this.listeners).forEach((key) => {
       const listener = this.listeners[key]
       listener(state)
     })

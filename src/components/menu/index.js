@@ -27,10 +27,9 @@ class Menu extends Component {
         opacity={1}
         editing={false}
         key={'new-person-button'}
-        onClick={this.createPerson}
-      >
+        onClick={this.createPerson}>
         freshen up
-      </Button>
+      </Button>,
     )
 
     return <MenuContainer>{peopleButtons}</MenuContainer>

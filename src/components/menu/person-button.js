@@ -18,8 +18,7 @@ class PersonButton extends Component {
           key={this.props.personId}
           opacity={1}
           editing={false}
-          onClick={this.handleClick}
-        >
+          onClick={this.handleClick}>
           {this.props.personId}
         </Button>
       </div>

@@ -56,18 +56,17 @@ class Message extends Component {
             editing={false}
             opacity={this.props.opacity}
             onClick={this.handleMessageDelete}
-            key="new button"
-          >
+            key="new button">
             delete
           </Button>
           <Input
             key={`${this.props.nodeId}.${this.props.messageIndex}`}
             value={this.props.children}
-            onChange={e => {
+            onChange={(e) => {
               this.props.onChange(
                 this.props.nodeId,
                 this.props.messageIndex,
-                e.currentTarget.value
+                e.currentTarget.value,
               )
             }}
           />

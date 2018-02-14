@@ -52,7 +52,7 @@ class Screen extends Component {
         dragging: false,
         line: NULL_LINE,
       },
-      callback
+      callback,
     )
   }
   generateLink({ source, target }) {
@@ -80,7 +80,7 @@ class Screen extends Component {
     const transY = y * zoomY * -1 + h / 2
 
     const conversationNodes = this.props.nodes
-      .filter(n => n.data.id === this.props.selectedId)
+      .filter((n) => n.data.id === this.props.selectedId)
       .map((n, i) => {
         return (
           <ConversationNode
@@ -127,7 +127,7 @@ class Screen extends Component {
 
     if (this.state.dragging)
       naturalLinks.push(
-        <Path d={this.generateLink(this.state.line)} key={'why-hello-there'} />
+        <Path d={this.generateLink(this.state.line)} key={'why-hello-there'} />,
       )
 
     const storylineMode = false // zoomX <= 1 && this.props.editing
@@ -138,17 +138,14 @@ class Screen extends Component {
         onMouseUp={this.state.dragging ? this.handleDragCancel : null}
         onMouseLeave={this.state.dragging ? this.handleDragCancel : null}
         width={w}
-        height={h}
-      >
+        height={h}>
         <g>
           <g
             className="ScreenTranslater"
-            transform={`translate(${transX}, ${transY})`}
-          >
+            transform={`translate(${transX}, ${transY})`}>
             <g
               className="ScreenScaler"
-              transform={`scale(${this.props.zoomX}, ${this.props.zoomY})`}
-            >
+              transform={`scale(${this.props.zoomX}, ${this.props.zoomY})`}>
               <g className="NaturalLinks">{naturalLinks}</g>
               <g className="AdditionalLinks">{additionalLinks}</g>
               <g className="GraphicalNodes">{graphicalNodes}</g>

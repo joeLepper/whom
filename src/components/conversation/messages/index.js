@@ -27,8 +27,7 @@ class Messages extends Component {
         key={`${this.props.node.data.id}.${this.props.index}`}
         style={{
           opacity: this.props.opacity,
-        }}
-      >
+        }}>
         <Li onClick={this.props.editing ? () => {} : this.props.reverseMessage}>
           <a>{'<'}</a>
         </Li>
@@ -40,8 +39,7 @@ class Messages extends Component {
           nodeId={this.props.node.data.id}
           messageIndex={this.props.index}
           editing={this.props.editing}
-          onChange={this.props.onMessageChange}
-        >
+          onChange={this.props.onMessageChange}>
           {msg}
         </Message>
         <Li
@@ -58,8 +56,7 @@ class Messages extends Component {
                   } else this.props.advanceMessage()
                 }
               : this.props.advanceMessage
-          }
-        >
+          }>
           <a>
             {this.props.editing &&
             this.props.index === this.props.node.data.messages.length - 1

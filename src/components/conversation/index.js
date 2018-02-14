@@ -34,7 +34,7 @@ class Conversation extends Component {
   handleButtonDelete(nodeId) {
     if (
       window.confirm(
-        'Deleting this button will delete its associated page. Are you sure?'
+        'Deleting this button will delete its associated page. Are you sure?',
       )
     ) {
       this.props.person.buttonDelete(nodeId)
@@ -55,8 +55,7 @@ class Conversation extends Component {
           zoomY: spring(this.state.zoom.y),
           maxZoomX: spring(this.state.maxZoomX),
           maxZoomY: spring(this.state.maxZoomY),
-        }}
-      >
+        }}>
         {({ x, y, w, h, zoomX, zoomY, maxZoomX, maxZoomY }) => {
           return (
             <Screen
@@ -90,7 +89,7 @@ class Conversation extends Component {
   }
   render() {
     const selected =
-      this.props.person.data.nodes.filter(node => {
+      this.props.person.data.nodes.filter((node) => {
         return node.id === this.props.selectedId
       })[0] || {}
     return (

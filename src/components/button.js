@@ -54,7 +54,7 @@ class Button extends Component {
         <Input
           size={this.props.children.length}
           value={this.props.children}
-          onChange={e => {
+          onChange={(e) => {
             this.props.onChange(this.props.nodeId, e.currentTarget.value)
           }}
         />
@@ -73,8 +73,7 @@ class Button extends Component {
       <ButtonContainer
         className={this.props.className}
         onClick={this.handleClick}
-        style={Object.assign(containerStyle, this.props.style)}
-      >
+        style={Object.assign(containerStyle, this.props.style)}>
         {this.props.editing ? <a onClick={this.handleButtonDelete}>X</a> : null}
         {this.renderDisplayMessage()}
       </ButtonContainer>

@@ -25,7 +25,7 @@ class GraphicalNode extends Component {
   render() {
     return (
       <g
-        onMouseUp={e => {
+        onMouseUp={(e) => {
           e.stopPropagation()
           e.preventDefault()
 
@@ -58,8 +58,7 @@ class GraphicalNode extends Component {
             }
           }
         }}
-        transform={`translate(${this.props.node.x}, ${this.props.node.y})`}
-      >
+        transform={`translate(${this.props.node.x}, ${this.props.node.y})`}>
         <Circle r={this.state.hover ? 8 : 2} />
         {this.state.hover ? <ActiveCircle r={5} /> : null}
         {this.state.hover ? <Circle r={2} /> : null}
