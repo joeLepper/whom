@@ -5,8 +5,6 @@ import { enableLiveReload } from 'electron-compile'
 require('./renderer-events')
 
 let mainWindow
-const isDevMode = process.execPath.match(/[\\/]electron/)
-if (isDevMode) enableLiveReload({ strategy: 'react-hmr' })
 
 const createWindow = async () => {
   mainWindow = new BrowserWindow({ fullscreen: true })
