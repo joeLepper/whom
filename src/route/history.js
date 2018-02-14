@@ -31,7 +31,7 @@ class History {
   }
   read () {
     const history = this.store.load()
-    return history && history[history.length - 1] || '/'
+    return (history && history[history.length - 1]) || '/'
   }
   notifyListeners (state) {
     Object.keys(this.listeners).forEach((key) => {

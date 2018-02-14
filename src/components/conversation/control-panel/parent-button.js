@@ -7,11 +7,11 @@ const Button = require('../../button')
 class ParentButton extends Component {
   render () {
     const { parent } = this.props.selected
-    // if (parent === null || this.props.editing) return null
+    if (parent === null || this.props.editing) return null
     return (
       <Button
         editing={false}
-        opacity="1"
+        opacity='1'
         onClick={(e) => {
           e.preventDefault()
           back()
@@ -20,7 +20,3 @@ class ParentButton extends Component {
   }
 }
 module.exports = ParentButton
-
-
-
-

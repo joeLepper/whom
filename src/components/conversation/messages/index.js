@@ -43,8 +43,7 @@ class Messages extends Component {
             this.props.onMessageAdd(this.props.node.data.id, () => {
               this.props.advanceMessage()
             })
-          }
-          else this.props.advanceMessage()
+          } else this.props.advanceMessage()
         } : this.props.advanceMessage}>
           <a>{this.props.editing && (this.props.index === this.props.node.data.messages.length - 1) ? '+' : '>'}</a>
         </Li>

@@ -139,7 +139,7 @@ class Person {
     })
     this.save(this.id)
   }
-  messageDelete () {
+  messageDelete (nodeId, messageIndex) {
     this.raw.forEach((node, i) => {
       if (nodeId === node.id) {
         node.messages = node.messages.filter((_, i) => i !== messageIndex)

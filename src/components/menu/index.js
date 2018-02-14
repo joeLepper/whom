@@ -26,7 +26,6 @@ class Menu extends Component {
     const peopleButtons = people.map(this.renderPersonButton)
     peopleButtons.push(
       <Button
-        key={'creator'}
         opacity={1}
         editing={false}
         key={'new-person-button'}

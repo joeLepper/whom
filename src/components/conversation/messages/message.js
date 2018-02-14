@@ -39,12 +39,6 @@ const Div = styled.div`
   flex-flow: row wrap;
 `
 
-const A = styled.a`
-  width: 10%;
-  margin: auto;
-  font-size: ${FONT_SIZE};
-`
-
 class Message extends Component {
   constructor () {
     super(...arguments)
@@ -57,19 +51,17 @@ class Message extends Component {
   renderDisplayMessage () {
     if (this.props.editing) return (
       <Div key={`${this.props.nodeId}.${this.props.messageIndex}`}>
-        {
-          <Button
+        <Button
           editing={false}
           opacity={this.props.opacity}
           onClick={this.handleMessageDelete}
           key='new button'>delete</Button>
-        }
         <Input
           key={`${this.props.nodeId}.${this.props.messageIndex}`}
           value={this.props.children}
           onChange={(e) => {
             this.props.onChange(this.props.nodeId, this.props.messageIndex, e.currentTarget.value)
-          }}/>
+          }} />
       </Div>
     )
     return (

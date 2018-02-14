@@ -36,7 +36,7 @@ class Buttons extends Component {
           opacity={this.props.opacity}
           onChange={this.props.onButtonChange}
           key={`natural-child-${i}`}
-          className="natural-child"
+          className='natural-child'
           onButtonDelete={this.props.onButtonDelete}
           onClick={(e) => {
             if (!this.props.editing) {
@@ -57,11 +57,11 @@ class Buttons extends Component {
             opacity={this.props.opacity}
             onChange={this.props.onButtonChange}
             key={`adopted-child-${i}`}
-            className="adopted-child"
+            className='adopted-child'
             onButtonDelete={this.props.onButtonDelete}
             onClick={(e) => {
               if (!this.props.editing) {
-                const path = `/person/${this.props.personId}/node/${target.data.id}`
+                const path = `/person/${this.props.personId}/node/${link.target.data.id}`
                 route.update(path)
               }
             }}>{link.optionText}</Button>
@@ -79,4 +79,4 @@ class Buttons extends Component {
   }
 }
 
-module.exports= Buttons
+module.exports = Buttons
