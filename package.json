@@ -10,7 +10,7 @@
     "make": "electron-forge make",
     "publish": "electron-forge publish",
     "lint": "eslint --cache --color --ext .jsx,.js src",
-    "fmt": "prettier --single-quote --trailing-comma --no-semi --write \"src/**/*.js\""
+    "fmt": "prettier --write \"src/**/*.js\""
   },
   "keywords": [],
   "author": "jlepper",
