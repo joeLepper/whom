@@ -1,6 +1,5 @@
 const React = require('react')
 const { Component } = React
-const { Motion, spring } = require('react-motion')
 const ConversationNode = require('./conversation-node')
 const GraphicalNode = require('./graphical-node')
 const styled = require('styled-components').default
@@ -21,7 +20,7 @@ class Screen extends Component {
     this.handleDragCancel = this.handleDragCancel.bind(this)
 
     this.state = {
-      line : NULL_LINE,
+      line: NULL_LINE,
       dragging: false,
     }
   }
@@ -46,7 +45,7 @@ class Screen extends Component {
     dragState.dragging = true
     this.setState(dragState)
   }
-  handleDragCancel (_, cb)  {
+  handleDragCancel (_, cb) {
     const callback = cb || (() => {})
     this.setState({
       dragging: false,
@@ -74,7 +73,7 @@ class Screen extends Component {
     this.setState({ line })
   }
   render () {
-    const { x, y, w, h, zoomX, zoomY, baseZoom, maxZoomX, maxZoomY } = this.props
+    const { x, y, w, h, zoomX, zoomY } = this.props
     const Path = styled.path`
       stroke: #099;
       stroke-width: 1px;
@@ -123,19 +122,19 @@ class Screen extends Component {
     ))
     const naturalLinks = this.props.links.map((l, i) => {
       return (
-        <Path d={this.generateLink(l)} key={`natural-link-${i}`}/>
+        <Path d={this.generateLink(l)} key={`natural-link-${i}`} />
       )
     })
 
     const additionalLinks = this.props.additionalLinks.map((l, i) => {
       return (
-        <Path d={this.generateLink(l)} key={`additional-link-${i}`}/>
+        <Path d={this.generateLink(l)} key={`additional-link-${i}`} />
       )
     })
 
-    if (this.state.dragging) naturalLinks.push(<Path d={this.generateLink(this.state.line)} key={'why-hello-there'}/>)
+    if (this.state.dragging) naturalLinks.push(<Path d={this.generateLink(this.state.line)} key={'why-hello-there'} />)
 
-    const storylineMode = zoomX <= 1 && this.props.editing
+    const storylineMode = false // zoomX <= 1 && this.props.editing
 
     return (
       <svg
@@ -146,18 +145,18 @@ class Screen extends Component {
         height={h}>
         <g>
           <g
-            className="ScreenTranslater"
+            className='ScreenTranslater'
             transform={`translate(${transX}, ${transY})`}>
             <g
-              className="ScreenScaler"
+              className='ScreenScaler'
               transform={`scale(${this.props.zoomX}, ${this.props.zoomY})`}>
-              <g className="NaturalLinks">{naturalLinks}</g>
-              <g className="AdditionalLinks">{additionalLinks}</g>
-              <g className="GraphicalNodes">{graphicalNodes}</g>
+              <g className='NaturalLinks'>{naturalLinks}</g>
+              <g className='AdditionalLinks'>{additionalLinks}</g>
+              <g className='GraphicalNodes'>{graphicalNodes}</g>
             </g>
           </g>
-          <g className="ConversationNodes">{conversationNodes}</g>
-          {/*storylineMode ? null : <g className="ConversationNodes">{conversationNodes}</g>*/}
+          <g className='ConversationNodes'>{conversationNodes}</g>
+          {storylineMode ? null : <g className='ConversationNodes'>{conversationNodes}</g>}
         </g>
       </svg>
     )

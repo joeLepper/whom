@@ -9,7 +9,6 @@ const History = require('./route/history')
 const history = new History()
 const Person = require('./person')
 const Conversation = require('./components/conversation')
-const Button = require('./components/button')
 const Menu = require('./components/menu')
 const BASE_ZOOM = 0.25
 
@@ -51,8 +50,7 @@ export default class Game extends Component {
     if (personParams) {
       initialState.personId = personParams.personId
       initialState.nodeId = personParams.nodeId
-    }
-    else if (nodeParams) {
+    } else if (nodeParams) {
       initialState.personId = nodeParams.personId
     }
     this.state = initialState
@@ -95,8 +93,7 @@ export default class Game extends Component {
             .replace(':personId', personId)
             .replace(':nodeId', result.nodeId)
           route.update(to)
-        }
-        else {
+        } else {
           const { nodes } = this.state.person.data
           const rootList = nodes.filter(({ parent }) => parent === null)
           const rootNode = rootList[0]

@@ -8,7 +8,7 @@ class ZoomButton extends Component {
     return (
       <Button
         editing={false}
-        opacity="1"
+        opacity='1'
         style={{ fontSize: 16 }}
         onClick={(e) => {
           const zoomLevel = this.props.zoomX !== this.props.baseZoom ?

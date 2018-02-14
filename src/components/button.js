@@ -3,7 +3,6 @@ const { Component } = React
 const styled = require('styled-components').default
 
 const PINK = '#f09'
-const WHITE = '#FFF'
 const FONT_SIZE = '1.5em'
 
 const ButtonContainer = styled.div`
@@ -56,7 +55,7 @@ class Button extends Component {
         value={this.props.children}
         onChange={(e) => {
           this.props.onChange(this.props.nodeId, e.currentTarget.value)
-        }}/>
+        }} />
     )
     return (
       <A>{this.props.children}</A>

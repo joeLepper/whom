@@ -2,8 +2,6 @@ const React = require('react')
 const { Component } = React
 const styled = require('styled-components').default
 
-const Button = require('../../button')
-
 const PINK = '#f09'
 const BLACK = '#000'
 const WHITE = '#fff'
@@ -95,20 +93,17 @@ const Input = styled.input`
 const Div = styled.div`
   width: 10vw;
 `
-const Span = styled.span`
-  width: 2vw;
-`
 
 class ZoomSlider extends Component {
   render () {
     return (
       <Div>
         <Input
-          type="range"
+          type='range'
           min={this.props.baseZoom}
           max={this.props.maxZoomX}
           value={this.props.zoomX}
-          step="0.1"
+          step='0.1'
           onChange={(e) => {
             const val = Math.round(e.currentTarget.value * 10) / 10
             this.props.onZoomChange({ zoom: { x: val, y: val } })

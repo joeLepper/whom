@@ -4,7 +4,6 @@ const { Motion, spring } = require('react-motion')
 const { ipcRenderer } = require('electron')
 const styled = require('styled-components').default
 
-const Person = require('../../person')
 const Screen = require('./navigator')
 const ControlPanel = require('./control-panel')
 
@@ -25,7 +24,7 @@ class Conversation extends Component {
     this.handleButtonDelete = this.handleButtonDelete.bind(this)
     this.state = {
       editing: false,
-      zoom: { x: baseZoom, y: baseZoom }
+      zoom: { x: baseZoom, y: baseZoom },
     }
   }
   handleSaveAs (id) {
@@ -33,7 +32,7 @@ class Conversation extends Component {
     ipcRenderer.send('person--load', id)
   }
   handleButtonDelete (nodeId) {
-    if (confirm('Deleting this button will delete its associated page. Are you sure?')) {
+    if (window.confirm('Deleting this button will delete its associated page. Are you sure?')) {
       this.props.person.buttonDelete(nodeId)
     }
   }
@@ -43,45 +42,45 @@ class Conversation extends Component {
   renderMotion (selected) {
     return (
       <Motion style={{
-          x: spring(selected.x),
-          y: spring(selected.y),
-          w: spring(this.props.person.dimensions.w),
-          h: spring(this.props.person.dimensions.h),
-          zoomX: spring(this.state.zoom.x),
-          zoomY: spring(this.state.zoom.y),
-          maxZoomX: spring(this.state.maxZoomX),
-          maxZoomY: spring(this.state.maxZoomY),
-        }}>
-          {
-            ({ x, y, w, h, zoomX, zoomY, maxZoomX, maxZoomY }) => {
-              return (
-                <Screen
-                  editing={this.state.editing}
-                  selectedId={this.props.selectedId}
-                  personId={this.props.personId}
-                  baseZoom={this.props.baseZoom}
-                  zoomX={zoomX}
-                  zoomY={zoomY}
-                  x={x}
-                  y={y}
-                  w={w}
-                  h={h}
-                  onLinkAdd={this.props.person.linkAdd}
-                  onButtonAdd={this.props.person.buttonAdd}
-                  onButtonChange={this.props.person.buttonChange}
-                  onButtonDelete={this.props.person.buttonDelete}
-                  onMessageAdd={this.props.person.messageAdd}
-                  onMessageChange={this.props.person.messageChange}
-                  onMessageDelete={this.props.person.messageDelete}
-                  maxZoomX={maxZoomX}
-                  maxZoomY={maxZoomY}
-                  links={this.props.person.data.links}
-                  additionalLinks={this.props.person.data.additionalLinks}
-                  nodes={this.props.person.data.nodes} />
-              )
-            }
+        x: spring(selected.x),
+        y: spring(selected.y),
+        w: spring(this.props.person.dimensions.w),
+        h: spring(this.props.person.dimensions.h),
+        zoomX: spring(this.state.zoom.x),
+        zoomY: spring(this.state.zoom.y),
+        maxZoomX: spring(this.state.maxZoomX),
+        maxZoomY: spring(this.state.maxZoomY),
+      }}>
+        {
+          ({ x, y, w, h, zoomX, zoomY, maxZoomX, maxZoomY }) => {
+            return (
+              <Screen
+                editing={this.state.editing}
+                selectedId={this.props.selectedId}
+                personId={this.props.personId}
+                baseZoom={this.props.baseZoom}
+                zoomX={zoomX}
+                zoomY={zoomY}
+                x={x}
+                y={y}
+                w={w}
+                h={h}
+                onLinkAdd={this.props.person.linkAdd}
+                onButtonAdd={this.props.person.buttonAdd}
+                onButtonChange={this.props.person.buttonChange}
+                onButtonDelete={this.props.person.buttonDelete}
+                onMessageAdd={this.props.person.messageAdd}
+                onMessageChange={this.props.person.messageChange}
+                onMessageDelete={this.props.person.messageDelete}
+                maxZoomX={maxZoomX}
+                maxZoomY={maxZoomY}
+                links={this.props.person.data.links}
+                additionalLinks={this.props.person.data.additionalLinks}
+                nodes={this.props.person.data.nodes} />
+            )
           }
-        </Motion>
+        }
+      </Motion>
     )
   }
   render () {

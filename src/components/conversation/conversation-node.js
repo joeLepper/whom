@@ -26,16 +26,14 @@ class ConversationNode extends Component {
     }
   }
   componentWillReceiveProps (nextProps) {
-    if (this.props.node.data.id !== nextProps.node.data.id) this.setState({ idx: 0})
+    if (this.props.node.data.id !== nextProps.node.data.id) this.setState({ idx: 0 })
   }
   advanceMessage () {
     const proposedIdx = this.state.idx + 1
     this.setState({ opacity: 0 })
     setTimeout(() => {
       const newState = { opacity: 1 }
-      if (proposedIdx < this.props.node.data.messages.length) {
-        newState.idx = proposedIdx
-      }
+      if (proposedIdx < this.props.node.data.messages.length) newState.idx = proposedIdx
       this.setState(newState)
     }, 500)
   }
@@ -44,14 +42,12 @@ class ConversationNode extends Component {
     this.setState({ opacity: 0 })
     setTimeout(() => {
       const newState = { opacity: 1 }
-      if (proposedIdx >= 0) {
-        newState.idx = proposedIdx
-      }
+      if (proposedIdx >= 0) newState.idx = proposedIdx
       this.setState(newState, cb)
     }, 500)
   }
   handleMessageDelete (nodeId, messageIndex) {
-    if (confirm('Delete this message?')) this.reverseMessage(() => {
+    if (window.confirm('Delete this message?')) this.reverseMessage(() => {
       this.props.onMessageDelete(nodeId, messageIndex)
     })
   }
@@ -71,7 +67,7 @@ class ConversationNode extends Component {
             onMessageAdd={this.props.onMessageAdd}
             editing={this.props.editing}
             zoomRatio={this.props.zoomRatio}
-            node={this.props.node}/>
+            node={this.props.node} />
           <Buttons
             editing={this.props.editing}
             personId={this.props.personId}

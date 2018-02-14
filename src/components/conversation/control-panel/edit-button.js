@@ -8,7 +8,7 @@ class EditButton extends Component {
     return (
       <Button
         editing={false}
-        opacity="1"
+        opacity='1'
         style={{ fontSize: 16 }}
         onClick={(e) => {
           e.preventDefault()
@@ -19,6 +19,3 @@ class EditButton extends Component {
   }
 }
 module.exports = EditButton
-
-
-

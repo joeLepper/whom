@@ -1,13 +1,7 @@
 const React = require('react')
 const { Component } = React
-const styled = require('styled-components').default
 const Button = require('../button')
 const route = require('../../route')
-
-const Div = styled.div`
-  display: flex;
-  flex: row wrap;
-`
 
 class PersonButton extends Component {
   constructor () {
