@@ -10,16 +10,13 @@
 <script type="text/jsx">
 import React from 'react';
 import ReactDOM from 'react-dom';
-import {AppContainer} from 'react-hot-loader';
 
 const render = () => {
   const Game = require('./game').default;
-  ReactDOM.render(<AppContainer><Game /></AppContainer>, document.getElementById('App'));
+  ReactDOM.render(<Game />, document.getElementById('App'));
 }
 
 render();
-
-module.hot = false;
 
 </script>
 </html>
