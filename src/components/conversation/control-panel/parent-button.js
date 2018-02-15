@@ -5,9 +5,9 @@ const { back } = require('../../../route')
 const Button = require('../../button')
 
 class ParentButton extends Component {
-  render () {
+  render() {
     const { parent } = this.props.selected
-    // if (parent === null || this.props.editing) return null
+    if (parent === null || this.props.editing) return null
     return (
       <Button
         editing={false}
@@ -15,12 +15,10 @@ class ParentButton extends Component {
         onClick={(e) => {
           e.preventDefault()
           back()
-        }}>{'<--'}</Button>
+        }}>
+        {'<--'}
+      </Button>
     )
   }
 }
 module.exports = ParentButton
-
-
-
-

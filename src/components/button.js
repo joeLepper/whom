@@ -3,7 +3,6 @@ const { Component } = React
 const styled = require('styled-components').default
 
 const PINK = '#f09'
-const WHITE = '#FFF'
 const FONT_SIZE = '1.5em'
 
 const ButtonContainer = styled.div`
@@ -39,33 +38,33 @@ const Input = styled.input`
 `
 
 class Button extends Component {
-  constructor () {
+  constructor() {
     super(...arguments)
     this.handleClick = this.handleClick.bind(this)
     this.handleButtonDelete = this.handleButtonDelete.bind(this)
     this.renderDisplayMessage = this.renderDisplayMessage.bind(this)
   }
-  handleClick (e) {
+  handleClick(e) {
     e.preventDefault()
     if (!this.props.editing) this.props.onClick(e)
   }
-  renderDisplayMessage () {
-    if (this.props.editing) return (
-      <Input
-        size={this.props.children.length}
-        value={this.props.children}
-        onChange={(e) => {
-          this.props.onChange(this.props.nodeId, e.currentTarget.value)
-        }}/>
-    )
-    return (
-      <A>{this.props.children}</A>
-    )
+  renderDisplayMessage() {
+    if (this.props.editing)
+      return (
+        <Input
+          size={this.props.children.length}
+          value={this.props.children}
+          onChange={(e) => {
+            this.props.onChange(this.props.nodeId, e.currentTarget.value)
+          }}
+        />
+      )
+    return <A>{this.props.children}</A>
   }
-  handleButtonDelete () {
+  handleButtonDelete() {
     this.props.onButtonDelete(this.props.nodeId)
   }
-  render () {
+  render() {
     const containerStyle = {
       opacity: this.props.opacity,
     }
@@ -75,9 +74,7 @@ class Button extends Component {
         className={this.props.className}
         onClick={this.handleClick}
         style={Object.assign(containerStyle, this.props.style)}>
-        {this.props.editing ? (
-          <a onClick={this.handleButtonDelete}>X</a>
-        ) : null}
+        {this.props.editing ? <a onClick={this.handleButtonDelete}>X</a> : null}
         {this.renderDisplayMessage()}
       </ButtonContainer>
     )

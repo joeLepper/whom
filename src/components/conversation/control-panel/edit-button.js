@@ -4,7 +4,7 @@ const { Component } = React
 const Button = require('../../button')
 
 class EditButton extends Component {
-  render () {
+  render() {
     return (
       <Button
         editing={false}
@@ -14,11 +14,10 @@ class EditButton extends Component {
           e.preventDefault()
           const newEditingState = !this.props.editing
           this.props.onEditChange({ editing: newEditingState })
-        }}>{this.props.editing ? 'dynamic' : 'static'}</Button>
+        }}>
+        {this.props.editing ? 'dynamic' : 'static'}
+      </Button>
     )
   }
 }
 module.exports = EditButton
-
-
-

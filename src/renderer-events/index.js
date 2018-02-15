@@ -5,26 +5,38 @@ import { join, basename, extname } from 'path'
 ipcMain.on('people--load', (event) => {
   const dir = join(__dirname, '..', 'people')
   readdir(dir, (err, people) => {
-    const names = people.filter((person) => {
-      return extname(person) === '.json'
-    }).map((person) => {
-      return basename(person, '.json')
-    })
-    event.sender.send('people--load:reply', names)
+    if (err) console.error(err)
+    else {
+      const names = people
+        .filter((person) => {
+          return extname(person) === '.json'
+        })
+        .map((person) => {
+          return basename(person, '.json')
+        })
+      event.sender.send('people--load:reply', names)
+    }
   })
 })
 
 ipcMain.on('person--load', (event, personId) => {
   const file = join(__dirname, '..', 'people', `${personId}.json`)
   readFile(file, 'utf8', (err, person) => {
-    event.sender.send('person--load:reply', personId, person)
+    if (err) console.error(err)
+    else event.sender.send('person--load:reply', personId, person)
   })
 })
 
 ipcMain.on('person--save', (event, personId, person) => {
   const file = join(__dirname, '..', 'people', `${personId}.json`)
   writeFile(file, person, 'utf8', (err) => {
-    event.sender.send('person--save:reply', personId, JSON.stringify(person, null, 2))
+    if (err) console.error(err)
+    else
+      event.sender.send(
+        'person--save:reply',
+        personId,
+        JSON.stringify(person, null, 2),
+      )
   })
 })
 
@@ -39,9 +51,13 @@ ipcMain.on('person--delete', (event, personId, person) => {
 ipcMain.on('person--create', (event, personId) => {
   const template = join(__dirname, '..', 'person', 'template.json')
   readFile(template, 'utf8', (err, person) => {
-    const file = join(__dirname, '..', 'people', `${personId}.json`)
-    writeFile(file, person, 'utf8', (err) => {
-      event.sender.send('person--create:reply', personId, person)
-    })
+    if (err) console.error(err)
+    else {
+      const file = join(__dirname, '..', 'people', `${personId}.json`)
+      writeFile(file, person, 'utf8', (err) => {
+        if (err) console.error(err)
+        else event.sender.send('person--create:reply', personId, person)
+      })
+    }
   })
 })

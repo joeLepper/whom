@@ -13,29 +13,26 @@ const MenuContainer = styled.ul`
 `
 
 class Menu extends Component {
-  createPerson () {
+  createPerson() {
     ipcRenderer.send('person--create', 'fresh')
   }
-  renderPersonButton (personId, i) {
-    return (
-      <PersonButton key={i} personId={personId} />
-    )
+  renderPersonButton(personId, i) {
+    return <PersonButton key={i} personId={personId} />
   }
-  render () {
+  render() {
     const { people } = this.props
     const peopleButtons = people.map(this.renderPersonButton)
     peopleButtons.push(
       <Button
-        key={'creator'}
         opacity={1}
         editing={false}
         key={'new-person-button'}
-        onClick={this.createPerson}>freshen up</Button>
+        onClick={this.createPerson}>
+        freshen up
+      </Button>,
     )
 
-    return (
-      <MenuContainer>{peopleButtons}</MenuContainer>
-    )
+    return <MenuContainer>{peopleButtons}</MenuContainer>
   }
 }
 module.exports = Menu
