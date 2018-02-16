@@ -1,5 +1,4 @@
 import { app, BrowserWindow } from 'electron'
-import { enableLiveReload } from 'electron-compile'
 
 require('./renderer-events')
 
