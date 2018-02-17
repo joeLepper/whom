@@ -45,6 +45,7 @@
     "d3-path": "^1.0.5",
     "electron-compile": "^6.4.2",
     "electron-devtools-installer": "^2.1.0",
+    "electron-reload": "^1.2.2",
     "electron-squirrel-startup": "^1.0.0",
     "eslint-config-prettier": "^2.9.0",
     "guid": "0.0.12",
