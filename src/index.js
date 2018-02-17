@@ -1,5 +1,7 @@
 import { app, BrowserWindow } from 'electron'
 
+require('electron-reload')(__dirname)
+
 require('./renderer-events')
 
 let mainWindow
