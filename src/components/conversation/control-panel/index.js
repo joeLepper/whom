@@ -86,4 +86,7 @@ class ControlPanel extends Component {
     )
   }
 }
+
+//propTypes can be found in ../button
+
 module.exports = ControlPanel

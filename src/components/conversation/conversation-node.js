@@ -1,6 +1,8 @@
 const React = require('react')
 const { Component } = React
 const styled = require('styled-components').default
+const PropTypes = require('prop-types')
+const { node } = require('../../validators')
 
 const Messages = require('./messages')
 const Buttons = require('./buttons')
@@ -90,4 +92,22 @@ class ConversationNode extends Component {
     )
   }
 }
+
+ConversationNode.propTypes = {
+  additionalLinks: PropTypes.array.isRequired,
+  editing: PropTypes.bool.isRequired,
+  h: PropTypes.number.isRequired,
+  w: PropTypes.number.isRequired,
+  zoomX: PropTypes.number.isRequired,
+  zoomY: PropTypes.number.isRequired,
+  personId: PropTypes.string.isRequired,
+  node: PropTypes.shape(node),
+  onButtonAdd: PropTypes.func.isRequired,
+  onButtonChange: PropTypes.func.isRequired,
+  onButtonDelete: PropTypes.func.isRequired,
+  onMessageAdd: PropTypes.func.isRequired,
+  onMessageChange: PropTypes.func.isRequired,
+  onMessageDelete: PropTypes.func.isRequired,
+}
+
 module.exports = ConversationNode

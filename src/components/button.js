@@ -1,6 +1,8 @@
 const React = require('react')
 const { Component } = React
 const styled = require('styled-components').default
+const PropTypes = require('prop-types')
+const { guid } = require('../validators')
 
 const PINK = '#f09'
 const FONT_SIZE = '1.5em'
@@ -79,6 +81,22 @@ class Button extends Component {
       </ButtonContainer>
     )
   }
+}
+
+Button.propTypes = {
+  children: PropTypes.string.isRequired,
+  editing: PropTypes.bool.isRequired,
+  onClick: PropTypes.func,
+  opacity: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+  style: PropTypes.shape({
+    fontSize: PropTypes.number,
+  }),
+  className: PropTypes.string,
+  onButtonDelete: PropTypes.func,
+  onChange: PropTypes.func,
+  zoomed: PropTypes.bool,
+  nodeId: guid,
+  ee: PropTypes.func, //I'm not exactly sure what this is supposed to be. Not yet defined in app.
 }
 
 module.exports = Button
