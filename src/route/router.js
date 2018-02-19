@@ -27,11 +27,11 @@ class Router {
     })
     return { route, params }
   }
-  update(path) {
-    this.history.push(path)
+  update(path, search) {
+    this.history.push(path, search)
   }
-  replace(path) {
-    this.history.replace(path)
+  replace(path, search) {
+    this.history.replace(path, search)
   }
   notifyListeners(route) {
     Object.keys(this.listeners).forEach((key) => {
