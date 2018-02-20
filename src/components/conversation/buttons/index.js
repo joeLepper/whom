@@ -2,8 +2,6 @@ const React = require('react')
 const { Component } = React
 const styled = require('styled-components').default
 const Guid = require('guid')
-const route = require('../../../route')
-
 const Button = require('../../button')
 
 const ButtonsContainer = styled.div`

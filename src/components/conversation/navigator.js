@@ -10,8 +10,9 @@ const NULL_LINE = {
   target: { x: 0, y: 0 },
 }
 
-class Screen extends Component {
-  constructor() {
+
+class Navigator extends Component {
+  constructor () {
     super(...arguments)
 
     this.handleDragEnd = this.handleDragEnd.bind(this)
@@ -79,29 +80,31 @@ class Screen extends Component {
     const transX = x * zoomX * -1 + w / 2
     const transY = y * zoomY * -1 + h / 2
 
-    const conversationNodes = this.props.nodes
-      .filter((n) => n.data.id === this.props.selectedId)
-      .map((n, i) => {
-        return (
-          <ConversationNode
-            additionalLinks={this.props.additionalLinks}
-            onMessageDelete={this.props.onMessageDelete}
-            onMessageChange={this.props.onMessageChange}
-            onButtonChange={this.props.onButtonChange}
-            onButtonDelete={this.props.onButtonDelete}
-            onMessageAdd={this.props.onMessageAdd}
-            onButtonAdd={this.props.onButtonAdd}
-            personId={this.props.personId}
-            editing={this.props.editing}
-            key={`conversation-${i}`}
-            zoomX={this.props.zoomX}
-            zoomY={this.props.zoomY}
-            node={n}
-            w={w}
-            h={h}
-          />
-        )
-      })
+
+    const conversationNodes = this.props.nodes.filter((n) => (
+      n.data.id === this.props.selectedId
+    )).map((n, i) => {
+      return (
+        <ConversationNode
+          additionalLinks={this.props.additionalLinks}
+          onMessageDelete={this.props.onMessageDelete}
+          onMessageChange={this.props.onMessageChange}
+          onButtonChange={this.props.onButtonChange}
+          onButtonDelete={this.props.onButtonDelete}
+          onMessageAdd={this.props.onMessageAdd}
+          onButtonAdd={this.props.onButtonAdd}
+          personId={this.props.personId}
+          editing={this.props.editing}
+          onView={this.props.onView}
+          viewed={this.props.viewed}
+          key={`conversation-${i}`}
+          zoomX={this.props.zoomX}
+          zoomY={this.props.zoomY}
+          node={n}
+          w={w}
+          h={h} />
+      )
+    })
     const graphicalNodes = this.props.nodes.map((n, i) => (
       <GraphicalNode
         onDragCancel={this.handleDragCancel}
@@ -160,4 +163,4 @@ class Screen extends Component {
     )
   }
 }
-module.exports = Screen
+module.exports = Navigator

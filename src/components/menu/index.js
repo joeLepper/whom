@@ -13,14 +13,37 @@ const MenuContainer = styled.ul`
 `
 
 class Menu extends Component {
+  constructor() {
+    super(...arguments)
+    this.state = {
+      people: [],
+      loading: true,
+    }
+  }
   createPerson() {
     ipcRenderer.send('person--create', 'fresh')
+  }
+  loadPeople() {
+    ipcRenderer.send('people--load')
   }
   renderPersonButton(personId, i) {
     return <PersonButton key={i} personId={personId} />
   }
+  componentDidMount() {
+    this.loadPeople()
+    ipcRenderer.on('people--load:reply', (event, people) => {
+      this.setState({
+        people,
+        loading: false,
+      })
+    })
+    ipcRenderer.on('person--create:reply', (event, personId) => {
+      this.props.history.push(`/person/${personId}`)
+    })
+  }
   render() {
-    const { people } = this.props
+    if (this.state.loading) return <h1>Loading</h1>
+    const { people } = this.state
     const peopleButtons = people.map(this.renderPersonButton)
     peopleButtons.push(
       <Button
@@ -31,7 +54,6 @@ class Menu extends Component {
         freshen up
       </Button>,
     )
-
     return <MenuContainer>{peopleButtons}</MenuContainer>
   }
 }
