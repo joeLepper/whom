@@ -3,6 +3,8 @@ const { Component } = React
 const { Motion, spring } = require('react-motion')
 const { ipcRenderer } = require('electron')
 const styled = require('styled-components').default
+const PropTypes = require('prop-types')
+const { guid } = require('../../validators')
 
 const Screen = require('./navigator')
 const ControlPanel = require('./control-panel')
@@ -114,4 +116,12 @@ class Conversation extends Component {
     )
   }
 }
+
+Conversation.propTypes = {
+  person: PropTypes.instanceOf(require('../../person')).isRequired,
+  personId: PropTypes.string.isRequired,
+  selectedId: guid.isRequired,
+  baseZoom: PropTypes.number.isRequired,
+}
+
 module.exports = Conversation

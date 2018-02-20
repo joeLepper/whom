@@ -1,6 +1,8 @@
 const React = require('react')
 const { Component } = React
 const styled = require('styled-components').default
+const PropTypes = require('prop-types')
+const { guid, node } = require('../../validators')
 
 // const route = require('../../route')
 
@@ -85,4 +87,18 @@ class GraphicalNode extends Component {
     )
   }
 }
+
+GraphicalNode.propTypes = {
+  dragging: PropTypes.bool.isRequired,
+  dragSource: PropTypes.shape({
+    id: guid,
+    x: PropTypes.number.isRequired,
+    y: PropTypes.number.isRequired,
+  }).isRequired,
+  node: PropTypes.shape(node),
+  onDragBegin: PropTypes.func.isRequired,
+  onDragCancel: PropTypes.func.isRequired,
+  onDragEnd: PropTypes.func.isRequired,
+}
+
 module.exports = GraphicalNode

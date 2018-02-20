@@ -21,4 +21,7 @@ class ParentButton extends Component {
     )
   }
 }
+
+// propTypes can be found in ../button
+
 module.exports = ParentButton

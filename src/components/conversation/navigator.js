@@ -4,6 +4,8 @@ const ConversationNode = require('./conversation-node')
 const GraphicalNode = require('./graphical-node')
 const styled = require('styled-components').default
 const { path } = require('d3-path')
+const PropTypes = require('prop-types')
+const { guid, node } = require('../../validators')
 
 const NULL_LINE = {
   source: { x: 0, y: 0, id: null },
@@ -160,4 +162,32 @@ class Screen extends Component {
     )
   }
 }
+
+Screen.propTypes = {
+  editing: PropTypes.bool.isRequired,
+  selectedId: guid.isRequired,
+  personId: PropTypes.string.isRequired,
+  additionalLinks: PropTypes.array.isRequired,
+  w: PropTypes.number.isRequired,
+  h: PropTypes.number.isRequired,
+  x: PropTypes.number.isRequired,
+  y: PropTypes.number.isRequired,
+  zoomX: PropTypes.number.isRequired,
+  zoomY: PropTypes.number.isRequired,
+  nodes: PropTypes.arrayOf(PropTypes.shape(node)).isRequired,
+  links: PropTypes.arrayOf(
+    PropTypes.shape({
+      source: PropTypes.shape(node).isRequired,
+      target: PropTypes.shape(node).isRequired,
+    }),
+  ).isRequired,
+  onButtonAdd: PropTypes.func.isRequired,
+  onButtonChange: PropTypes.func.isRequired,
+  onButtonDelete: PropTypes.func.isRequired,
+  onLinkAdd: PropTypes.func.isRequired,
+  onMessageAdd: PropTypes.func.isRequired,
+  onMessageChange: PropTypes.func.isRequired,
+  onMessageDelete: PropTypes.func.isRequired,
+}
+
 module.exports = Screen

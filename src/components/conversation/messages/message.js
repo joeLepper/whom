@@ -2,6 +2,8 @@ const React = require('react')
 const { Component } = React
 const styled = require('styled-components').default
 const Button = require('../../button')
+const PropTypes = require('prop-types')
+const { guid } = require('../../../validators')
 
 const FONT_SIZE = '1.75em'
 
@@ -81,6 +83,17 @@ class Message extends Component {
       </MessageContainer>
     )
   }
+}
+
+Message.propTypes = {
+  editing: PropTypes.bool.isRequired,
+  children: PropTypes.string.isRequired,
+  messageIndex: PropTypes.number.isRequired,
+  nodeId: guid.isRequired,
+  opacity: PropTypes.number.isRequired,
+  onChange: PropTypes.func.isRequired,
+  onClick: PropTypes.func.isRequired,
+  onMessageDelete: PropTypes.func.isRequired,
 }
 
 module.exports = Message

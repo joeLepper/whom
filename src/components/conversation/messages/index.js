@@ -1,6 +1,8 @@
 const React = require('react')
 const { Component } = React
 const styled = require('styled-components').default
+const PropTypes = require('prop-types')
+const { node } = require('../../../validators')
 
 const Message = require('./message')
 
@@ -67,6 +69,19 @@ class Messages extends Component {
       </MessagesContainer>
     )
   }
+}
+
+Messages.propTypes = {
+  editing: PropTypes.bool.isRequired,
+  index: PropTypes.number.isRequired,
+  opacity: PropTypes.number.isRequired,
+  zoomRatio: PropTypes.number,
+  node: PropTypes.shape(node).isRequired,
+  onMessageAdd: PropTypes.func.isRequired,
+  onMessageChange: PropTypes.func.isRequired,
+  onMessageDelete: PropTypes.func.isRequired,
+  reverseMessage: PropTypes.func.isRequired,
+  advanceMessage: PropTypes.func.isRequired,
 }
 
 module.exports = Messages
