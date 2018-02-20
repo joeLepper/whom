@@ -9,6 +9,7 @@ class PersonButton extends Component {
     this.handleClick = this.handleClick.bind(this)
   }
   handleClick() {
+    console.log(`/person/${this.props.personId}`)
     route.update(`/person/${this.props.personId}`)
   }
   render() {

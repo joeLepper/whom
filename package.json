@@ -48,13 +48,10 @@
     "electron-squirrel-startup": "^1.0.0",
     "eslint-config-prettier": "^2.9.0",
     "guid": "0.0.12",
-    "husky": "^0.14.3",
-    "pretty-quick": "^1.4.1",
     "react": "^15.4.1",
     "react-dom": "^15.4.1",
-    "react-keydown": "^1.9.6",
     "react-motion": "^0.5.2",
-    "route-parser": "0.0.5",
+    "react-router": "^4.2.0",
     "styled-components": "^2.2.4"
   },
   "devDependencies": {
@@ -75,6 +72,8 @@
     "eslint-plugin-promise": "^3.6.0",
     "eslint-plugin-react": "^7.6.1",
     "eslint-plugin-standard": "^3.0.1",
-    "prettier": "1.10.2"
+    "husky": "^0.14.3",
+    "prettier": "1.10.2",
+    "pretty-quick": "^1.4.1"
   }
 }

@@ -25,7 +25,7 @@ class ConversationNode extends Component {
       opacity: 1,
     }
   }
-  componentWillReceiveProps (nextProps) {
+  componentWillReceiveProps(nextProps) {
     if (this.props.node.data.id !== nextProps.node.data.id) {
       const idx = this.props.viewed[nextProps.node.data.id] || 0
       this.setState({ idx })
@@ -36,7 +36,7 @@ class ConversationNode extends Component {
     this.setState({ opacity: 0 })
     setTimeout(() => {
       const newState = { opacity: 1 }
-      if (proposedIdx < this.props.node.data.messages.length)
+      if (proposedIdx < this.props.node.data.messages.length) {
         newState.idx = proposedIdx
       }
       const nodeId = this.props.node.data.id
