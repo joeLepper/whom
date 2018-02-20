@@ -1,10 +1,11 @@
 const PropTypes = require('prop-types')
+const Guid = require('guid')
 
-//The guid validator checks the length of the prop since the guid format is consistent.
-//I can't think of a situation where we're trying to pass through a incorrect prop
-//that's a string of 36 characters.
+// The guid validator checks the length of the prop since the guid format is consistent.
+// I can't think of a situation where we're trying to pass through a incorrect prop
+// that's a string of 36 characters.
 
-function chainedGuidLengthChecker(isRequired) {
+function chainedGuidChecker(isRequired) {
   return function(props, propName, componentName) {
     const guid = props[propName] || ''
 
@@ -12,7 +13,7 @@ function chainedGuidLengthChecker(isRequired) {
       return new Error(
         `${propName} was empty. This is a required prop for ${componentName}`,
       )
-    } else if (guid.length !== 36) {
+    } else if (!Guid.isGuid(guid)) {
       return new Error(
         `${props[propName]} supplied to ${componentName}, expected a guid.`,
       )
@@ -20,11 +21,11 @@ function chainedGuidLengthChecker(isRequired) {
   }
 }
 
-let guid = chainedGuidLengthChecker(false)
-guid.isRequired = chainedGuidLengthChecker(true)
+const guid = chainedGuidChecker(false)
+guid.isRequired = chainedGuidChecker(true)
 
-//Node appears as a prop in most of the components. I believe this is created by
-//d3 and is not a ReactNode, so it needs a custom PropType
+// Node appears as a prop in most of the components. I believe this is created by
+// d3 and is not a ReactNode, so it needs a custom PropType
 const node = {
   children: PropTypes.array,
   data: PropTypes.object.isRequired,

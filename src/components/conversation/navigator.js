@@ -167,7 +167,6 @@ Screen.propTypes = {
   editing: PropTypes.bool.isRequired,
   selectedId: guid.isRequired,
   personId: PropTypes.string.isRequired,
-  baseZoom: PropTypes.number.isRequired,
   additionalLinks: PropTypes.array.isRequired,
   w: PropTypes.number.isRequired,
   h: PropTypes.number.isRequired,
@@ -175,8 +174,6 @@ Screen.propTypes = {
   y: PropTypes.number.isRequired,
   zoomX: PropTypes.number.isRequired,
   zoomY: PropTypes.number.isRequired,
-  maxZoomX: PropTypes.number,
-  maxZoomY: PropTypes.number,
   nodes: PropTypes.arrayOf(PropTypes.shape(node)).isRequired,
   links: PropTypes.arrayOf(
     PropTypes.shape({

@@ -99,4 +99,6 @@ class Buttons extends Component {
   }
 }
 
+// propTypes can be found in ../button
+
 module.exports = Buttons

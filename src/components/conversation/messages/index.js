@@ -2,7 +2,7 @@ const React = require('react')
 const { Component } = React
 const styled = require('styled-components').default
 const PropTypes = require('prop-types')
-const { guid, node } = require('../../../validators')
+const { node } = require('../../../validators')
 
 const Message = require('./message')
 
@@ -81,6 +81,7 @@ Messages.propTypes = {
   onMessageChange: PropTypes.func.isRequired,
   onMessageDelete: PropTypes.func.isRequired,
   reverseMessage: PropTypes.func.isRequired,
+  advanceMessage: PropTypes.func.isRequired,
 }
 
 module.exports = Messages

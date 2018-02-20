@@ -90,16 +90,12 @@ class GraphicalNode extends Component {
 
 GraphicalNode.propTypes = {
   dragging: PropTypes.bool.isRequired,
-  w: PropTypes.number.isRequired,
-  h: PropTypes.number.isRequired,
-  zoom: PropTypes.number.isRequired,
   dragSource: PropTypes.shape({
     id: guid,
     x: PropTypes.number.isRequired,
     y: PropTypes.number.isRequired,
   }).isRequired,
   node: PropTypes.shape(node),
-  personId: PropTypes.string.isRequired,
   onDragBegin: PropTypes.func.isRequired,
   onDragCancel: PropTypes.func.isRequired,
   onDragEnd: PropTypes.func.isRequired,

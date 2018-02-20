@@ -78,7 +78,6 @@ class ConversationNode extends Component {
             onButtonAdd={this.props.onButtonAdd}
             onButtonChange={this.props.onButtonChange}
             onButtonDelete={this.props.onButtonDelete}
-            ee={this.props.ee}
             opacity={
               this.props.node.data.messages.length - 1 === this.state.idx
                 ? 1
@@ -95,12 +94,11 @@ class ConversationNode extends Component {
 
 ConversationNode.propTypes = {
   additionalLinks: PropTypes.array.isRequired,
-  editing: PropTypes.bool.isRequired,
-  h: PropTypes.number.isRequired,
   w: PropTypes.number.isRequired,
-  zoomX: PropTypes.number.isRequired,
-  zoomY: PropTypes.number.isRequired,
+  h: PropTypes.number.isRequired,
+  zoomRatio: PropTypes.number.isRequired,
   personId: PropTypes.string.isRequired,
+  editing: PropTypes.bool.isRequired,
   node: PropTypes.shape(node),
   onButtonAdd: PropTypes.func.isRequired,
   onButtonChange: PropTypes.func.isRequired,

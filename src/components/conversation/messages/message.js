@@ -90,7 +90,7 @@ Message.propTypes = {
   children: PropTypes.string.isRequired,
   messageIndex: PropTypes.number.isRequired,
   nodeId: guid.isRequired,
-  zoomRatio: PropTypes.number,
+  opacity: PropTypes.number.isRequired,
   onChange: PropTypes.func.isRequired,
   onClick: PropTypes.func.isRequired,
   onMessageDelete: PropTypes.func.isRequired,

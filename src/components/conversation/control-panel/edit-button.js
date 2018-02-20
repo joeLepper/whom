@@ -21,6 +21,6 @@ class EditButton extends Component {
   }
 }
 
-//propTypes can be found in ../button
+// propTypes can be found in ../button
 
 module.exports = EditButton

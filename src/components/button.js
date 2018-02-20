@@ -86,17 +86,15 @@ class Button extends Component {
 Button.propTypes = {
   children: PropTypes.string.isRequired,
   editing: PropTypes.bool.isRequired,
-  onClick: PropTypes.func,
+  onClick: PropTypes.func.isRequired,
   opacity: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
   style: PropTypes.shape({
     fontSize: PropTypes.number,
   }),
   className: PropTypes.string,
-  onButtonDelete: PropTypes.func,
-  onChange: PropTypes.func,
-  zoomed: PropTypes.bool,
+  onButtonDelete: PropTypes.func.isRequired,
+  onChange: PropTypes.func.isRequired,
   nodeId: guid,
-  ee: PropTypes.func, //I'm not exactly sure what this is supposed to be. Not yet defined in app.
 }
 
 module.exports = Button
