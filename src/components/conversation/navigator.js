@@ -153,7 +153,6 @@ class Screen extends Component {
               <g className="GraphicalNodes">{graphicalNodes}</g>
             </g>
           </g>
-          <g className="ConversationNodes">{conversationNodes}</g>
           {storylineMode ? null : (
             <g className="ConversationNodes">{conversationNodes}</g>
           )}
