@@ -1,5 +1,6 @@
 const React = require('react')
 const { Component } = React
+const PropTypes = require('prop-types')
 
 const Button = require('../../button')
 
@@ -21,6 +22,9 @@ class EditButton extends Component {
   }
 }
 
-// propTypes can be found in ../button
+EditButton.propTypes = {
+  editing: PropTypes.bool.isRequired,
+  onEditChange: PropTypes.func.isRequired,
+}
 
 module.exports = EditButton

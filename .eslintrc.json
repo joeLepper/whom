@@ -2,12 +2,10 @@
   "extends": ["standard", "standard-react", "prettier"],
   "rules": {
     "comma-dangle": [1, "always-multiline"],
-    "react/prop-types": [1, { "skipUndeclared": true }],
+    "react/prop-types": [1],
     "curly": [1, "multi"],
-    "operator-linebreak": [
-      1,
-      "before",
-      { "overrides": { "?": "ignore", ":": "ignore" } }
-    ]
+    "no-console": [1],
+    "no-debugger": [1],
+    "no-alert": [1]
   }
 }

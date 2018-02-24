@@ -2,14 +2,15 @@ const React = require('react')
 const { Component } = React
 
 const styled = require('styled-components').default
+const PropTypes = require('prop-types')
+const { node } = require('../../../validators')
 
-const { history, update } = require('../../../route')
 const Button = require('../../button')
 const EditButton = require('./edit-button')
+const MenuButton = require('./menu-button')
 const ZoomButton = require('./zoom-button')
 const ParentButton = require('./parent-button')
-
-const FONT_SIZE = '1.5em'
+// const ResetButton = require('./reset-button')
 
 const Panel = styled.div`
   position: absolute;
@@ -17,14 +18,6 @@ const Panel = styled.div`
   flex-flow: row wrap;
   width: 100vw;
   height: 5vh;
-`
-const DevOutput = styled.div`
-  margin: 1vh 1vw;
-  display: flex;
-  justify-content: center;
-  background-color: transparent;
-  padding 0.5vh 0.5vw;
-  font-size: ${FONT_SIZE};
 `
 
 class ControlPanel extends Component {
@@ -40,14 +33,11 @@ class ControlPanel extends Component {
   render() {
     return (
       <Panel>
-        <Button
-          opacity={1}
-          editing={false}
-          key="menu"
-          onClick={() => update(`/`)}>
-          menu
-        </Button>
-        <ParentButton selected={this.props.selected} />
+        <MenuButton history={this.props.history} />
+        <ParentButton
+          history={this.props.history}
+          selected={this.props.selected}
+        />
         <EditButton
           editing={this.props.editing}
           personId={this.props.personId}
@@ -62,11 +52,6 @@ class ControlPanel extends Component {
           maxZoomY={this.props.maxZoomY}
           onZoomChange={this.props.onZoomChange}
         />
-
-        <DevOutput>
-          <span>{history.read()}</span>
-        </DevOutput>
-
         <input
           value={this.state.personId}
           onChange={({ target }) => {
@@ -86,7 +71,18 @@ class ControlPanel extends Component {
     )
   }
 }
-
-// propTypes can be found in ../button
-
+ControlPanel.propTypes = {
+  personId: PropTypes.string.isRequired,
+  history: PropTypes.object.isRequired,
+  selected: PropTypes.shape(node).isRequired,
+  editing: PropTypes.bool.isRequired,
+  person: PropTypes.instanceOf(require('../../../person')).isRequired,
+  baseZoom: PropTypes.number.isRequired,
+  zoom: PropTypes.object.isRequired,
+  maxZoomX: PropTypes.number.isRequired,
+  maxZoomY: PropTypes.number.isRequired,
+  onEditChange: PropTypes.func.isRequired,
+  onZoomChange: PropTypes.func.isRequired,
+  onSaveAs: PropTypes.func.isRequired,
+}
 module.exports = ControlPanel

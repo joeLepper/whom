@@ -1,27 +1,26 @@
 const React = require('react')
 const { Component } = React
+const PropTypes = require('prop-types')
 
-const { back } = require('../../../route')
 const Button = require('../../button')
 
 class ParentButton extends Component {
+  constructor() {
+    super(...arguments)
+    this.handleBackClick = this.handleBackClick.bind(this)
+  }
+  handleBackClick() {
+    this.props.history.goBack()
+  }
   render() {
-    const { parent } = this.props.selected
-    if (parent === null || this.props.editing) return null
     return (
-      <Button
-        editing={false}
-        opacity="1"
-        onClick={(e) => {
-          e.preventDefault()
-          back()
-        }}>
+      <Button editing={false} opacity="1" onClick={this.handleBackClick}>
         {'<--'}
       </Button>
     )
   }
 }
-
-// propTypes can be found in ../button
-
+ParentButton.propTypes = {
+  history: PropTypes.object.isRequired,
+}
 module.exports = ParentButton

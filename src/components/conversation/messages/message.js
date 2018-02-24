@@ -18,12 +18,10 @@ const MessageContainer = styled.li`
   justify-content: center;
   transition: opacity 0.5s;
 `
-
 const P = styled.p`
   margin: auto;
   font-size: ${FONT_SIZE};
 `
-
 const Input = styled.input`
   margin: auto;
   border: none;
@@ -33,14 +31,12 @@ const Input = styled.input`
   color: #f09;
   font-size: ${FONT_SIZE};
 `
-
 const Div = styled.div`
   margin: auto;
   width: 100%;
   display: flex;
   flex-flow: row wrap;
 `
-
 class Message extends Component {
   constructor() {
     super(...arguments)
@@ -56,7 +52,7 @@ class Message extends Component {
         <Div key={`${this.props.nodeId}.${this.props.messageIndex}`}>
           <Button
             editing={false}
-            opacity={this.props.opacity}
+            opacity={1}
             onClick={this.handleMessageDelete}
             key="new button">
             delete
@@ -84,13 +80,11 @@ class Message extends Component {
     )
   }
 }
-
 Message.propTypes = {
   editing: PropTypes.bool.isRequired,
   children: PropTypes.string.isRequired,
   messageIndex: PropTypes.number.isRequired,
   nodeId: guid.isRequired,
-  opacity: PropTypes.number.isRequired,
   onChange: PropTypes.func.isRequired,
   onClick: PropTypes.func.isRequired,
   onMessageDelete: PropTypes.func.isRequired,

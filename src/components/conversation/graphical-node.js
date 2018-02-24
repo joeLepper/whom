@@ -4,8 +4,6 @@ const styled = require('styled-components').default
 const PropTypes = require('prop-types')
 const { guid, node } = require('../../validators')
 
-// const route = require('../../route')
-
 const Circle = styled.circle`
   fill: #f09;
 `
@@ -34,9 +32,10 @@ class GraphicalNode extends Component {
           if (this.props.dragging) {
             const { dragSource, node } = this.props
 
-            // click!
+            /* eslint-disable curly */
             if (node.data.id === dragSource.id) {
               this.props.onDragCancel()
+              /* eslint-enable curly */
 
               // TODO: personId is undefined
               // so that's not awesome. need better insight into prop types.
