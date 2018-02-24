@@ -2,6 +2,7 @@ const React = require('react')
 const { Component } = React
 const { ipcRenderer } = require('electron')
 const styled = require('styled-components').default
+const PropTypes = require('prop-types')
 const Button = require('../button')
 const PersonButton = require('./person-button')
 
@@ -59,5 +60,8 @@ class Menu extends Component {
     )
     return <MenuContainer>{peopleButtons}</MenuContainer>
   }
+}
+Menu.propTypes = {
+  history: PropTypes.object.isRequired,
 }
 module.exports = Menu

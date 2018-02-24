@@ -2,6 +2,8 @@ const React = require('react')
 const { Component } = React
 
 const styled = require('styled-components').default
+const PropTypes = require('prop-types')
+const { node } = require('../../../validators')
 
 const Button = require('../../button')
 const EditButton = require('./edit-button')
@@ -10,22 +12,12 @@ const ZoomButton = require('./zoom-button')
 const ParentButton = require('./parent-button')
 // const ResetButton = require('./reset-button')
 
-const FONT_SIZE = '1.5em'
-
 const Panel = styled.div`
   position: absolute;
   display: flex;
   flex-flow: row wrap;
   width: 100vw;
   height: 5vh;
-`
-const DevOutput = styled.div`
-  margin: 1vh 1vw;
-  display: flex;
-  justify-content: center;
-  background-color: transparent;
-  padding 0.5vh 0.5vw;
-  font-size: ${FONT_SIZE};
 `
 
 class ControlPanel extends Component {
@@ -79,7 +71,18 @@ class ControlPanel extends Component {
     )
   }
 }
-
-// propTypes can be found in ../button
-
+ControlPanel.propTypes = {
+  personId: PropTypes.string.isRequired,
+  history: PropTypes.object.isRequired,
+  selected: PropTypes.shape(node).isRequired,
+  editing: PropTypes.bool.isRequired,
+  person: PropTypes.instanceOf(require('../../../person')).isRequired,
+  baseZoom: PropTypes.number.isRequired,
+  zoom: PropTypes.object.isRequired,
+  maxZoomX: PropTypes.number.isRequired,
+  maxZoomY: PropTypes.number.isRequired,
+  onEditChange: PropTypes.func.isRequired,
+  onZoomChange: PropTypes.func.isRequired,
+  onSaveAs: PropTypes.func.isRequired,
+}
 module.exports = ControlPanel

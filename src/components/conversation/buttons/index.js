@@ -3,7 +3,10 @@ const { Component } = React
 const styled = require('styled-components').default
 const Guid = require('guid')
 const qs = require('qs')
+const PropTypes = require('prop-types')
+
 const Button = require('../../button')
+const { node } = require('../../../validators')
 
 const ButtonsContainer = styled.div`
   display: flex;
@@ -49,7 +52,6 @@ class Buttons extends Component {
       .map((child, i) => {
         return (
           <Button
-            zoomed={this.props.zoomed}
             nodeId={child.data.id}
             editing={this.props.editing}
             opacity={this.props.opacity}
@@ -70,7 +72,6 @@ class Buttons extends Component {
           .map((link, i) => {
             return (
               <Button
-                zoomed={this.props.zoomed}
                 nodeId={link.childId}
                 editing={this.props.editing}
                 opacity={this.props.opacity}
@@ -97,7 +98,16 @@ class Buttons extends Component {
     return <ButtonsContainer>{buttons}</ButtonsContainer>
   }
 }
-
-// propTypes can be found in ../button
-
+Buttons.propTypes = {
+  node: PropTypes.shape(node).isRequired,
+  onButtonAdd: PropTypes.func.isRequired,
+  editing: PropTypes.bool.isRequired,
+  personId: PropTypes.string.isRequired,
+  location: PropTypes.object.isRequired,
+  history: PropTypes.object.isRequired,
+  additionalLinks: PropTypes.array.isRequired,
+  opacity: PropTypes.number.isRequired,
+  onButtonChange: PropTypes.func.isRequired,
+  onButtonDelete: PropTypes.func.isRequired,
+}
 module.exports = Buttons

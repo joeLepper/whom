@@ -1,9 +1,9 @@
 const React = require('react')
 const { Component } = React
+const PropTypes = require('prop-types')
 
 const { Redirect } = require('react-router-dom')
 const { ipcRenderer } = require('electron')
-const styled = require('styled-components').default
 const qs = require('qs')
 
 const Person = require('../../person')
@@ -11,19 +11,9 @@ const ConversationContainer = require('./container')
 
 const BASE_ZOOM = 0.25
 
-const Container = styled.div`
-  position: relative;
-  display: flex;
-  flex-flow: row wrap;
-  width: 100vw;
-  height: 100vh;
-  overflow: none;
-`
-
 class Conversation extends Component {
   constructor(props) {
     super(...arguments)
-    console.log(props)
     this.renderRedirect = this.renderRedirect.bind(this)
     this.state = {
       loading: true,
@@ -88,11 +78,16 @@ class Conversation extends Component {
     return <Redirect from="/" to={to} />
   }
   render() {
+    // eslint-disable-next-line no-console
     console.log(this.props.location)
     if (this.state.loading) return <h1>'LOADING'</h1>
     else if (this.props.match.params.nodeId) return this.renderConversation()
     return this.renderRedirect()
   }
 }
-
+Conversation.propTypes = {
+  location: PropTypes.object.isRequired,
+  match: PropTypes.object.isRequired,
+  history: PropTypes.object.isRequired,
+}
 module.exports = Conversation

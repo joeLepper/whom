@@ -2,7 +2,6 @@ const React = require('react')
 const { Component } = React
 
 const { Motion, spring } = require('react-motion')
-const { Switch, Route } = require('react-router-dom')
 const { ipcRenderer } = require('electron')
 const PropTypes = require('prop-types')
 
@@ -26,13 +25,10 @@ class ConversationContainer extends Component {
     ipcRenderer.send('person--load', id)
   }
   handleButtonDelete(nodeId) {
-    if (
-      window.confirm(
-        'Deleting this button will delete its associated page. Are you sure?',
-      )
-    ) {
-      this.props.person.buttonDelete(nodeId)
-    }
+    const confirmWarning =
+      'Deleting this button will delete its associated page. Are you sure?'
+    // eslint-disable-next-line no-alert
+    if (window.confirm(confirmWarning)) this.props.person.buttonDelete(nodeId)
   }
   handleEditChange({ editing }) {
     this.setState({ editing })
@@ -66,7 +62,6 @@ class ConversationContainer extends Component {
               y={y}
               w={w}
               h={h}
-              onView={this.props.onView}
               onLinkAdd={this.props.person.linkAdd}
               onButtonAdd={this.props.person.buttonAdd}
               onButtonChange={this.props.person.buttonChange}
@@ -104,7 +99,6 @@ class ConversationContainer extends Component {
           maxZoomX={this.props.person.data.maxZoomX}
           maxZoomY={this.props.person.data.maxZoomY}
           onSaveAs={this.handleSaveAs}
-          onReset={this.props.onReset}
           onZoomChange={({ zoom }) => {
             this.setState({ zoom })
           }}
@@ -114,11 +108,13 @@ class ConversationContainer extends Component {
     )
   }
 }
-
 ConversationContainer.propTypes = {
   person: PropTypes.instanceOf(require('../../person')).isRequired,
   personId: PropTypes.string.isRequired,
   selectedId: guid.isRequired,
   baseZoom: PropTypes.number.isRequired,
+  location: PropTypes.object.isRequired,
+  match: PropTypes.object.isRequired,
+  history: PropTypes.object.isRequired,
 }
 module.exports = ConversationContainer

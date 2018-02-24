@@ -1,6 +1,7 @@
 const React = require('react')
 const { Component } = React
 const styled = require('styled-components').default
+const PropTypes = require('prop-types')
 
 const PINK = '#f09'
 const BLACK = '#000'
@@ -113,5 +114,11 @@ class ZoomSlider extends Component {
       </Div>
     )
   }
+}
+ZoomSlider.propTypes = {
+  zoomX: PropTypes.number.isRequired,
+  baseZoom: PropTypes.number.isRequired,
+  maxZoomX: PropTypes.number.isRequired,
+  onZoomChange: PropTypes.func.isRequired,
 }
 module.exports = ZoomSlider

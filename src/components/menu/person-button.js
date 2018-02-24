@@ -1,7 +1,6 @@
 const React = require('react')
 const { Component } = React
 const PropTypes = require('prop-types')
-const { guid } = require('../../validators')
 
 const Button = require('../button')
 
@@ -30,5 +29,6 @@ class PersonButton extends Component {
 }
 PersonButton.propTypes = {
   personId: PropTypes.string.isRequired,
+  history: PropTypes.object.isRequired,
 }
 module.exports = PersonButton

@@ -56,11 +56,11 @@ class Messages extends Component {
                   if (
                     this.props.index ===
                     this.props.node.data.messages.length - 1
-                  ) {
+                  )
                     this.props.onMessageAdd(this.props.node.data.id, () => {
                       this.props.advanceMessage()
                     })
-                  } else this.props.advanceMessage()
+                  else this.props.advanceMessage()
                 }
               : this.props.advanceMessage
           }>

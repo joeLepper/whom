@@ -58,9 +58,8 @@ class ConversationNode extends Component {
   advanceMessage() {
     const proposedIdx = this.getCurrentIndex() + 1
     this.setState({ opacity: 0 }, () => {
-      if (proposedIdx < this.props.node.data.messages.length) {
-        this.updateIndex(proposedIdx)
-      }
+      const messagesLength = this.props.node.data.messages.length
+      if (proposedIdx < messagesLength) this.updateIndex(proposedIdx)
     })
     setTimeout(() => this.setState({ opacity: 1 }), 500)
   }
@@ -72,6 +71,7 @@ class ConversationNode extends Component {
     setTimeout(() => this.setState({ opacity: 1 }, cb), 500)
   }
   handleMessageDelete(nodeId, messageIndex) {
+    // eslint-disable-next-line no-alert
     if (window.confirm('Delete this message?'))
       this.reverseMessage(() => {
         this.props.onMessageDelete(nodeId, messageIndex)
@@ -136,6 +136,8 @@ ConversationNode.propTypes = {
   onMessageAdd: PropTypes.func.isRequired,
   onMessageChange: PropTypes.func.isRequired,
   onMessageDelete: PropTypes.func.isRequired,
+  location: PropTypes.object.isRequired,
+  history: PropTypes.object.isRequired,
 }
 
 module.exports = ConversationNode

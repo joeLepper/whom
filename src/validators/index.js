@@ -9,15 +9,14 @@ function chainedGuidChecker(isRequired) {
   return function(props, propName, componentName) {
     const guid = props[propName]
 
-    if (!guid && isRequired) {
+    if (!guid && isRequired)
       return new Error(
         `${propName} was empty. This is a required prop for ${componentName}`,
       )
-    } else if (guid && !Guid.isGuid(guid)) {
+    else if (guid && !Guid.isGuid(guid))
       return new Error(
         `${props[propName]} supplied to ${componentName}, expected a guid.`,
       )
-    }
   }
 }
 

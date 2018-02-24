@@ -1,5 +1,6 @@
 const React = require('react')
 const { Component } = React
+const PropTypes = require('prop-types')
 
 const Button = require('../../button')
 
@@ -23,7 +24,7 @@ class MenuButton extends Component {
     )
   }
 }
-
-// propTypes can be found in ../button
-
+MenuButton.propTypes = {
+  history: PropTypes.object.isRequired,
+}
 module.exports = MenuButton

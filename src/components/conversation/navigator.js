@@ -98,8 +98,6 @@ class Navigator extends Component {
             history={this.props.history}
             zoomRatio={this.props.zoomX}
             editing={this.props.editing}
-            onView={this.props.onView}
-            viewed={this.props.viewed}
             key={`conversation-${i}`}
             match={this.props.match}
             node={n}
@@ -165,7 +163,6 @@ class Navigator extends Component {
     )
   }
 }
-
 Navigator.propTypes = {
   editing: PropTypes.bool.isRequired,
   selectedId: guid.isRequired,
@@ -191,6 +188,8 @@ Navigator.propTypes = {
   onMessageAdd: PropTypes.func.isRequired,
   onMessageChange: PropTypes.func.isRequired,
   onMessageDelete: PropTypes.func.isRequired,
+  location: PropTypes.object.isRequired,
+  match: PropTypes.object.isRequired,
+  history: PropTypes.object.isRequired,
 }
-
 module.exports = Navigator

@@ -32,9 +32,10 @@ class GraphicalNode extends Component {
           if (this.props.dragging) {
             const { dragSource, node } = this.props
 
-            // click!
+            /* eslint-disable curly */
             if (node.data.id === dragSource.id) {
               this.props.onDragCancel()
+              /* eslint-enable curly */
 
               // TODO: personId is undefined
               // so that's not awesome. need better insight into prop types.
