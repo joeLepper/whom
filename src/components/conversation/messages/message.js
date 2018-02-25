@@ -38,18 +38,36 @@ const Div = styled.div`
   flex-flow: row wrap;
 `
 class Message extends Component {
-  constructor() {
+  constructor(props) {
     super(...arguments)
     this.renderDisplayMessage = this.renderDisplayMessage.bind(this)
     this.handleMessageDelete = this.handleMessageDelete.bind(this)
+    this.handleChange = this.handleChange.bind(this)
+    this.state = { value: props.children }
   }
   handleMessageDelete() {
     this.props.onMessageDelete(this.props.nodeId, this.props.messageIndex)
   }
+  handleChange(e) {
+    this.setState({ value: e.currentTarget.value })
+  }
+  componentWillReceiveProps(nextProps) {
+    const { children, editing } = this.props
+    if (nextProps.children !== children)
+      this.setState({
+        value: nextProps.children,
+      })
+    if (!nextProps.editing && editing)
+      this.props.onChange(
+        this.props.nodeId,
+        this.props.messageIndex,
+        this.state.value,
+      )
+  }
   renderDisplayMessage() {
     if (this.props.editing)
       return (
-        <Div key={`${this.props.nodeId}.${this.props.messageIndex}`}>
+        <Div key={`div-${this.props.nodeId}.${this.props.messageIndex}`}>
           <Button
             editing={false}
             opacity={1}
@@ -58,19 +76,14 @@ class Message extends Component {
             delete
           </Button>
           <Input
+            size={this.state.value.length}
             key={`${this.props.nodeId}.${this.props.messageIndex}`}
-            value={this.props.children}
-            onChange={(e) => {
-              this.props.onChange(
-                this.props.nodeId,
-                this.props.messageIndex,
-                e.currentTarget.value,
-              )
-            }}
+            value={this.state.value}
+            onChange={this.handleChange}
           />
         </Div>
       )
-    return <P>{this.props.children}</P>
+    return <P>{this.state.value}</P>
   }
   render() {
     return (

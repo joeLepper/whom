@@ -40,31 +40,44 @@ const Input = styled.input`
 `
 
 class Button extends Component {
-  constructor() {
+  constructor(props) {
     super(...arguments)
     this.handleClick = this.handleClick.bind(this)
+    this.handleChange = this.handleChange.bind(this)
     this.handleButtonDelete = this.handleButtonDelete.bind(this)
     this.renderDisplayMessage = this.renderDisplayMessage.bind(this)
+    this.state = { value: props.children }
   }
   handleClick(e) {
     e.preventDefault()
     if (!this.props.editing) this.props.onClick(e)
   }
+  handleButtonDelete() {
+    this.props.onButtonDelete(this.props.nodeId)
+  }
+  handleChange(e) {
+    this.setState({ value: e.currentTarget.value })
+  }
+  componentWillReceiveProps(nextProps) {
+    const { children, editing } = this.props
+    if (nextProps.children !== children)
+      this.setState({
+        value: nextProps.children,
+      })
+    if (!nextProps.editing && editing)
+      this.props.onChange(this.props.nodeId, this.state.value)
+  }
   renderDisplayMessage() {
     if (this.props.editing)
       return (
         <Input
-          size={this.props.children.length}
-          value={this.props.children}
-          onChange={(e) => {
-            this.props.onChange(this.props.nodeId, e.currentTarget.value)
-          }}
+          key={this.props.nodeId}
+          size={this.state.value.length}
+          value={this.state.value}
+          onChange={this.handleChange}
         />
       )
-    return <A>{this.props.children}</A>
-  }
-  handleButtonDelete() {
-    this.props.onButtonDelete(this.props.nodeId)
+    return <A>{this.state.value}</A>
   }
   render() {
     const containerStyle = {
