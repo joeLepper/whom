@@ -32,18 +32,8 @@ class GraphicalNode extends Component {
           if (this.props.dragging) {
             const { dragSource, node } = this.props
 
-            /* eslint-disable curly */
-            if (node.data.id === dragSource.id) {
-              this.props.onDragCancel()
-              /* eslint-enable curly */
-
-              // TODO: personId is undefined
-              // so that's not awesome. need better insight into prop types.
-              // this is just the D&D code. So I'm going to leave commented out for now - JL
-
-              // const path = `/person/${personId}/node/${this.props.node.data.id}`
-              // route.update(path)
-            } else {
+            if (node.data.id === dragSource.id) this.props.onDragCancel()
+            else {
               const dragState = {
                 line: {
                   source: dragSource,
@@ -54,7 +44,6 @@ class GraphicalNode extends Component {
                   },
                 },
               }
-
               this.props.onDragEnd(dragState)
             }
           }

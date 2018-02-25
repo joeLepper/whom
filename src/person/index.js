@@ -130,6 +130,7 @@ class Person {
       parentId,
       childId,
     })
+    this.save(this.id)
   }
   messageAdd(nodeId) {
     this.raw.forEach((node, i) => {

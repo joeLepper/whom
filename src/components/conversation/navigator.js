@@ -27,7 +27,6 @@ class Navigator extends Component {
     }
   }
   handleDragEnd(dragState) {
-    dragState.dragging = false
     this.setState({ dragging: false, line: NULL_LINE })
     this.props.onLinkAdd(dragState.line.source.id, dragState.line.target.id)
   }
@@ -134,7 +133,7 @@ class Navigator extends Component {
         <Path d={this.generateLink(this.state.line)} key={'why-hello-there'} />,
       )
 
-    const storylineMode = false // zoomX <= 1 && this.props.editing
+    const storylineMode = zoomX <= 1 && this.props.editing
 
     return (
       <svg
