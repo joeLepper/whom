@@ -8,7 +8,7 @@
     "start": "electron-forge start",
     "package": "electron-forge package",
     "make": "electron-forge make",
-    "publish": "electron-forge publish --auth-token=$TRAVIS_RELEASE_TOKEN",
+    "publish": "electron-forge publish",
     "lint": "eslint --cache --color --ext .jsx,.js src",
     "precommit": "pretty-quick --staged"
   },
@@ -31,8 +31,8 @@
       "electronInstallerDebian": {},
       "electronInstallerRedhat": {},
       "github_repository": {
-        "owner": "",
-        "name": ""
+        "owner": "joeLepper",
+        "name": "whom"
       },
       "windowsStoreConfig": {
         "packageName": "",
