@@ -27,10 +27,15 @@ class Messages extends Component {
     return (
       <MessagesContainer
         key={`${this.props.node.data.id}.${this.props.index}`}
-        style={{
-          opacity: this.props.opacity,
-        }}>
-        <Li onClick={this.props.editing ? () => {} : this.props.reverseMessage}>
+        style={{ opacity: this.props.opacity }}>
+        <Li
+          onClick={
+            this.props.editing
+              ? () => {}
+              : () => {
+                  this.props.reverseMessage(undefined)
+                }
+          }>
           <a>{'<'}</a>
         </Li>
         <Message
@@ -51,11 +56,11 @@ class Messages extends Component {
                   if (
                     this.props.index ===
                     this.props.node.data.messages.length - 1
-                  ) {
+                  )
                     this.props.onMessageAdd(this.props.node.data.id, () => {
                       this.props.advanceMessage()
                     })
-                  } else this.props.advanceMessage()
+                  else this.props.advanceMessage()
                 }
               : this.props.advanceMessage
           }>

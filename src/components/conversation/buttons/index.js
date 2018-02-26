@@ -2,9 +2,11 @@ const React = require('react')
 const { Component } = React
 const styled = require('styled-components').default
 const Guid = require('guid')
-const route = require('../../../route')
+const qs = require('qs')
+const PropTypes = require('prop-types')
 
 const Button = require('../../button')
+const { node } = require('../../../validators')
 
 const ButtonsContainer = styled.div`
   display: flex;
@@ -19,11 +21,25 @@ class Buttons extends Component {
   constructor() {
     super(...arguments)
     this.handleButtonAdd = this.handleButtonAdd.bind(this)
+    this.handleButtonClick = this.handleButtonClick.bind(this)
   }
   handleButtonAdd() {
     const newNodeId = Guid.raw()
     const currentNodeId = this.props.node.data.id
     this.props.onButtonAdd(newNodeId, currentNodeId)
+  }
+  handleButtonClick(child) {
+    return (e) => {
+      if (!this.props.editing) {
+        const { personId } = this.props
+        const search = qs.parse(this.props.location.search.substring(1))
+        const to = {
+          pathname: `/person/${personId}/node/${child.data.id}`,
+          search: `?${qs.stringify(search, { encode: false })}`,
+        }
+        this.props.history.push(to)
+      }
+    }
   }
   render() {
     if (
@@ -36,7 +52,6 @@ class Buttons extends Component {
       .map((child, i) => {
         return (
           <Button
-            zoomed={this.props.zoomed}
             nodeId={child.data.id}
             editing={this.props.editing}
             opacity={this.props.opacity}
@@ -44,14 +59,7 @@ class Buttons extends Component {
             key={`natural-child-${i}`}
             className="natural-child"
             onButtonDelete={this.props.onButtonDelete}
-            onClick={(e) => {
-              if (!this.props.editing) {
-                const path = `/person/${this.props.personId}/node/${
-                  child.data.id
-                }`
-                route.update(path)
-              }
-            }}>
+            onClick={this.handleButtonClick(child)}>
             {child.data.optionText}
           </Button>
         )
@@ -64,7 +72,6 @@ class Buttons extends Component {
           .map((link, i) => {
             return (
               <Button
-                zoomed={this.props.zoomed}
                 nodeId={link.childId}
                 editing={this.props.editing}
                 opacity={this.props.opacity}
@@ -72,14 +79,7 @@ class Buttons extends Component {
                 key={`adopted-child-${i}`}
                 className="adopted-child"
                 onButtonDelete={this.props.onButtonDelete}
-                onClick={(e) => {
-                  if (!this.props.editing) {
-                    const path = `/person/${this.props.personId}/node/${
-                      link.target.data.id
-                    }`
-                    route.update(path)
-                  }
-                }}>
+                onClick={this.handleButtonClick(link.target)}>
                 {link.optionText}
               </Button>
             )
@@ -98,7 +98,16 @@ class Buttons extends Component {
     return <ButtonsContainer>{buttons}</ButtonsContainer>
   }
 }
-
-// propTypes can be found in ../button
-
+Buttons.propTypes = {
+  node: PropTypes.shape(node).isRequired,
+  onButtonAdd: PropTypes.func.isRequired,
+  editing: PropTypes.bool.isRequired,
+  personId: PropTypes.string.isRequired,
+  location: PropTypes.object.isRequired,
+  history: PropTypes.object.isRequired,
+  additionalLinks: PropTypes.array.isRequired,
+  opacity: PropTypes.number.isRequired,
+  onButtonChange: PropTypes.func.isRequired,
+  onButtonDelete: PropTypes.func.isRequired,
+}
 module.exports = Buttons

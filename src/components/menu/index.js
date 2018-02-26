@@ -2,6 +2,7 @@ const React = require('react')
 const { Component } = React
 const { ipcRenderer } = require('electron')
 const styled = require('styled-components').default
+const PropTypes = require('prop-types')
 const Button = require('../button')
 const PersonButton = require('./person-button')
 
@@ -13,14 +14,40 @@ const MenuContainer = styled.ul`
 `
 
 class Menu extends Component {
+  constructor() {
+    super(...arguments)
+    this.renderPersonButton = this.renderPersonButton.bind(this)
+    this.state = {
+      people: [],
+      loading: true,
+    }
+  }
   createPerson() {
     ipcRenderer.send('person--create', 'fresh')
   }
+  loadPeople() {
+    ipcRenderer.send('people--load')
+  }
   renderPersonButton(personId, i) {
-    return <PersonButton key={i} personId={personId} />
+    return (
+      <PersonButton key={i} personId={personId} history={this.props.history} />
+    )
+  }
+  componentDidMount() {
+    this.loadPeople()
+    ipcRenderer.on('people--load:reply', (event, people) => {
+      this.setState({
+        people,
+        loading: false,
+      })
+    })
+    ipcRenderer.on('person--create:reply', (event, personId) => {
+      this.props.history.push(`/person/${personId}`)
+    })
   }
   render() {
-    const { people } = this.props
+    if (this.state.loading) return <h1>Loading</h1>
+    const { people } = this.state
     const peopleButtons = people.map(this.renderPersonButton)
     peopleButtons.push(
       <Button
@@ -31,8 +58,10 @@ class Menu extends Component {
         freshen up
       </Button>,
     )
-
     return <MenuContainer>{peopleButtons}</MenuContainer>
   }
+}
+Menu.propTypes = {
+  history: PropTypes.object.isRequired,
 }
 module.exports = Menu

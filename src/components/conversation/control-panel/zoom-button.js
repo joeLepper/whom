@@ -1,5 +1,6 @@
 const React = require('react')
 const { Component } = React
+const PropTypes = require('prop-types')
 
 const Button = require('../../button')
 
@@ -22,7 +23,11 @@ class ZoomButton extends Component {
     )
   }
 }
-
-// propTypes can be found in ../button
-
+ZoomButton.propTypes = {
+  zoomX: PropTypes.number.isRequired,
+  baseZoom: PropTypes.number.isRequired,
+  maxZoomX: PropTypes.number.isRequired,
+  maxZoomY: PropTypes.number.isRequired,
+  onZoomChange: PropTypes.func.isRequired,
+}
 module.exports = ZoomButton

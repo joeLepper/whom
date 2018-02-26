@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 import { ipcMain } from 'electron'
 import { readdir, readFile, writeFile, unlink } from 'fs'
 import { join, basename, extname } from 'path'

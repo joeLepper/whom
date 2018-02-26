@@ -12,7 +12,7 @@ const NULL_LINE = {
   target: { x: 0, y: 0 },
 }
 
-class Screen extends Component {
+class Navigator extends Component {
   constructor() {
     super(...arguments)
 
@@ -27,7 +27,6 @@ class Screen extends Component {
     }
   }
   handleDragEnd(dragState) {
-    dragState.dragging = false
     this.setState({ dragging: false, line: NULL_LINE })
     this.props.onLinkAdd(dragState.line.source.id, dragState.line.target.id)
   }
@@ -94,10 +93,12 @@ class Screen extends Component {
             onMessageAdd={this.props.onMessageAdd}
             onButtonAdd={this.props.onButtonAdd}
             personId={this.props.personId}
+            location={this.props.location}
+            history={this.props.history}
+            zoomRatio={this.props.zoomX}
             editing={this.props.editing}
             key={`conversation-${i}`}
-            zoomX={this.props.zoomX}
-            zoomY={this.props.zoomY}
+            match={this.props.match}
             node={n}
             w={w}
             h={h}
@@ -132,7 +133,7 @@ class Screen extends Component {
         <Path d={this.generateLink(this.state.line)} key={'why-hello-there'} />,
       )
 
-    const storylineMode = false // zoomX <= 1 && this.props.editing
+    const storylineMode = zoomX <= 1 && this.props.editing
 
     return (
       <svg
@@ -161,8 +162,7 @@ class Screen extends Component {
     )
   }
 }
-
-Screen.propTypes = {
+Navigator.propTypes = {
   editing: PropTypes.bool.isRequired,
   selectedId: guid.isRequired,
   personId: PropTypes.string.isRequired,
@@ -187,6 +187,8 @@ Screen.propTypes = {
   onMessageAdd: PropTypes.func.isRequired,
   onMessageChange: PropTypes.func.isRequired,
   onMessageDelete: PropTypes.func.isRequired,
+  location: PropTypes.object.isRequired,
+  match: PropTypes.object.isRequired,
+  history: PropTypes.object.isRequired,
 }
-
-module.exports = Screen
+module.exports = Navigator
