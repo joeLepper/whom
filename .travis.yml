@@ -5,6 +5,9 @@ os:
 dist: trusty
 osx_image: xcode8.3
 sudo: false
+env:
+  global:
+    secure: S7gOmQ/mfh/A2rTPM1mEbJ1oDVKyYVbhz+Hy1o8ZVswNkcxUCWdr9oEzWPIciaEQHiMHYvy2mahp6CFwxPjW5G6ubW0oWgAeMLPc6tTxwrRWXeoyow/PS8gZR3IcWdr279YMRDU9fJss98+rhiuQ06lOf1tYbavnwTgC+jdVXYZbA62FxkhXs6DG0wdWpzJN5y/Hh4A/cJvFJAdHOC6ZiJoY3CMAzlq6Z8e3hfAda+K00MBtnuWz6trKGR+mUPO5npe+phZ8d/ENKfOdQ+mLv7wR9lHZ2OhtbrefW8c7vGigqZm1g8EmkI3TG7/aolCwORgjROi2jBMDh7tQ9GNNmvs69T0+d30t1EpU2TIrfIgIO/q/Hz+PlyJ0EO1JLt+dE0FV2Ql2M8bbXscbz/dP/e2brbqYy1eEbj1+a+XlS+V+nrEfBIm/lwt+eHXyIwzzWacP+RCgiwDkWZcgsuA3jK3mCs8kUm/tZj0dK2iQmf0kWxV5z9oxuoSwdHIHovCBTJh2HtYnCXTX+GCA/BEpEkAG8l3ylbE/CFUsczH5JVg6sh4hJ7mNkCecqJuSJ5h6DAWTTuyiWvV3ovedr6mC1oLOWFyDMBZGlKQ8Rf72f5ccE2c1HrrMh8nZwL0t6SdrL1or1kKqGyznMm/byaT54f1DRPJLVqbabLDcTJbglXw=
 
 cache:
   directories:
