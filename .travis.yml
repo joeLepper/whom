@@ -5,6 +5,9 @@ os:
 dist: trusty
 osx_image: xcode8.3
 sudo: false
+env:
+  global:
+    secure: Kdac7ud8RKi3Cj2zDvGMvEXQHIEpxhIStWAVR50NrQnsOWijHUZ7cJY1DStU//3gABglLU7Tp4nRS+zJ9jHVR7P7ZhOpBkCqHC/Q2tae7DoK9mMKH7mJRLyi42FmIMvx1/q57Vs7mDEA4bMqJAAXp28M227AD51msEldKh5jNO99cXY7c9Ubo/JQ4QNf8HSIj8wGRirnoKKw3n6byql3acrllCgyymjsPdDmsxGYjHXetr7VsXEjT6hHs0JkmmHwYmrt2r11UP1MwwLZPOBx07GlPe5fuNrFCrO2EywsVfrQgxmAs3szXJUyQNRxnmoSSyaZPGvMmBnTJ4OpKz85RwsYfh4XWu19/a2excFB8FUcZAKzLFOWfk/1+GUMre1RN00ID/kFkv/8RQtH0TPLOjsoO7qhlEZHWzkKQ1F0F2oBnKNYSe2v8CGbDPyj3BPW76ql79TwS6T2mE7FZ6tHanHzQZjlYlmizFlK71kBDH0Jzb/Eb/vOsMNyP4F55BpGAKfZpjEz03jYSw7U4Oqvr7z4ATOts0oKbEO0UQ2G5EEJbqbQXDREdr2n/9wll4pKIUWEQDr+HN/XtIIxN6E9y2gUSNqwCvjsD+UYwh3MC8soN25/orlLM0oh1o/PWctT316PWpxzR9aT3lUWnONAebtT004cTvNT/qcJyj1sVFI=
 
 cache:
   directories:
@@ -26,6 +29,7 @@ install:
 - npm install
 
 script:
+- echo $HELLO
 - npm run lint
 - if test -z "$TRAVIS_TAG"; then npm run make; fi
 after_success: if test -n "$TRAVIS_TAG"; then npm run publish; fi
