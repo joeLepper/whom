@@ -32,4 +32,6 @@ script:
 - echo $TRAVIS_RELEASE_TAG
 - npm run lint
 - if test -z "$TRAVIS_TAG"; then npm run make; fi
-after_success: if test -n "$TRAVIS_TAG"; then npm run publish; fi; echo "$TRAVIS_TAG"
+after_success:
+- echo $TRAVIS_TAG
+- if test -n "$TRAVIS_TAG"; then npm run publish; fi;
