@@ -3,6 +3,7 @@ platform:
 environment:
   nodejs_version: "9"
 deploy:
+  provider: GitHub
   description: 'Windows release'
   auth_token:
     secure: p6WA6L9fcY8ciSDi2RM8W/e1Knq693dnoaQX1vHb+21k+5glTH3SrFUgdfxpI5U4
