@@ -2,7 +2,7 @@ const React = require('react')
 const { Component } = React
 const PropTypes = require('prop-types')
 
-const Button = require('../../button')
+const Button = require('../button')
 
 class ZoomButton extends Component {
   render() {

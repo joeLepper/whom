@@ -2,9 +2,7 @@ import { app, BrowserWindow } from 'electron'
 
 require('electron-reload')(`${__dirname}/**/*.{css,js}`)
 
-require('./renderer-events')
-
-let mainWindow
+let mainWindow = null
 
 const createWindow = async () => {
   mainWindow = new BrowserWindow({ fullscreen: true })

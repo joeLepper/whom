@@ -4,7 +4,7 @@
     "comma-dangle": [1, "always-multiline"],
     "react/prop-types": [1],
     "curly": [1, "multi"],
-    "no-console": [2],
+    "no-console": [2, { "allow": ["error"] }],
     "no-debugger": [2],
     "no-alert": [2]
   }

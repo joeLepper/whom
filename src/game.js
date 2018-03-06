@@ -3,7 +3,7 @@ const { Component } = React
 const styled = require('styled-components').default
 const { HashRouter, Route, Switch } = require('react-router-dom')
 
-const ConversationContainer = require('./components/conversation')
+const Book = require('./components/book')
 const Menu = require('./components/menu')
 
 const GameContainer = styled.div`
@@ -23,14 +23,8 @@ export default class Game extends Component {
         <GameContainer>
           <Switch>
             <Route exact path="/" component={Menu} />
-            <Route
-              path={'/person/:personId/node/:nodeId'}
-              component={ConversationContainer}
-            />
-            <Route
-              path={'/person/:personId'}
-              component={ConversationContainer}
-            />
+            <Route path={'/story/:storyId/node/:nodeId'} component={Book} />
+            <Route path={'/story/:storyId'} component={Book} />
           </Switch>
         </GameContainer>
       </HashRouter>

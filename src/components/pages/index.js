@@ -2,17 +2,15 @@ const React = require('react')
 const { Component } = React
 
 const { Motion, spring } = require('react-motion')
-const { ipcRenderer } = require('electron')
 const PropTypes = require('prop-types')
 
-const Navigator = require('./navigator')
-const ControlPanel = require('./control-panel')
+const Page = require('../page')
+const ControlPanel = require('../control-panel')
 const { guid } = require('../../validators')
 
-class ConversationContainer extends Component {
+class Pages extends Component {
   constructor({ baseZoom }) {
     super(...arguments)
-    this.handleSaveAs = this.handleSaveAs.bind(this)
     this.handleEditChange = this.handleEditChange.bind(this)
     this.handleButtonDelete = this.handleButtonDelete.bind(this)
     this.state = {
@@ -20,15 +18,11 @@ class ConversationContainer extends Component {
       zoom: { x: baseZoom, y: baseZoom },
     }
   }
-  handleSaveAs(id) {
-    this.props.person.save(id)
-    ipcRenderer.send('person--load', id)
-  }
   handleButtonDelete(nodeId) {
     const confirmWarning =
       'Deleting this button will delete its associated page. Are you sure?'
     // eslint-disable-next-line no-alert
-    if (window.confirm(confirmWarning)) this.props.person.buttonDelete(nodeId)
+    if (window.confirm(confirmWarning)) this.props.story.buttonDelete(nodeId)
   }
   handleEditChange({ editing }) {
     this.setState({ editing })
@@ -39,8 +33,8 @@ class ConversationContainer extends Component {
         style={{
           x: spring(selected.x),
           y: spring(selected.y),
-          w: spring(this.props.person.dimensions.w),
-          h: spring(this.props.person.dimensions.h),
+          w: spring(this.props.story.dimensions.w),
+          h: spring(this.props.story.dimensions.h),
           zoomX: spring(this.state.zoom.x),
           zoomY: spring(this.state.zoom.y),
           maxZoomX: spring(this.state.maxZoomX),
@@ -48,13 +42,13 @@ class ConversationContainer extends Component {
         }}>
         {({ x, y, w, h, zoomX, zoomY, maxZoomX, maxZoomY }) => {
           return (
-            <Navigator
+            <Page
               match={this.props.match}
               location={this.props.location}
               history={this.props.history}
               editing={this.state.editing}
               selectedId={this.props.selectedId}
-              personId={this.props.personId}
+              storyId={this.props.storyId}
               baseZoom={this.props.baseZoom}
               zoomX={zoomX}
               zoomY={zoomY}
@@ -62,18 +56,18 @@ class ConversationContainer extends Component {
               y={y}
               w={w}
               h={h}
-              onLinkAdd={this.props.person.linkAdd}
-              onButtonAdd={this.props.person.buttonAdd}
-              onButtonChange={this.props.person.buttonChange}
-              onButtonDelete={this.props.person.buttonDelete}
-              onMessageAdd={this.props.person.messageAdd}
-              onMessageChange={this.props.person.messageChange}
-              onMessageDelete={this.props.person.messageDelete}
+              onLinkAdd={this.props.story.linkAdd}
+              onButtonAdd={this.props.story.buttonAdd}
+              onButtonChange={this.props.story.buttonChange}
+              onButtonDelete={this.props.story.buttonDelete}
+              onMessageAdd={this.props.story.messageAdd}
+              onMessageChange={this.props.story.messageChange}
+              onMessageDelete={this.props.story.messageDelete}
               maxZoomX={maxZoomX}
               maxZoomY={maxZoomY}
-              links={this.props.person.data.links}
-              additionalLinks={this.props.person.data.additionalLinks}
-              nodes={this.props.person.data.nodes}
+              links={this.props.story.data.links}
+              additionalLinks={this.props.story.data.additionalLinks}
+              nodes={this.props.story.data.nodes}
             />
           )
         }}
@@ -82,7 +76,7 @@ class ConversationContainer extends Component {
   }
   render() {
     const selected =
-      this.props.person.data.nodes.filter((node) => {
+      this.props.story.data.nodes.filter((node) => {
         return node.id === this.props.selectedId
       })[0] || {}
     return (
@@ -91,14 +85,14 @@ class ConversationContainer extends Component {
           history={this.props.history}
           editing={this.state.editing}
           selected={selected}
-          person={this.props.person}
-          personId={this.props.personId}
+          story={this.props.story}
+          storyId={this.props.storyId}
           onEditChange={this.handleEditChange}
           baseZoom={this.props.baseZoom}
           zoom={this.state.zoom}
-          maxZoomX={this.props.person.data.maxZoomX}
-          maxZoomY={this.props.person.data.maxZoomY}
-          onSaveAs={this.handleSaveAs}
+          maxZoomX={this.props.story.data.maxZoomX}
+          maxZoomY={this.props.story.data.maxZoomY}
+          onSaveAs={this.props.onSaveAs}
           onZoomChange={({ zoom }) => {
             this.setState({ zoom })
           }}
@@ -108,13 +102,14 @@ class ConversationContainer extends Component {
     )
   }
 }
-ConversationContainer.propTypes = {
-  person: PropTypes.instanceOf(require('../../person')).isRequired,
-  personId: PropTypes.string.isRequired,
+Pages.propTypes = {
+  story: PropTypes.instanceOf(require('../../story-manager')).isRequired,
+  storyId: PropTypes.string.isRequired,
   selectedId: guid.isRequired,
   baseZoom: PropTypes.number.isRequired,
   location: PropTypes.object.isRequired,
   match: PropTypes.object.isRequired,
   history: PropTypes.object.isRequired,
+  onSaveAs: PropTypes.func.isRequired,
 }
-module.exports = ConversationContainer
+module.exports = Pages

@@ -21,9 +21,7 @@
     "optionText": "Click me.",
     "id": "6439a03e-955f-ea6f-4763-91f34855b5c9",
     "fontSize": 256,
-    "messages": [
-      "Thank you."
-    ],
+    "messages": ["Thank you."],
     "children": []
   },
   {
@@ -32,9 +30,7 @@
     "optionText": "Don't click me.",
     "id": "3c2578c4-502e-f06d-0bcb-1ad2c0948653",
     "fontSize": 256,
-    "messages": [
-      "I told you not to click me."
-    ],
+    "messages": ["I told you not to click me."],
     "children": []
   }
 ]

@@ -4,31 +4,31 @@ const PropTypes = require('prop-types')
 
 const Button = require('../button')
 
-class PersonButton extends Component {
+class StoryButton extends Component {
   constructor() {
     super(...arguments)
     this.handleClick = this.handleClick.bind(this)
   }
   handleClick() {
-    const to = `/person/${this.props.personId}`
+    const to = `/story/${this.props.storyId}`
     this.props.history.push(to)
   }
   render() {
     return (
       <div>
         <Button
-          key={this.props.personId}
+          key={this.props.storyId}
           opacity={1}
           editing={false}
           onClick={this.handleClick}>
-          {this.props.personId}
+          {this.props.storyId}
         </Button>
       </div>
     )
   }
 }
-PersonButton.propTypes = {
-  personId: PropTypes.string.isRequired,
+StoryButton.propTypes = {
+  storyId: PropTypes.string.isRequired,
   history: PropTypes.object.isRequired,
 }
-module.exports = PersonButton
+module.exports = StoryButton

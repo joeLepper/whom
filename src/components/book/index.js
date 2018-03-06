@@ -3,69 +3,88 @@ const { Component } = React
 const PropTypes = require('prop-types')
 
 const { Redirect } = require('react-router-dom')
-const { ipcRenderer } = require('electron')
 const qs = require('qs')
 
-const Person = require('../../person')
-const ConversationContainer = require('./container')
+const Pages = require('../pages')
+const StoryManager = require('../../story-manager')
+const stories = require('../../stories')
 
 const BASE_ZOOM = 0.25
 
-class Conversation extends Component {
+class Book extends Component {
   constructor(props) {
     super(...arguments)
     this.renderRedirect = this.renderRedirect.bind(this)
+    this.loadStory = this.loadStory.bind(this)
+    this.handleSave = this.handleSave.bind(this)
     this.state = {
       loading: true,
       nodeId: null,
-      personId: props.match.params.personId,
+      story: null,
+      storyId: props.match.params.storyId,
     }
   }
-  loadPerson(personId) {
-    ipcRenderer.send('person--load', personId)
+  handleSave(storyId, story) {
+    stories
+      .save(storyId, story)
+      .then(() => this.loadStory(storyId))
+      .catch((err) => console.error(err))
+  }
+  handleSaveAs(newStoryId) {
+    stories
+      .load(this.state.storyId)
+      .then((storyRecord) => stories.save(newStoryId, storyRecord))
+      .then(() => this.loadStory(newStoryId))
+      .catch((err) => console.error(err))
+  }
+  loadStory(storyId) {
+    stories
+      .load(storyId)
+      .then((storyRecord) => {
+        const story = new StoryManager({
+          storyId,
+          storyRecord,
+          onSave: this.handleSave,
+        })
+        this.setState({ story, loading: false })
+      })
+      .catch((err) => console.error(err))
   }
   loadNode({ params }) {
     this.setState({
       nodeId: params.nodeId,
-      personId: params.personId,
+      storyId: params.storyId,
       loading: false,
     })
   }
   loadRootNode({ params }) {
-    this.loadPerson(params.personId)
+    this.loadStory(params.storyId)
   }
   componentDidMount() {
-    // probably need to confirm that this is still the right approach.
     window.addEventListener('resize', () => {
-      this.loadPerson(this.state.personId)
+      this.loadStory(this.state.storyId)
     })
-    ipcRenderer.on('person--load:reply', (_, personId, p) => {
-      const person = new Person({ person: JSON.parse(p), id: personId })
-      this.setState({ person, loading: false })
-    })
-    ipcRenderer.on('person--save:reply', (event, personId, person) => {
-      this.loadPerson(this.props.match.params.personId)
-    })
-    this.loadPerson(this.props.match.params.personId)
+    this.loadStory(this.props.match.params.storyId)
   }
   renderConversation() {
     return (
-      <ConversationContainer
+      <Pages
+        onSaveAs={this.handleSaveAs}
         baseZoom={BASE_ZOOM}
         match={this.props.match}
-        person={this.state.person}
+        story={this.state.story}
         history={this.props.history}
         location={this.props.location}
-        personId={this.props.match.params.personId}
+        storyId={this.props.match.params.storyId}
         selectedId={this.props.match.params.nodeId}
       />
     )
   }
   renderRedirect() {
-    const { nodes } = this.state.person.data
+    const { nodes } = this.state.story.data
     const { id } = nodes.find(({ parent }) => parent === null)
-    const { personId } = this.state
-    const pathname = `/person/${personId}/node/${id}`
+    const { storyId } = this.state
+    const pathname = `/story/${storyId}/node/${id}`
     let search
     if (this.props.location.search.length) {
       search = qs.parse(this.props.location.search)
@@ -85,9 +104,9 @@ class Conversation extends Component {
     return this.renderRedirect()
   }
 }
-Conversation.propTypes = {
+Book.propTypes = {
   location: PropTypes.object.isRequired,
   match: PropTypes.object.isRequired,
   history: PropTypes.object.isRequired,
 }
-module.exports = Conversation
+module.exports = Book

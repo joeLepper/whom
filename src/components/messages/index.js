@@ -2,7 +2,7 @@ const React = require('react')
 const { Component } = React
 const styled = require('styled-components').default
 const PropTypes = require('prop-types')
-const { node } = require('../../../validators')
+const { node } = require('../../validators')
 
 const Message = require('./message')
 

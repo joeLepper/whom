@@ -2,6 +2,7 @@ const React = require('react')
 const { Component } = React
 const styled = require('styled-components').default
 const PropTypes = require('prop-types')
+
 const { guid, node } = require('../../validators')
 
 const Circle = styled.circle`

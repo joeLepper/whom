@@ -1,13 +1,12 @@
 const d3 = require('d3-hierarchy')
 const Guid = require('guid')
-const { ipcRenderer } = require('electron')
 
-class Person {
-  constructor({ person, id }) {
-    this.raw = person
-    this.id = id
+class StoryManager {
+  constructor({ storyRecord, storyId, onSave }) {
+    this.storyRecord = storyRecord
+    this.storyId = storyId
     this.stratifier = d3.stratify().parentId((d) => {
-      const parents = this.raw.filter(
+      const parents = this.storyRecord.filter(
         (node) =>
           node.children && node.children.some((child) => child === d.id),
       )
@@ -33,22 +32,20 @@ class Person {
     this.messageAdd = this.messageAdd.bind(this)
     this.messageChange = this.messageChange.bind(this)
     this.messageDelete = this.messageDelete.bind(this)
-    this.save = this.save.bind(this)
+    this.save = onSave
 
     this.update()
   }
   parseAdditionalLinks() {
-    this.data.additionalLinks = this.raw
-      .filter(({ type }) => {
-        return type === 'link'
-      })
+    this.data.additionalLinks = this.storyRecord
+      .filter(({ type }) => type === 'link')
       .map(({ childId, parentId, optionText }) => {
-        const source = this.data.nodes.filter(
-          (node) => node.data.id === parentId,
-        )[0]
-        const target = this.data.nodes.filter(
-          (node) => node.data.id === childId,
-        )[0]
+        const source = this.data.nodes.find((node) => {
+          return node.data.id === parentId
+        })
+        const target = this.data.nodes.find((node) => {
+          return node.data.id === childId
+        })
         const result = { source, target, optionText }
         return result
       })
@@ -58,9 +55,10 @@ class Person {
   }
   tree() {
     const layout = d3.tree().size([this.dimensions.w, this.dimensions.h])
-    return layout(
-      this.stratifier(this.raw.filter(({ type }) => type === 'node')),
+    const stratified = this.stratifier(
+      this.storyRecord.filter(({ type }) => type === 'node'),
     )
+    return layout(stratified)
   }
   parseNodes() {
     const nodes = []
@@ -88,13 +86,13 @@ class Person {
     this.parseAdditionalLinks()
   }
   buttonAdd(newNodeId, currentNodeId) {
-    this.raw.forEach((node, i) => {
+    this.storyRecord.forEach((node, i) => {
       if (currentNodeId === node.id) {
         node.children.push(newNodeId)
-        this.raw[i] = node
+        this.storyRecord[i] = node
       }
     })
-    this.raw.push({
+    this.storyRecord.push({
       optionText: 'fresh button',
       id: newNodeId,
       fontSize: 32,
@@ -102,27 +100,27 @@ class Person {
       children: [],
       type: 'node',
     })
-    this.save(this.id)
+    this.save(this.storyId, this.storyRecord)
   }
   buttonChange(nodeId, optionText) {
-    this.raw.forEach((node, i) => {
+    this.storyRecord.forEach((node, i) => {
       if (nodeId === node.id) {
         node.optionText = optionText
-        this.raw[i] = node
+        this.storyRecord[i] = node
       }
     })
-    this.save(this.id)
+    this.save(this.storyId, this.storyRecord)
   }
   buttonDelete(nodeId) {
     let deleteIndex
-    this.raw.forEach((node, i) => {
+    this.storyRecord.forEach((node, i) => {
       if (nodeId === node.id) deleteIndex = i
     })
-    this.raw.splice(deleteIndex, 1)
-    this.save(this.id)
+    this.storyRecord.splice(deleteIndex, 1)
+    this.save(this.storyId, this.storyRecord)
   }
   linkAdd(parentId, childId) {
-    this.raw.push({
+    this.storyRecord.push({
       type: 'link',
       id: Guid.raw(),
       title: 'adoption',
@@ -130,36 +128,33 @@ class Person {
       parentId,
       childId,
     })
-    this.save(this.id)
+    this.save(this.storyId, this.storyRecord)
   }
   messageAdd(nodeId) {
-    this.raw.forEach((node, i) => {
+    this.storyRecord.forEach((node, i) => {
       if (nodeId === node.id) {
         node.messages.push('fresh message')
-        this.raw[i] = node
+        this.storyRecord[i] = node
       }
     })
   }
   messageChange(nodeId, messageIndex, message) {
-    this.raw.forEach((node, i) => {
+    this.storyRecord.forEach((node, i) => {
       if (nodeId === node.id) {
         node.messages[messageIndex] = message
-        this.raw[i] = node
+        this.storyRecord[i] = node
       }
     })
-    this.save(this.id)
+    this.save(this.storyId, this.storyRecord)
   }
   messageDelete(nodeId, messageIndex) {
-    this.raw.forEach((node, i) => {
+    this.storyRecord.forEach((node, i) => {
       if (nodeId === node.id) {
         node.messages = node.messages.filter((_, i) => i !== messageIndex)
-        this.raw[i] = node
+        this.storyRecord[i] = node
       }
     })
-  }
-  save(id) {
-    ipcRenderer.send('person--save', id, JSON.stringify(this.raw, null, 2))
   }
 }
 
-module.exports = Person
+module.exports = StoryManager

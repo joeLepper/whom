@@ -3,9 +3,9 @@ const { Component } = React
 
 const styled = require('styled-components').default
 const PropTypes = require('prop-types')
-const { node } = require('../../../validators')
+const { node } = require('../../validators')
 
-const Button = require('../../button')
+const Button = require('../button')
 const EditButton = require('./edit-button')
 const MenuButton = require('./menu-button')
 const ZoomButton = require('./zoom-button')
@@ -24,11 +24,11 @@ class ControlPanel extends Component {
   constructor(props) {
     super(...arguments)
     this.state = {
-      personId: props.personId,
+      storyId: props.storyId,
     }
   }
-  componentWillReceiveProps({ personId }) {
-    if (personId !== this.state.personId) this.setState({ personId })
+  componentWillReceiveProps({ storyId }) {
+    if (storyId !== this.state.storyId) this.setState({ storyId })
   }
   render() {
     return (
@@ -40,8 +40,8 @@ class ControlPanel extends Component {
         />
         <EditButton
           editing={this.props.editing}
-          personId={this.props.personId}
-          person={this.props.person}
+          storyId={this.props.storyId}
+          story={this.props.story}
           onEditChange={this.props.onEditChange}
         />
         <ZoomButton
@@ -53,9 +53,9 @@ class ControlPanel extends Component {
           onZoomChange={this.props.onZoomChange}
         />
         <input
-          value={this.state.personId}
+          value={this.state.storyId}
           onChange={({ target }) => {
-            this.setState({ personId: target.value })
+            this.setState({ storyId: target.value })
           }}
         />
         <Button
@@ -63,7 +63,7 @@ class ControlPanel extends Component {
           editing={false}
           key="save-as"
           onClick={() => {
-            this.props.onSaveAs(this.state.personId)
+            this.props.onSaveAs(this.state.storyId)
           }}>
           save as
         </Button>
@@ -72,11 +72,11 @@ class ControlPanel extends Component {
   }
 }
 ControlPanel.propTypes = {
-  personId: PropTypes.string.isRequired,
+  storyId: PropTypes.string.isRequired,
   history: PropTypes.object.isRequired,
   selected: PropTypes.shape(node).isRequired,
   editing: PropTypes.bool.isRequired,
-  person: PropTypes.instanceOf(require('../../../person')).isRequired,
+  story: PropTypes.instanceOf(require('../../story-manager')).isRequired,
   baseZoom: PropTypes.number.isRequired,
   zoom: PropTypes.object.isRequired,
   maxZoomX: PropTypes.number.isRequired,

@@ -1,10 +1,10 @@
 const React = require('react')
 const { Component } = React
-const { ipcRenderer } = require('electron')
 const styled = require('styled-components').default
 const PropTypes = require('prop-types')
 const Button = require('../button')
-const PersonButton = require('./person-button')
+const StoryButton = require('./story-button')
+const stories = require('../../stories')
 
 const MenuContainer = styled.ul`
   list-style: none;
@@ -16,49 +16,49 @@ const MenuContainer = styled.ul`
 class Menu extends Component {
   constructor() {
     super(...arguments)
-    this.renderPersonButton = this.renderPersonButton.bind(this)
+    this.renderStoryButton = this.renderStoryButton.bind(this)
+    this.createStory = this.createStory.bind(this)
     this.state = {
-      people: [],
+      stories: [],
       loading: true,
     }
   }
-  createPerson() {
-    ipcRenderer.send('person--create', 'fresh')
+  createStory() {
+    stories
+      .create('fresh')
+      .then(() => this.props.history.push(`/story/fresh`))
+      .catch((err) => {
+        throw new Error(err)
+      })
   }
-  loadPeople() {
-    ipcRenderer.send('people--load')
-  }
-  renderPersonButton(personId, i) {
+  renderStoryButton(storyId, i) {
     return (
-      <PersonButton key={i} personId={personId} history={this.props.history} />
+      <StoryButton key={i} storyId={storyId} history={this.props.history} />
     )
   }
   componentDidMount() {
-    this.loadPeople()
-    ipcRenderer.on('people--load:reply', (event, people) => {
-      this.setState({
-        people,
-        loading: false,
+    stories
+      .list()
+      .then((stories) => this.setState({ stories, loading: false }))
+      .catch((err) => {
+        throw new Error(err)
       })
-    })
-    ipcRenderer.on('person--create:reply', (event, personId) => {
-      this.props.history.push(`/person/${personId}`)
-    })
   }
   render() {
     if (this.state.loading) return <h1>Loading</h1>
-    const { people } = this.state
-    const peopleButtons = people.map(this.renderPersonButton)
-    peopleButtons.push(
+    const { stories } = this.state
+    const storyButtons = stories.map(this.renderStoryButton)
+    const createStoryButton = (
       <Button
         opacity={1}
         editing={false}
-        key={'new-person-button'}
-        onClick={this.createPerson}>
+        key={'new-story-button'}
+        onClick={this.createStory}>
         freshen up
-      </Button>,
+      </Button>
     )
-    return <MenuContainer>{peopleButtons}</MenuContainer>
+    storyButtons.push(createStoryButton)
+    return <MenuContainer>{storyButtons}</MenuContainer>
   }
 }
 Menu.propTypes = {

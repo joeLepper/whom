@@ -5,8 +5,8 @@ const Guid = require('guid')
 const qs = require('qs')
 const PropTypes = require('prop-types')
 
-const Button = require('../../button')
-const { node } = require('../../../validators')
+const Button = require('../button')
+const { node } = require('../../validators')
 
 const ButtonsContainer = styled.div`
   display: flex;
@@ -31,10 +31,10 @@ class Buttons extends Component {
   handleButtonClick(child) {
     return (e) => {
       if (!this.props.editing) {
-        const { personId } = this.props
+        const { storyId } = this.props
         const search = qs.parse(this.props.location.search.substring(1))
         const to = {
-          pathname: `/person/${personId}/node/${child.data.id}`,
+          pathname: `/story/${storyId}/node/${child.data.id}`,
           search: `?${qs.stringify(search, { encode: false })}`,
         }
         this.props.history.push(to)
@@ -102,7 +102,7 @@ Buttons.propTypes = {
   node: PropTypes.shape(node).isRequired,
   onButtonAdd: PropTypes.func.isRequired,
   editing: PropTypes.bool.isRequired,
-  personId: PropTypes.string.isRequired,
+  storyId: PropTypes.string.isRequired,
   location: PropTypes.object.isRequired,
   history: PropTypes.object.isRequired,
   additionalLinks: PropTypes.array.isRequired,

@@ -1,10 +1,14 @@
 const React = require('react')
 const { Component } = React
-const ConversationNode = require('./conversation-node')
-const GraphicalNode = require('./graphical-node')
 const styled = require('styled-components').default
 const { path } = require('d3-path')
 const PropTypes = require('prop-types')
+
+const Stage = require('../stage')
+const Viewport = require('../viewport')
+const GraphicalNode = require('../graphical-node')
+const ConversationNode = require('../text-node')
+
 const { guid, node } = require('../../validators')
 
 const NULL_LINE = {
@@ -12,7 +16,7 @@ const NULL_LINE = {
   target: { x: 0, y: 0 },
 }
 
-class Navigator extends Component {
+class Page extends Component {
   constructor() {
     super(...arguments)
 
@@ -92,7 +96,7 @@ class Navigator extends Component {
             onButtonDelete={this.props.onButtonDelete}
             onMessageAdd={this.props.onMessageAdd}
             onButtonAdd={this.props.onButtonAdd}
-            personId={this.props.personId}
+            storyId={this.props.storyId}
             location={this.props.location}
             history={this.props.history}
             zoomRatio={this.props.zoomX}
@@ -110,7 +114,7 @@ class Navigator extends Component {
         onDragCancel={this.handleDragCancel}
         dragSource={this.state.line.source}
         onDragBegin={this.handleDragBegin}
-        personId={this.props.personId}
+        storyId={this.props.storyId}
         dragging={this.state.dragging}
         onDragEnd={this.handleDragEnd}
         key={`graphical-${i}`}
@@ -120,52 +124,58 @@ class Navigator extends Component {
         h={h}
       />
     ))
-    const naturalLinks = this.props.links.map((l, i) => {
-      return <Path d={this.generateLink(l)} key={`natural-link-${i}`} />
-    })
+    const naturalLinks = this.props.links.map((l, i) => (
+      <Path d={this.generateLink(l)} key={`natural-link-${i}`} />
+    ))
 
-    const additionalLinks = this.props.additionalLinks.map((l, i) => {
-      return <Path d={this.generateLink(l)} key={`additional-link-${i}`} />
-    })
+    const additionalLinks = this.props.additionalLinks.map((l, i) => (
+      <Path d={this.generateLink(l)} key={`additional-link-${i}`} />
+    ))
 
-    if (this.state.dragging)
-      naturalLinks.push(
-        <Path d={this.generateLink(this.state.line)} key={'why-hello-there'} />,
+    if (this.state.dragging) {
+      const link = (
+        <Path d={this.generateLink(this.state.line)} key={'potential-link'} />
       )
+      naturalLinks.push(link)
+    }
 
-    const storylineMode = zoomX <= 1 && this.props.editing
+    const stageProps = {
+      w,
+      h,
+      zoomX,
+      zoomY,
+      transX,
+      transY,
+      naturalLinks,
+      graphicalNodes,
+      additionalLinks,
+      conversationNodes,
+    }
 
+    const viewportProps = {
+      w,
+      h,
+      dragging: this.state.dragging,
+      storylineMode: zoomX <= 1 && this.props.editing,
+      onDragCancel: this.handleDragCancel,
+      onDragMove: this.handleDragMove,
+    }
     return (
-      <svg
-        onMouseMove={this.state.dragging ? this.handleDragMove : null}
-        onMouseUp={this.state.dragging ? this.handleDragCancel : null}
-        onMouseLeave={this.state.dragging ? this.handleDragCancel : null}
-        width={w}
-        height={h}>
-        <g>
-          <g
-            className="ScreenTranslater"
-            transform={`translate(${transX}, ${transY})`}>
-            <g
-              className="ScreenScaler"
-              transform={`scale(${this.props.zoomX}, ${this.props.zoomY})`}>
-              <g className="NaturalLinks">{naturalLinks}</g>
-              <g className="AdditionalLinks">{additionalLinks}</g>
-              <g className="GraphicalNodes">{graphicalNodes}</g>
-            </g>
-          </g>
-          {storylineMode ? null : (
+      <Viewport {...viewportProps}>
+        <Stage {...stageProps}>
+          {this.props.storylineMode ? null : (
             <g className="ConversationNodes">{conversationNodes}</g>
           )}
-        </g>
-      </svg>
+        </Stage>
+      </Viewport>
     )
   }
 }
-Navigator.propTypes = {
+Page.propTypes = {
   editing: PropTypes.bool.isRequired,
   selectedId: guid.isRequired,
-  personId: PropTypes.string.isRequired,
+  storyId: PropTypes.string.isRequired,
+  storylineMode: PropTypes.bool.isRequired,
   additionalLinks: PropTypes.array.isRequired,
   w: PropTypes.number.isRequired,
   h: PropTypes.number.isRequired,
@@ -191,4 +201,4 @@ Navigator.propTypes = {
   match: PropTypes.object.isRequired,
   history: PropTypes.object.isRequired,
 }
-module.exports = Navigator
+module.exports = Page

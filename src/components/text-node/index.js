@@ -4,8 +4,8 @@ const styled = require('styled-components').default
 const PropTypes = require('prop-types')
 const qs = require('qs')
 
-const Messages = require('./messages')
-const Buttons = require('./buttons')
+const Messages = require('../messages')
+const Choices = require('../choices')
 const { node } = require('../../validators')
 
 const Div = styled.div`
@@ -17,13 +17,13 @@ const Div = styled.div`
   align-items: center;
   justify-content: center;
 `
-class ConversationNode extends Component {
+class TextNode extends Component {
   constructor() {
     super(...arguments)
     this.advanceMessage = this.advanceMessage.bind(this)
     this.reverseMessage = this.reverseMessage.bind(this)
     this.handleMessageDelete = this.handleMessageDelete.bind(this)
-    this.renderButtons = this.renderButtons.bind(this)
+    this.renderChoices = this.renderChoices.bind(this)
     this.renderMessages = this.renderMessages.bind(this)
     this.getCurrentIndex = this.getCurrentIndex.bind(this)
     this.updateIndex = this.updateIndex.bind(this)
@@ -77,13 +77,13 @@ class ConversationNode extends Component {
         this.props.onMessageDelete(nodeId, messageIndex)
       })
   }
-  renderButtons(index) {
+  renderChoices(index) {
     return (
-      <Buttons
+      <Choices
         history={this.props.history}
         editing={this.props.editing}
         location={this.props.location}
-        personId={this.props.personId}
+        storyId={this.props.storyId}
         onButtonAdd={this.props.onButtonAdd}
         onButtonChange={this.props.onButtonChange}
         onButtonDelete={this.props.onButtonDelete}
@@ -115,19 +115,18 @@ class ConversationNode extends Component {
       <foreignObject width={this.props.w} height={this.props.h}>
         <Div>
           {this.renderMessages(index)}
-          {this.renderButtons(index)}
+          {this.renderChoices(index)}
         </Div>
       </foreignObject>
     )
   }
 }
-
-ConversationNode.propTypes = {
+TextNode.propTypes = {
   additionalLinks: PropTypes.array.isRequired,
   w: PropTypes.number.isRequired,
   h: PropTypes.number.isRequired,
   zoomRatio: PropTypes.number.isRequired,
-  personId: PropTypes.string.isRequired,
+  storyId: PropTypes.string.isRequired,
   editing: PropTypes.bool.isRequired,
   node: PropTypes.shape(node),
   onButtonAdd: PropTypes.func.isRequired,
@@ -139,5 +138,4 @@ ConversationNode.propTypes = {
   location: PropTypes.object.isRequired,
   history: PropTypes.object.isRequired,
 }
-
-module.exports = ConversationNode
+module.exports = TextNode
