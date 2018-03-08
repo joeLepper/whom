@@ -163,7 +163,7 @@ class Page extends Component {
     return (
       <Viewport {...viewportProps}>
         <Stage {...stageProps}>
-          {this.props.storylineMode ? null : (
+          {viewportProps.storylineMode ? null : (
             <g className="ConversationNodes">{conversationNodes}</g>
           )}
         </Stage>
@@ -175,7 +175,6 @@ Page.propTypes = {
   editing: PropTypes.bool.isRequired,
   selectedId: guid.isRequired,
   storyId: PropTypes.string.isRequired,
-  storylineMode: PropTypes.bool.isRequired,
   additionalLinks: PropTypes.array.isRequired,
   w: PropTypes.number.isRequired,
   h: PropTypes.number.isRequired,

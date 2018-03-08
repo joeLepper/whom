@@ -17,6 +17,7 @@ class Book extends Component {
     this.renderRedirect = this.renderRedirect.bind(this)
     this.loadStory = this.loadStory.bind(this)
     this.handleSave = this.handleSave.bind(this)
+    this.handleSaveAs = this.handleSaveAs.bind(this)
     this.state = {
       loading: true,
       nodeId: null,
@@ -46,7 +47,9 @@ class Book extends Component {
           storyRecord,
           onSave: this.handleSave,
         })
-        this.setState({ story, loading: false })
+        this.setState({ story, storyId, loading: false }, () => {
+          this.props.history.push(`/story/${storyId}`)
+        })
       })
       .catch((err) => console.error(err))
   }
