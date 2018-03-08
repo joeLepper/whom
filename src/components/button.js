@@ -5,26 +5,25 @@ const PropTypes = require('prop-types')
 const { guid } = require('../validators')
 
 const PINK = '#f09'
+const WHITE = '#fff'
 const FONT_SIZE = '1.5em'
 
 const ButtonContainer = styled.div`
   margin: 1vh 1vw;
   display: flex;
   justify-content: center;
-  border-top: solid 1px ${PINK};
-  border-bottom: solid 1px transparent;
-  background-color: transparent;
+  background-color: ${PINK};
   padding 0.5vh 0.5vw;
   font-size: ${FONT_SIZE};
+  color: ${WHITE};
   &:hover{
-    border-top: solid 1px transparent;
-    border-bottom: solid 1px ${PINK};
+    background-color: transparent;
+    color: ${PINK};
   }
 `
 
 const A = styled.a`
   text-decoration: none;
-  color: ${PINK};
   padding: 0.125em;
 `
 
