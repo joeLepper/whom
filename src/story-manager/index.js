@@ -1,11 +1,12 @@
-const d3 = require('d3-hierarchy')
+const { stratify, tree } = require('d3-hierarchy')
+const { scaleLinear } = require('d3-scale')
 const Guid = require('guid')
 
 class StoryManager {
   constructor({ storyRecord, storyId, onSave }) {
     this.storyRecord = storyRecord
     this.storyId = storyId
-    this.stratifier = d3.stratify().parentId((d) => {
+    this.stratifier = stratify().parentId((d) => {
       const parents = this.storyRecord.filter(
         (node) =>
           node.children && node.children.some((child) => child === d.id),
@@ -54,7 +55,7 @@ class StoryManager {
     this.data.links = this.tree(this.dimensions).links()
   }
   tree() {
-    const layout = d3.tree().size([this.dimensions.w, this.dimensions.h])
+    const layout = tree().size([this.dimensions.w, this.dimensions.h])
     const stratified = this.stratifier(
       this.storyRecord.filter(({ type }) => type === 'node'),
     )
@@ -75,6 +76,26 @@ class StoryManager {
     this.data.nodes = nodes
     this.data.maxZoomX = maxZoomX
     this.data.maxZoomY = maxZoomY
+
+    console.log('STORY MANAGER')
+    console.log(this.dimensions, maxZoomX, maxZoomY)
+
+    const xScale = scaleLinear()
+      .range([
+        this.dimensions.w * maxZoomX / 2,
+        this.dimensions.w * maxZoomX / 2 * -1,
+      ])
+      .domain([0, this.dimensions.w])
+    const yScale = scaleLinear()
+      .range([
+        this.dimensions.h * maxZoomY / 2,
+        this.dimensions.h * maxZoomY / 2 * -1,
+      ])
+      .domain([0, this.dimensions.h])
+    this.scale = {
+      x: xScale,
+      y: yScale,
+    }
   }
   update() {
     this.dimensions = {

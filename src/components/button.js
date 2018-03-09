@@ -6,6 +6,7 @@ const { guid } = require('../validators')
 
 const PINK = '#f09'
 const WHITE = '#fff'
+const GREEN = '#0f0'
 const FONT_SIZE = '1.5em'
 
 const ButtonContainer = styled.div`
@@ -15,9 +16,9 @@ const ButtonContainer = styled.div`
   background-color: ${PINK};
   padding 0.5vh 0.5vw;
   font-size: ${FONT_SIZE};
-  color: ${WHITE};
+  color: ${GREEN};
   &:hover{
-    background-color: transparent;
+    background-color: ${GREEN};
     color: ${PINK};
   }
 `

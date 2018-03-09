@@ -31,16 +31,14 @@ class Pages extends Component {
     return (
       <Motion
         style={{
-          x: spring(selected.x),
-          y: spring(selected.y),
+          x: spring(this.props.story.scale.x(selected.x)),
+          y: spring(this.props.story.scale.y(selected.y)),
           w: spring(this.props.story.dimensions.w),
           h: spring(this.props.story.dimensions.h),
           zoomX: spring(this.state.zoom.x),
           zoomY: spring(this.state.zoom.y),
-          maxZoomX: spring(this.state.maxZoomX),
-          maxZoomY: spring(this.state.maxZoomY),
         }}>
-        {({ x, y, w, h, zoomX, zoomY, maxZoomX, maxZoomY }) => {
+        {({ x, y, w, h, zoomX, zoomY }) => {
           return (
             <Page
               match={this.props.match}
@@ -63,11 +61,10 @@ class Pages extends Component {
               onMessageAdd={this.props.story.messageAdd}
               onMessageChange={this.props.story.messageChange}
               onMessageDelete={this.props.story.messageDelete}
-              maxZoomX={maxZoomX}
-              maxZoomY={maxZoomY}
               links={this.props.story.data.links}
               additionalLinks={this.props.story.data.additionalLinks}
               nodes={this.props.story.data.nodes}
+              scale={this.props.story.scale}
             />
           )
         }}

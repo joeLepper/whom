@@ -7,7 +7,7 @@ const PropTypes = require('prop-types')
 const Stage = require('../stage')
 const Viewport = require('../viewport')
 const GraphicalNode = require('../graphical-node')
-const ConversationNode = require('../text-node')
+const TextNode = require('../text-node')
 
 const { guid, node } = require('../../validators')
 
@@ -15,6 +15,13 @@ const NULL_LINE = {
   source: { x: 0, y: 0, id: null },
   target: { x: 0, y: 0 },
 }
+
+const Path = styled.path`
+  stroke: #099;
+  stroke-width: 1px;
+  stroke-linecap: round;
+  fill: none;
+`
 
 class Page extends Component {
   constructor() {
@@ -74,41 +81,36 @@ class Page extends Component {
   }
   render() {
     const { x, y, w, h, zoomX, zoomY } = this.props
-    const Path = styled.path`
-      stroke: #099;
-      stroke-width: 1px;
-      stroke-linecap: round;
-      fill: none;
-    `
+    console.log(this.props.x, this.props.y)
+    const transX = x
+    const transY = y
 
-    const transX = x * zoomX * -1 + w / 2
-    const transY = y * zoomY * -1 + h / 2
+    const rawNode = this.props.nodes.find(
+      (n) => n.data.id === this.props.selectedId,
+    )
 
-    const conversationNodes = this.props.nodes
-      .filter((n) => n.data.id === this.props.selectedId)
-      .map((n, i) => {
-        return (
-          <ConversationNode
-            additionalLinks={this.props.additionalLinks}
-            onMessageDelete={this.props.onMessageDelete}
-            onMessageChange={this.props.onMessageChange}
-            onButtonChange={this.props.onButtonChange}
-            onButtonDelete={this.props.onButtonDelete}
-            onMessageAdd={this.props.onMessageAdd}
-            onButtonAdd={this.props.onButtonAdd}
-            storyId={this.props.storyId}
-            location={this.props.location}
-            history={this.props.history}
-            zoomRatio={this.props.zoomX}
-            editing={this.props.editing}
-            key={`conversation-${i}`}
-            match={this.props.match}
-            node={n}
-            w={w}
-            h={h}
-          />
-        )
-      })
+    const textNode = (
+      <TextNode
+        additionalLinks={this.props.additionalLinks}
+        onMessageDelete={this.props.onMessageDelete}
+        onMessageChange={this.props.onMessageChange}
+        onButtonChange={this.props.onButtonChange}
+        onButtonDelete={this.props.onButtonDelete}
+        onMessageAdd={this.props.onMessageAdd}
+        onButtonAdd={this.props.onButtonAdd}
+        storyId={this.props.storyId}
+        location={this.props.location}
+        history={this.props.history}
+        zoomRatio={this.props.zoomX}
+        editing={this.props.editing}
+        key={`conversation`}
+        match={this.props.match}
+        node={rawNode}
+        w={w}
+        h={h}
+      />
+    )
+
     const graphicalNodes = this.props.nodes.map((n, i) => (
       <GraphicalNode
         onDragCancel={this.handleDragCancel}
@@ -149,7 +151,7 @@ class Page extends Component {
       naturalLinks,
       graphicalNodes,
       additionalLinks,
-      conversationNodes,
+      textNode,
     }
 
     const viewportProps = {
@@ -164,7 +166,7 @@ class Page extends Component {
       <Viewport {...viewportProps}>
         <Stage {...stageProps}>
           {viewportProps.storylineMode ? null : (
-            <g className="ConversationNodes">{conversationNodes}</g>
+            <g className="TextNode">{textNode}</g>
           )}
         </Stage>
       </Viewport>

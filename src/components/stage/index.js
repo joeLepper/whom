@@ -5,9 +5,7 @@ const PropTypes = require('prop-types')
 class Scaler extends PureComponent {
   render() {
     return (
-      <g
-        className="IllustrationScaler"
-        transform={`scale(${this.props.zoomX}, ${this.props.zoomY})`}>
+      <g className="IllustrationScaler">
         <g className="NaturalLinks">{this.props.naturalLinks}</g>
         <g className="AdditionalLinks">{this.props.additionalLinks}</g>
         <g className="GraphicalNodes">{this.props.graphicalNodes}</g>
@@ -23,8 +21,6 @@ class Illustration extends PureComponent {
         className="Illustration"
         transform={`translate(${this.props.transX}, ${this.props.transY})`}>
         <Scaler
-          zoomX={this.props.zoomX}
-          zoomY={this.props.zoomY}
           naturalLinks={this.props.naturalLinks}
           additionalLinks={this.props.additionalLinks}
           graphicalNodesnks={this.props.graphicalNodes}
@@ -41,8 +37,6 @@ class Stage extends PureComponent {
         <Illustration
           transX={this.props.transX}
           transY={this.props.transY}
-          zoomX={this.props.zoomX}
-          zoomY={this.props.zoomY}
           naturalLinks={this.props.naturalLinks}
           additionalLinks={this.props.additionalLinks}
           graphicalNodesnks={this.props.graphicalNodes}

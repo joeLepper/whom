@@ -69,7 +69,8 @@ class Book extends Component {
     })
     this.loadStory(this.props.match.params.storyId)
   }
-  renderConversation() {
+  renderPages() {
+    // console.log('render pages')
     return (
       <Pages
         onSaveAs={this.handleSaveAs}
@@ -103,7 +104,7 @@ class Book extends Component {
     // eslint-disable-next-line no-console
     console.log(this.props.location)
     if (this.state.loading) return <h1>'LOADING'</h1>
-    else if (this.props.match.params.nodeId) return this.renderConversation()
+    else if (this.props.match.params.nodeId) return this.renderPages()
     return this.renderRedirect()
   }
 }
