@@ -47,8 +47,6 @@ class Stage extends PureComponent {
   }
 }
 Stage.propTypes = {
-  zoomX: PropTypes.number.isRequired,
-  zoomY: PropTypes.number.isRequired,
   transX: PropTypes.number.isRequired,
   transY: PropTypes.number.isRequired,
   children: PropTypes.node,

@@ -81,7 +81,7 @@ class Page extends Component {
   }
   render() {
     const { x, y, w, h, zoomX, zoomY } = this.props
-    console.log(this.props.x, this.props.y)
+
     const transX = x
     const transY = y
 

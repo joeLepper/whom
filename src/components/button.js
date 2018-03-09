@@ -5,7 +5,6 @@ const PropTypes = require('prop-types')
 const { guid } = require('../validators')
 
 const PINK = '#f09'
-const WHITE = '#fff'
 const GREEN = '#0f0'
 const FONT_SIZE = '1.5em'
 

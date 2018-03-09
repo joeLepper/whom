@@ -77,9 +77,6 @@ class StoryManager {
     this.data.maxZoomX = maxZoomX
     this.data.maxZoomY = maxZoomY
 
-    console.log('STORY MANAGER')
-    console.log(this.dimensions, maxZoomX, maxZoomY)
-
     const xScale = scaleLinear()
       .range([
         this.dimensions.w * maxZoomX / 2,
