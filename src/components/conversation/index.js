@@ -58,6 +58,9 @@ class Conversation extends Component {
         location={this.props.location}
         personId={this.props.match.params.personId}
         selectedId={this.props.match.params.nodeId}
+        onMouseEnter={(e) => {
+          console.log('entered')
+        }}
       />
     )
   }
