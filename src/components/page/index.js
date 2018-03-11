@@ -119,6 +119,8 @@ class Page extends Component {
         storyId={this.props.storyId}
         dragging={this.state.dragging}
         onDragEnd={this.handleDragEnd}
+        history={this.props.history}
+        location={this.props.location}
         key={`graphical-${i}`}
         node={n}
         zoom={zoomY}

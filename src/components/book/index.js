@@ -102,7 +102,6 @@ class Book extends Component {
   }
   render() {
     // eslint-disable-next-line no-console
-    console.log(this.props.location)
     if (this.state.loading) return <h1>'LOADING'</h1>
     else if (this.props.match.params.nodeId) return this.renderPages()
     return this.renderRedirect()

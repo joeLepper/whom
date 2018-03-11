@@ -4,6 +4,7 @@ const styled = require('styled-components').default
 const PropTypes = require('prop-types')
 
 const { guid, node } = require('../../validators')
+const qs = require('qs')
 
 const Circle = styled.circle`
   fill: #f09;
@@ -69,6 +70,17 @@ class GraphicalNode extends Component {
               },
             }
             this.props.onDragBegin(dragState)
+          }}
+          onClick={(e) => {
+            if (!this.props.dragging) {
+              const { storyId, node } = this.props
+              const search = qs.parse(this.props.location.search.substring(1))
+              const to = {
+                pathname: `/story/${storyId}/node/${node.id}`,
+                search: `?${qs.stringify(search, { encode: false })}`,
+              }
+              this.props.history.push(to)
+            }
           }}
           r={20}
         />

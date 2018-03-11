@@ -23,7 +23,7 @@ class Illustration extends PureComponent {
         <Scaler
           naturalLinks={this.props.naturalLinks}
           additionalLinks={this.props.additionalLinks}
-          graphicalNodesnks={this.props.graphicalNodes}
+          graphicalNodes={this.props.graphicalNodes}
         />
       </g>
     )
@@ -34,14 +34,14 @@ class Stage extends PureComponent {
   render() {
     return (
       <g className="Stage">
+        {this.props.children}
         <Illustration
           transX={this.props.transX}
           transY={this.props.transY}
           naturalLinks={this.props.naturalLinks}
           additionalLinks={this.props.additionalLinks}
-          graphicalNodesnks={this.props.graphicalNodes}
+          graphicalNodes={this.props.graphicalNodes}
         />
-        {this.props.children}
       </g>
     )
   }
