@@ -23,20 +23,6 @@ class GraphicalNode extends Component {
       active: false,
     }
   }
-  handleNodeClick() {
-    return (e) => {
-      if (!this.props.editing) {
-        const { personId } = e.target
-        const search = qs.parse(this.props.node.id)
-        const to = {
-          pathname: `/person/${personId}/node/${child.data.id}`,
-          search: `?${qs.stringify(search, { encode: false })}`,
-        }
-        this.props.history.push(to)
-      }
-    }
-  }
-
   render() {
     console.log(this.props)
     return (
