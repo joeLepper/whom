@@ -113,6 +113,7 @@ class Navigator extends Component {
         personId={this.props.personId}
         dragging={this.state.dragging}
         onDragEnd={this.handleDragEnd}
+        history={this.props.history}
         key={`graphical-${i}`}
         node={n}
         zoom={zoomY}
@@ -143,6 +144,9 @@ class Navigator extends Component {
         width={w}
         height={h}>
         <g>
+          {storylineMode ? null : (
+            <g className="ConversationNodes">{conversationNodes}</g>
+          )}
           <g
             className="ScreenTranslater"
             transform={`translate(${transX}, ${transY})`}>
@@ -154,9 +158,6 @@ class Navigator extends Component {
               <g className="GraphicalNodes">{graphicalNodes}</g>
             </g>
           </g>
-          {storylineMode ? null : (
-            <g className="ConversationNodes">{conversationNodes}</g>
-          )}
         </g>
       </svg>
     )

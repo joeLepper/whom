@@ -3,6 +3,7 @@ const { Component } = React
 const styled = require('styled-components').default
 const PropTypes = require('prop-types')
 const { guid, node } = require('../../validators')
+const qs = require('qs')
 
 const Circle = styled.circle`
   fill: #f09;
@@ -22,7 +23,22 @@ class GraphicalNode extends Component {
       active: false,
     }
   }
+  handleNodeClick() {
+    return (e) => {
+      if (!this.props.editing) {
+        const { personId } = e.target
+        const search = qs.parse(this.props.node.id)
+        const to = {
+          pathname: `/person/${personId}/node/${child.data.id}`,
+          search: `?${qs.stringify(search, { encode: false })}`,
+        }
+        this.props.history.push(to)
+      }
+    }
+  }
+
   render() {
+    console.log(this.props)
     return (
       <g
         onMouseUp={(e) => {
@@ -68,6 +84,16 @@ class GraphicalNode extends Component {
               },
             }
             this.props.onDragBegin(dragState)
+          }}
+          onClick={(e) => {
+            if (!this.props.editing) {
+              const { personId, node } = this.props
+              const to = {
+                pathname: `/person/${personId}/node/${node.id}`,
+                search: `?${qs.stringify(node.id, { encode: false })}`,
+              }
+              this.props.history.push(to)
+            }
           }}
           r={20}
         />
